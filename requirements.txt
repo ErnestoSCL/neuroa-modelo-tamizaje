@@ -1,0 +1,13 @@
+scikit-learn==1.6.1
+pandas
+numpy
+scipy
+matplotlib
+seaborn
+pyreadstat
+joblib
+xgboost
+lightgbm
+catboost
+shap
+jupyter

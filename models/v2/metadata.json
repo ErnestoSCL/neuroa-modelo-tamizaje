@@ -1,0 +1,74 @@
+{
+  "modelo": "Regresión Logística_Qchat",
+  "algoritmo": "Regresión Logística",
+  "hiperparametros": {
+    "C": 0.1
+  },
+  "features": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8",
+    "A9",
+    "A10"
+  ],
+  "umbral": 0.3251,
+  "criterio_umbral": "máxima especificidad con sensibilidad >= 0.90 en la validación clínica (Polonia, 50%)",
+  "calibracion": "sigmoid sobre la validación clínica (Polonia, 50%, prevalencia 54%): la probabilidad sobreestima el riesgo poblacional; mostrar niveles, no el porcentaje exacto",
+  "metricas_test_clinico": {
+    "AUC": 0.9598,
+    "Sensibilidad": 0.9254,
+    "Especificidad": 0.8475,
+    "Precisión": 0.8732,
+    "Accuracy": 0.8889,
+    "F1": 0.8986
+  },
+  "metricas_regla_oficial_test_clinico": {
+    "AUC": 0.964,
+    "Sensibilidad": 0.791,
+    "Especificidad": 0.9322,
+    "Precisión": 0.9298,
+    "Accuracy": 0.8571,
+    "F1": 0.8548
+  },
+  "datos_entrenamiento": {
+    "fuentes": [
+      "Nueva Zelanda (Thabtah 2018)",
+      "Arabia Saudita (Kaggle)"
+    ],
+    "n": 1270
+  },
+  "datos_validacion_clinica": {
+    "fuente": "Polonia (Niedźwiecka et al. 2020)",
+    "n_validacion": 126,
+    "n_test": 126
+  },
+  "puntuacion_items": "A1-A9: 1 si el índice de la opción >= 2; A10: 1 si el índice <= 2 (igual que Forms.jsx)",
+  "edad": "no se usa en el modelo",
+  "perfiles": {
+    "pesos_comunicacion": {
+      "A3": 0.2,
+      "A8": 0.2,
+      "A9": 0.2
+    },
+    "pesos_social": {
+      "A1": 0.1,
+      "A2": 0.1,
+      "A4": 0.1,
+      "A5": 0.15,
+      "A6": 0.15,
+      "A7": 0.15
+    },
+    "regla": "Mixto si |com% - soc%| < 10; si no, el mayor"
+  },
+  "rango_validado": "12-36 meses (entrenamiento); 18-24 meses (validación clínica)",
+  "versiones": {
+    "python": "3.11.15",
+    "scikit-learn": "1.6.1"
+  },
+  "fecha": "2026-09-30"
+}
