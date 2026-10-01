@@ -47,23 +47,23 @@ Puntuación actual (`Forms.jsx`, `calculateScore`): ítems 1–9 suman 1 si la o
 |---|---|---|---|---|---|---|
 | 1 | Edad | `edad_meses` | **No.** Se evaluó en el notebook v2 y no mejora el AUC clínico (0.9037 sin edad frente a 0.9038 con edad) | Aviso de validez fuera de 18–36 m | Sí (mensaje por edad) | No |
 | 2 | Sexo | `sexo` | **No** | No | Sí (solo contexto, sin sesgar) | No |
-| 3 | Responde a su nombre | `A1` | Sí | No | Sí | Social (0.10) |
-| 4 | Contacto visual | `A2` | Sí | No | Sí | Social (0.10) |
-| 5 | Señala para pedir | `A3` | Sí | No | Sí | Comunicación |
-| 6 | Señala para compartir interés | `A4` | Sí | No | Sí | Social (0.10) |
-| 7 | Juego simbólico / finge | `A5` | Sí | No | Sí | Social (0.15) |
-| 8 | Sigue la mirada | `A6` | Sí | No | Sí | Social (0.15) |
-| 9 | Consuela | `A7` | Sí | No | Sí | Social (0.15) |
-| 10 | Primeras palabras | `A8` | Sí | No | Sí | Comunicación |
-| 11 | Gestos simples | `A9` | Sí | No | Sí | Comunicación |
+| 3 | Responde a su nombre | `A1` | Sí | No | Sí | Social (10 %) |
+| 4 | Contacto visual | `A2` | Sí | No | Sí | Social (10 %) |
+| 5 | Señala para pedir | `A3` | Sí | No | Sí | Comunicación (20 %) |
+| 6 | Señala para compartir interés | `A4` | Sí | No | Sí | Social (10 %) |
+| 7 | Juego simbólico / finge | `A5` | Sí | No | Sí | Social (15 %) |
+| 8 | Sigue la mirada | `A6` | Sí | No | Sí | Social (15 %) |
+| 9 | Consuela | `A7` | Sí | No | Sí | Social (15 %) |
+| 10 | Primeras palabras | `A8` | Sí | No | Sí | Comunicación (20 %) |
+| 11 | Gestos simples | `A9` | Sí | No | Sí | Comunicación (20 %) |
 | 12 | Mira fijamente a la nada | `A10` | Sí | No | Sí | Ninguno |
-| 13 | Dificultad del habla/lenguaje | `c_habla` | **No** | Sí | Sí | Extendido (heurístico) |
-| 14 | Dificultad de aprendizaje | `c_aprendizaje` | **No** | Sí | Sí | Extendido (heurístico) |
+| 13 | Dificultad del habla/lenguaje | `c_habla` | **No** | Sí | Sí | Comunicación (25 %) |
+| 14 | Dificultad de aprendizaje | `c_aprendizaje` | **No** | Sí | Sí | Comunicación (15 %) |
 | 15 | Trastorno genético | `c_genetico` | **No** | Sí | Sí | No |
 | 16 | Síntomas de depresión | `c_depresion` | **No** | Sí | Sí | No |
 | 17 | Retraso del desarrollo | `c_retraso_desarrollo` | **No** | Sí | Sí | No |
-| 18 | Problemas sociales/conducta | `c_social_conducta` | **No** | Sí | Sí | Extendido (heurístico) |
-| 19 | Ansiedad | `c_ansiedad` | **No** | Sí | Sí | Extendido (heurístico) |
+| 18 | Problemas sociales/conducta | `c_social_conducta` | **No** | Sí | Sí | Social (20 %) |
+| 19 | Ansiedad | `c_ansiedad` | **No** | Sí | Sí | Social (5 %) |
 | 20 | Familiar con autismo | `antecedente_familiar` | **No** | Sí | Sí | No |
 
 Guardar **la respuesta cruda (índice 0–4)** de cada ítem además del valor binario. Hoy la tabla `evaluaciones` solo guarda `a1..a10` binarizados (`app/db/models.py:17-26`), lo que impide reentrenar con la escala completa o cambiar el punto de corte en el futuro.
@@ -126,7 +126,7 @@ flowchart TD
     C -->|probabilidad, umbral| D[Capa 2: Reglas clínicas<br/>deterministas y versionadas]
     B -->|comorbilidades, antecedente, edad| D
     D -->|nivel: Bajo / Moderado / Alto / Prioritario<br/>reglas activadas| E[Resultado determinista]
-    B -->|A1-A10| P[Perfiles de riesgo<br/>comunicación / social / mixto]
+    B -->|A1-A10 + comorbilidades 13, 14, 18, 19| P[Perfiles de riesgo<br/>pesos validados por especialistas<br/>comunicación / social / mixto]
     P --> E
     E --> F[Capa 3: Agente LLM<br/>prompt especializado, JSON estricto]
     F -->|explicación, terapias sugeridas| G[Validador de salida<br/>guardrails]
@@ -186,10 +186,10 @@ Principio clave: **las capas 1 y 2 deciden; la capa 3 solo explica.** El LLM nun
     "reglas_activadas": ["R02"]
   },
   "perfil": {
-    "comunicacion_pct": 66.7,
-    "social_pct": 46.7,
+    "comunicacion_pct": 85.0,
+    "social_pct": 55.0,
     "perfil": "Comunicación",
-    "extendido_heuristico": { "comunicacion_pct": 85.0, "social_pct": 55.0 }
+    "comorbilidades_sin_responder": []
   },
   "explicacion": {
     "fuente": "llm",
@@ -205,7 +205,7 @@ Principio clave: **las capas 1 y 2 deciden; la capa 3 solo explica.** El LLM nun
 - `umbral` se lee de `models/v2/metadata.json`; no se escribe en el código. El `0.0` del ejemplo es solo un marcador de posición.
 - `probabilidad` es **siempre la probabilidad de la clase positiva** (hoy no es así, ver sección 10).
 - `explicacion.fuente` ∈ {`llm`, `plantilla`} para saber si se usó el fallback.
-- `extendido_heuristico` se marca explícitamente como no derivado del modelo.
+- `perfil` es un indicador clínico orientativo (sección 7.1), no una salida del modelo.
 
 ---
 
@@ -389,17 +389,45 @@ Si el LLM falla, excede el tiempo o no pasa la validación: mostrar textos plant
 
 ## 7. Perfiles de riesgo, terapias y conexión con centros
 
-### 7.1 Cálculo del perfil (solo Q-CHAT-10)
+### 7.1 Cálculo del perfil (pesos validados por especialistas)
 
-- **Comunicación** = promedio de A3, A8, A9 (pesos iguales) × 100.
-- **Interacción social** = (0.10·A1 + 0.10·A2 + 0.10·A4 + 0.15·A5 + 0.15·A6 + 0.15·A7) / 0.75 × 100 (pesos renormalizados: 0.133 y 0.20).
-- Perfil = **Mixto** si |com% − soc%| < 10; si no, el mayor.
-- A10 no entra en ningún perfil.
-- Caso límite: si ambos porcentajes son 0 (o muy bajos), la regla da "Mixto". Definir con especialistas si en ese caso se muestra "Sin perfil predominante" o no se muestra perfil **[a validar con especialistas]**.
+El perfil se calcula **como fue diseñado originalmente**, combinando preguntas del Q-CHAT-10 y comorbilidades con los pesos validados por especialistas. Son los mismos pesos que ya usa el formulario actual (`calculateHabilidadPorcentajes` en `Forms.jsx`).
 
-### 7.2 Perfil extendido (opcional)
+🟦 **Habilidades comunicativas** (suma 100 %)
 
-Se puede seguir mostrando el cálculo original validado por especialistas que incluye comorbilidades (comunicación: A3, A8, A9 al 20% c/u, habla 25%, aprendizaje 15%; social: A1, A2, A4 al 10%, A5, A6, A7 al 15%, conducta/social 20%, ansiedad 5%). Debe etiquetarse como **"indicador clínico orientativo"**, no como salida del modelo.
+| Variable | Pregunta | Peso |
+|---|---|---|
+| A3 | Señala para pedir | 20 % |
+| A8 | Primeras palabras | 20 % |
+| A9 | Gestos simples | 20 % |
+| `c_habla` | Dificultad del habla/lenguaje (id13) | 25 % |
+| `c_aprendizaje` | Dificultad de aprendizaje (id14) | 15 % |
+
+🟩 **Interacción social** (suma 100 %)
+
+| Variable | Pregunta | Peso |
+|---|---|---|
+| A1 | Responde a su nombre | 10 % |
+| A2 | Contacto visual | 10 % |
+| A4 | Señala para compartir interés | 10 % |
+| A5 | Juego simbólico | 15 % |
+| A6 | Sigue la mirada | 15 % |
+| A7 | Consuela | 15 % |
+| `c_social_conducta` | Problemas sociales/conducta (id18) | 20 % |
+| `c_ansiedad` | Ansiedad (id19) | 5 % |
+
+- `comunicacion_pct` = Σ (peso × valor) de su tabla, con cada variable en 0/1.
+- `social_pct` = Σ (peso × valor) de su tabla.
+- Perfil = **Mixto** si |com% − soc%| < 10; si no, el de mayor porcentaje (**Comunicación** o **Interacción social**).
+- A10 y las comorbilidades 15, 16 y 17 no entran en ningún perfil (17 y 15 se usan en las reglas de la capa 2).
+- **Respuesta "No sé"** en una comorbilidad: se cuenta como 0 en el porcentaje, pero se registra en `comorbilidades_sin_responder` para que el agente lo mencione ("no sabemos si…") **[a validar con especialistas]**.
+- **Caso límite:** si ambos porcentajes son 0 (o muy bajos), la regla da "Mixto". Definir con especialistas si en ese caso se muestra "Sin perfil predominante" o no se muestra perfil **[a validar con especialistas]**.
+
+### 7.2 Qué está validado con datos y qué no
+
+- El perfil **no es una salida del modelo ML**: es un indicador clínico orientativo para explicar el resultado y orientar las terapias. El riesgo lo deciden las capas 1 y 2.
+- La **parte del Q-CHAT-10** de los perfiles se evaluó en el notebook v2 con los niños polacos con diagnóstico clínico: el porcentaje social separa bien a los niños con TEA (AUC 0.91) y el comunicativo algo menos (AUC 0.83). Ahí se calculó solo con las preguntas, porque los datasets públicos no tienen comorbilidades.
+- La **parte de las comorbilidades** se apoya en el criterio de los especialistas, no en datos. Cuando la plataforma acumule evaluaciones con diagnóstico confirmado por los centros, conviene revisar estos pesos con datos reales.
 
 ### 7.3 Mapeo determinista de terapias (base para el fallback y para acotar al LLM)
 
@@ -529,7 +557,7 @@ Verificados en el código del repositorio (backend en `app/`, frontend a partir 
 |---|---|---|---|
 | 19 | Edad en años, rango 1–18; `handleChange` además acepta 0 aunque `isValid` exige ≥ 1. | `components/Forms.jsx:45` y `:219` | Fecha de nacimiento o años+meses. |
 | 20 | `evolSociales` y `evolComunicativas` invierten las preguntas Sí/No: marcan 1 cuando la respuesta es "No" (`r === 0 ? 1 : 0`), al contrario que los porcentajes, que usan `=== 1`. | `components/Forms.jsx:151` y `:154` | Usar `r === 1`. |
-| 21 | Los porcentajes de habilidades mezclan Q-CHAT y comorbilidades sin indicar que son heurísticos. | `components/Forms.jsx:59-82` y `:113-144` | Mover el cálculo al backend (fuente única) y etiquetar el extendido. |
+| 21 | Los porcentajes de habilidades se calculan en el frontend y no se indica que son un indicador orientativo (no salida del modelo). | `components/Forms.jsx:59-82` y `:113-144` | Mover el cálculo al backend (fuente única, sección 7.1) y presentarlo como indicador orientativo. |
 | 22 | `onFinish()` se llama antes de que termine el `fetch` a `/predict`; si falla, solo hay `console.error` y el usuario no ve error. | `components/Forms.jsx:190-207` | Esperar la respuesta, manejar errores y reintentos. |
 | 23 | Todas las respuestas de salud se guardan en `localStorage` (`reportData`). | `components/Forms.jsx:178-188` y `:200-203` | Usar estado en memoria o `sessionStorage` con limpieza; datos persistentes solo en el servidor con consentimiento. |
 | 24 | Mezcla de "tu hijo" y "su hijo/a" en las preguntas. | `components/form-comp/questions.js` | Unificar a "usted". |
