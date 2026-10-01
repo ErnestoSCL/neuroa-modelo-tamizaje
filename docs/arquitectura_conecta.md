@@ -2,7 +2,7 @@
 
 Arquitectura técnica de la **Solución 1: Conecta** (plataforma de tamizaje), con su frontend, su backend y su base de datos, y cómo se integra con el SGT y el Panel Startup.
 
-Versión 1.0 · 2026-10-01
+Versión 1.1 · 2026-10-01
 
 ---
 
@@ -12,8 +12,8 @@ Versión 1.0 · 2026-10-01
 
 | Espacio | Tecnología | Base de datos | Dueño de… |
 |---|---|---|---|
-| **Conecta** | Next.js (frontend) + FastAPI (backend) | PostgreSQL | Tamizajes, resultados, modelo de ML, agente IA, contactos de padres, métricas de uso |
-| **SGT** | C# | SQL Server 2022+ | Centros, sedes, terapias, pacientes, citas. Incluye la versión limitada del SGT (panel de autogestión) para los centros que solo contratan Conecta |
+| **Conecta** | Next.js (frontend) + FastAPI (backend) | PostgreSQL | Tamizajes, resultados, modelo de ML, agente IA, resultados compartidos con centros, métricas de uso |
+| **SGT** | C# | SQL Server 2022+ | Centros, sedes (con teléfono, correo y WhatsApp), terapias, pacientes, citas. Incluye la versión limitada del SGT (panel de autogestión) para los centros que solo contratan Conecta |
 | **Panel Startup** | ASP.NET Core + React/TypeScript | Propia | **TenantId**, estado de cada centro, productos habilitados (Conecta, SGT), suscripciones, vista de modelos y métricas |
 
 **Regla principal:** cada espacio es dueño de su base de datos. Los demás obtienen esos datos **a través de su API**, nunca entrando directo a la base.
@@ -29,7 +29,7 @@ Versión 1.0 · 2026-10-01
 
 1. El equipo registra el centro en el Panel → se genera su TenantId y se marcan sus productos.
 2. El Panel crea el centro en el SGT con ese TenantId.
-3. El centro carga sus sedes y terapias en el SGT (completo o limitado).
+3. El centro carga sus sedes (con sus datos de contacto) y terapias en el SGT (completo o limitado).
 4. Conecta copia el catálogo del SGT: cada sede y terapia trae su TenantId.
 5. Conecta copia del Panel la lista de tenants con Conecta activo y solo muestra esos centros a los padres.
 
@@ -70,7 +70,7 @@ flowchart LR
     WK --> PG
     API --> LLM
     WK -- "catálogo, diagnósticos" --> SAPI
-    WK -- "pacientes nuevos (Integral)" --> SAPI
+    WK -- "resultados compartidos (Integral)" --> SAPI
     WK -- "tenants activos" --> PAPI
     PAPI -- "/internal: modelos, métricas" --> API
     PAPI -- "alta de centros" --> SAPI
@@ -88,7 +88,7 @@ flowchart LR
 | Landing y páginas públicas de los centros | Panel de autogestión de los centros (es la versión limitada del SGT, en C#) |
 | Prueba de tamizaje, registro del padre y resultado | Alta de centros, TenantId, productos y suscripciones (Panel Startup) |
 | Modelo de ML, reglas clínicas, perfiles y agente IA | Gestión de citas y pacientes (SGT) |
-| Terapias sugeridas, comparación de sedes y contacto con centros | Programa de referidos y puntos (fase posterior, solo para centros con SGT) |
+| Terapias sugeridas, comparación de sedes y datos de contacto de los centros | Programa de referidos y puntos (fase posterior, solo para centros con SGT) |
 | Métricas de uso para el reporte mensual de los centros | Facturación (Panel Startup) |
 | Endpoints internos de modelos y métricas para el Panel | |
 
@@ -119,8 +119,7 @@ flowchart LR
 | `/registro` | Crear cuenta antes de ver el resultado | Pública |
 | `/resultado/[id]` | Nivel de riesgo, perfil y explicación | Requiere sesión |
 | `/resultado/[id]/terapias` | Terapias sugeridas y sedes que las ofrecen | Requiere sesión |
-| `/resultado/[id]/sedes` | Comparación de sedes | Requiere sesión |
-| `/contacto/[sede]` | Formulario de contacto con la sede | Requiere sesión |
+| `/resultado/[id]/sedes` | Comparación de sedes con botones de WhatsApp, llamada y correo | Requiere sesión |
 | `/cuenta` | Historial de pruebas y datos del padre | Requiere sesión |
 | `/privacidad`, `/terminos` | Textos legales | Pública |
 
@@ -131,7 +130,9 @@ flowchart LR
 - El avance de la prueba se guarda para poder retomarla. Las respuestas se envían al backend al terminar.
 - El resultado se muestra en dos tiempos: primero el nivel y el perfil (instantáneo) y luego la explicación del agente IA (carga diferida).
 - Accesibilidad AA, español de Perú y avisos obligatorios ("esto no es un diagnóstico") en el resultado.
-- Las visitas a las páginas de los centros y los clics en "contactar" se registran como eventos para el reporte mensual, sin datos personales.
+- **Contacto directo:** cada sede muestra botones de **WhatsApp** (`wa.me/51…` con un mensaje precargado genérico, p. ej. *"Hola, vengo de Neuroa y quiero información sobre su terapia de lenguaje"*), **llamada** (`tel:`) y **correo** (`mailto:`). El mensaje de WhatsApp **nunca incluye el resultado del tamizaje**.
+- Solo en sedes de centros con SGT completo (plan Integral) aparece además **"Compartir mi resultado con este centro"**, con consentimiento explícito.
+- Las visitas a las páginas de los centros y los clics en los botones de contacto se registran como eventos para el reporte mensual, sin datos personales.
 
 ---
 
@@ -143,11 +144,11 @@ flowchart LR
 |---|---|
 | Lenguaje y framework | Python 3.12, FastAPI, Pydantic v2 |
 | Base de datos | PostgreSQL con SQLAlchemy 2 y migraciones con Alembic |
-| Procesos en segundo plano | Redis + workers (Celery o arq) |
+| Procesos en segundo plano | **Celery** + Redis, con **Celery Beat** para las tareas programadas |
 | Modelo | scikit-learn 1.6.1 (`models/v2/modelo_tamizaje_tea.pkl` + `metadata.json`) |
 | Seguimiento de modelos | MLflow (almacenamiento en PostgreSQL) |
 | Llamadas a otras APIs | httpx, con reintentos y tiempos límite |
-| Agente IA | SDK del proveedor del LLM con *tool calling* (LangGraph cuando el flujo crezca) |
+| Agente IA | Modelo desplegado en **Azure OpenAI / Microsoft Foundry**, con *tool calling* (LangGraph cuando el flujo crezca) |
 
 ### 3.2 Estructura de módulos
 
@@ -159,7 +160,7 @@ conecta-api/
 │   ├── riesgo/        ← capa 1 (modelo), capa 2 (reglas) y perfiles
 │   ├── agente/        ← capa 3: prompt, base de conocimiento, buscar_terapias
 │   ├── catalogo/      ← copia de centros, sedes y terapias del SGT + tenants activos del Panel
-│   ├── contactos/     ← contacto padre → sede y envío de pacientes nuevos al SGT
+│   ├── contactos/     ← resultados compartidos con centros Integral y envío al SGT
 │   ├── metricas/      ← eventos y reportes mensuales por centro
 │   ├── modelos/       ← versiones, métricas, reentrenamiento (MLflow)
 │   ├── internal/      ← endpoints para el Panel Startup
@@ -181,9 +182,9 @@ conecta-api/
 | `GET /evaluaciones/{id}/explicacion` | Explicación y terapias sugeridas por el agente IA |
 | `GET /evaluaciones` | Historial del padre |
 | `GET /centros`, `GET /centros/{slug}` | Directorio y página pública de un centro (solo tenants activos) |
-| `GET /sedes?terapia=…&distrito=…` | Sedes que ofrecen una terapia |
-| `POST /contactos` | El padre contacta a una sede |
-| `POST /eventos` | Visitas y clics para las métricas de los centros |
+| `GET /sedes?terapias=…&distrito=…` | Sedes que ofrecen las terapias recomendadas, con sus datos de contacto, en el orden definido en 3.6 |
+| `POST /resultados-compartidos` | El padre comparte su resultado con una sede de un centro Integral (requiere consentimiento) |
+| `POST /eventos` | Visitas y clics en WhatsApp, llamada y correo, para las métricas de los centros |
 
 ### 3.4 Endpoints internos (para el Panel Startup)
 
@@ -194,7 +195,7 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 | `GET /internal/modelos` | Versión en producción y candidatos |
 | `GET /internal/modelos/{version}/metricas` | AUC, sensibilidad y especificidad: de validación y reales |
 | `GET /internal/metricas/uso` | Tamizajes por día y distribución de niveles de riesgo |
-| `GET /internal/metricas/centros/{tenant_id}` | Visitas, contactos y conversión por centro (reporte mensual) |
+| `GET /internal/metricas/centros/{tenant_id}` | Visitas, clics de contacto y conversión por centro (reporte mensual) |
 | `GET /internal/metricas/sesgos` | Rendimiento por sexo y edad |
 | `POST /internal/entrenamientos`, `GET /internal/entrenamientos/{id}` | Lanzar y seguir un reentrenamiento |
 | `POST /internal/modelos/{version}/promover` | Pasar un candidato a producción (queda registrado quién lo aprobó) |
@@ -204,12 +205,12 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 
 | Con | Qué | Cómo |
 |---|---|---|
-| **API SGT** | Copia de centros, sedes y terapias (con TenantId) | Worker cada 5 minutos con `actualizado_desde` |
-| **API SGT** | Paciente nuevo cuando un padre contacta una sede de un centro con SGT completo | Cola con reintentos |
+| **API SGT** | Copia de centros, sedes (con teléfono, correo y WhatsApp) y terapias, con TenantId | Worker cada 5 minutos con `actualizado_desde` |
+| **API SGT** | Paciente nuevo cuando un padre comparte su resultado con un centro Integral | Cola con reintentos |
 | **API SGT** | Diagnósticos confirmados (con consentimiento) para reentrenar | Worker diario |
 | **API Panel** | Tenants con Conecta activo | Worker cada 5 minutos + webhook del Panel ante cambios |
-| **Proveedor LLM** | Explicación del resultado y elección de terapias | Llamada con *tool calling*; textos plantilla si falla |
-| **Correo** | Confirmaciones, resultado en PDF y aviso de contacto a la sede | Cola |
+| **Azure OpenAI / Foundry** | Explicación del resultado y elección de terapias | Llamada con *tool calling*; textos plantilla si falla |
+| **Correo** | Confirmaciones y resultado en PDF para el padre | Cola |
 
 ### 3.6 Cálculo del resultado
 
@@ -222,6 +223,15 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 5. **Perfil:** porcentajes comunicativo y social con los pesos validados por especialistas.
 6. Se guarda todo con las **versiones** del modelo y de las reglas, y se devuelve el resultado.
 7. **Capa 3 (agente IA):** se genera la explicación aparte. El agente llama a `buscar_terapias`, que consulta la copia del catálogo filtrando por tenants activos, edad y zona. El backend valida la salida; si falla, se usan textos plantilla.
+
+**Quién decide qué:**
+
+| Decisión | Quién | Cómo |
+|---|---|---|
+| **Qué terapias le sirven al niño** | El LLM | Lee el contexto del niño y el nombre y la descripción de cada terapia, y marca **todas** las que encajan (no elige una "favorita"), explicando por qué en términos de necesidad |
+| **En qué orden se muestran los centros** | El backend | 1. Agrupa las terapias marcadas por centro y sede. 2. Ordena por cercanía (mismo distrito del padre, luego cercanos). 3. Rota entre sedes empatadas con un orden aleatorio que cambia cada día |
+
+Así el LLM personaliza la recomendación sin favorecer a unos centros sobre otros, que pagan por aparecer. Si algún día se cobra por aparecer primero, debe mostrarse como **"Destacado"**.
 
 ### 3.7 Seguridad
 
@@ -240,7 +250,7 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 
 | Esquema | Contenido |
 |---|---|
-| `app` | Datos propios de Conecta: padres, evaluaciones, resultados, contactos, eventos |
+| `app` | Datos propios de Conecta: padres, evaluaciones, resultados, resultados compartidos, eventos |
 | `catalogo` | Copias de solo lectura: tenants activos (del Panel) y centros, sedes y terapias (del SGT) |
 | `ml` | Versiones del modelo, métricas, entrenamientos y diagnósticos confirmados |
 | `mlflow` | Almacenamiento interno de MLflow |
@@ -255,10 +265,10 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 | `app.respuestas` | evaluacion_id, pregunta_id, opcion_indice (0–4 o sí/no/no sé), valor_binario |
 | `app.resultados` | evaluacion_id, qchat10_puntaje, probabilidad, umbral, positivo, nivel_base, nivel_final, reglas_activadas, comunicacion_pct, social_pct, perfil, version_modelo, version_reglas |
 | `app.explicaciones` | evaluacion_id, fuente (llm o plantilla), texto, terapias_sugeridas, version_prompt, version_conocimiento |
-| `app.contactos` | id, padre_id, evaluacion_id, tenant_id, sede_id, terapia_id, mensaje, estado_envio_sgt, creado_en |
-| `app.eventos` | id, tipo (visita, clic_contacto), tenant_id, sede_id, fecha (sin datos personales) |
+| `app.resultados_compartidos` | id, padre_id, evaluacion_id, tenant_id, sede_id, consentimiento_id, estado_envio_sgt, creado_en |
+| `app.eventos` | id, tipo (visita, clic_whatsapp, clic_llamada, clic_correo), tenant_id, sede_id, fecha (sin datos personales) |
 | `catalogo.tenants` | tenant_id, nombre, conecta_activo, sgt_completo, actualizado_en |
-| `catalogo.sedes` | sede_id, tenant_id, nombre, slug, distrito, direccion, contacto, actualizado_en |
+| `catalogo.sedes` | sede_id, tenant_id, nombre, slug, distrito, direccion, telefono, correo, whatsapp, actualizado_en |
 | `catalogo.terapias` | terapia_id, tenant_id, sede_id, nombre, descripcion, edad_min_meses, edad_max_meses, modalidad, activa, actualizado_en |
 | `ml.diagnosticos_confirmados` | evaluacion_id, diagnostico, fecha_diagnostico, origen (SGT), consentimiento_id |
 | `ml.modelos` | version, estado (candidato, produccion, retirado), metricas, mlflow_run_id, aprobado_por, promovido_en |
@@ -273,11 +283,11 @@ erDiagram
     EVALUACIONES ||--|{ RESPUESTAS : contiene
     EVALUACIONES ||--|| RESULTADOS : produce
     EVALUACIONES ||--o| EXPLICACIONES : tiene
-    EVALUACIONES ||--o{ CONTACTOS : origina
-    PADRES ||--o{ CONTACTOS : envia
+    EVALUACIONES ||--o{ RESULTADOS_COMPARTIDOS : origina
+    PADRES ||--o{ RESULTADOS_COMPARTIDOS : comparte
     TENANTS ||--o{ SEDES : tiene
     SEDES ||--o{ TERAPIAS : ofrece
-    SEDES ||--o{ CONTACTOS : recibe
+    SEDES ||--o{ RESULTADOS_COMPARTIDOS : recibe
     TENANTS ||--o{ EVENTOS : acumula
     EVALUACIONES ||--o| DIAGNOSTICOS_CONFIRMADOS : confirma
     MODELOS ||--o{ RESULTADOS : calcula
@@ -288,7 +298,16 @@ erDiagram
 - Los datos de salud del niño (respuestas y resultados) son **datos sensibles** según la Ley N.º 29733: requieren consentimiento expreso del padre o tutor (a validar con asesoría legal).
 - **No se guarda el nombre del niño**; solo edad en meses y sexo.
 - Para reentrenar y para las métricas se usan **datos anonimizados** (sin padre ni contacto).
-- Plazos de conservación y de borrado a pedido del padre: a definir con asesoría legal.
+- Plazos de conservación acordados (a validar con asesoría legal):
+
+| Dato | Plazo |
+|---|---|
+| Cuenta del padre | Mientras la cuenta esté activa; se borra a pedido (derechos ARCO) |
+| Evaluaciones y resultados | Mientras la cuenta esté activa, o 2 años sin actividad, y luego se anonimizan |
+| Datos anonimizados (reentrenamiento y métricas) | Sin plazo, porque ya no identifican a nadie |
+| Eventos de clics y visitas | 24 meses |
+| Logs técnicos | 90 días |
+| Datos enviados al LLM | Sin retención del proveedor (exigido en el contrato) |
 
 ---
 
@@ -339,24 +358,29 @@ sequenceDiagram
     WK->>DB: Actualiza ese tenant al instante
 ```
 
-### 5.3 El padre contacta una sede
+### 5.3 El padre contacta un centro
 
 ```mermaid
 sequenceDiagram
     participant Pa as Padre
+    participant W as Frontend
     participant A as Backend
     participant DB as PostgreSQL
     participant Q as Cola
     participant S as API SGT
-    Pa->>A: POST /contactos
-    A->>DB: Guarda el contacto
-    A->>Q: Encola el aviso
-    alt Centro con SGT completo
+    W->>A: GET /sedes con las terapias recomendadas
+    A-->>W: Sedes ordenadas, con teléfono, correo y WhatsApp
+    Pa->>W: Clic en WhatsApp, llamada o correo
+    W->>A: POST /eventos (sin datos personales)
+    W-->>Pa: Abre WhatsApp, el teléfono o el correo
+    opt Centro con SGT completo (Integral)
+        Pa->>W: Compartir mi resultado (con consentimiento)
+        W->>A: POST /resultados-compartidos
+        A->>DB: Guarda el envío y el consentimiento
+        A->>Q: Encola el envío
         Q->>S: POST paciente nuevo con evaluación resumida
-    else Centro solo con Conecta
-        Q->>Q: Aviso por correo a la sede
+        Q->>DB: Actualiza estado_envio_sgt
     end
-    Q->>DB: Actualiza estado_envio_sgt
 ```
 
 ### 5.4 Reentrenamiento del modelo
@@ -379,32 +403,51 @@ sequenceDiagram
 
 ---
 
-## 6. Despliegue
+## 6. Despliegue (Azure, región Brazil South · São Paulo)
 
-| Contenedor | Rol |
+| Componente | Servicio de Azure |
 |---|---|
-| `conecta-web` | Frontend Next.js |
-| `conecta-api` | Backend FastAPI |
-| `conecta-worker` | Copias, colas, correos, reentrenamiento |
-| `redis` | Cola de tareas y caché |
-| `postgres` | Base de datos (servicio administrado en producción) |
-| `mlflow` | Seguimiento de modelos (acceso con login solo para el equipo) |
+| `conecta-web` (Next.js) | Azure Container Apps |
+| `conecta-api` (FastAPI) | Azure Container Apps |
+| `conecta-worker` (Celery + Celery Beat) | Azure Container Apps |
+| Redis | Azure Cache for Redis |
+| PostgreSQL | Azure Database for PostgreSQL (Flexible Server) |
+| MLflow | Azure Container Apps + Azure Blob Storage para los modelos |
+| LLM | Azure OpenAI / Microsoft Foundry |
+| Secretos y claves | Azure Key Vault |
 
 - **Ambientes:** desarrollo, pruebas (*staging*) y producción, cada uno con su base de datos.
 - **CI/CD:** en cada cambio se ejecutan pruebas, lint y migraciones en pruebas; el despliegue a producción requiere aprobación.
-- **Monitoreo:** logs centralizados, métricas de la API (latencia y errores), alertas si fallan las copias del SGT o del Panel y alertas de costo del LLM.
+- **Monitoreo:** Azure Monitor y Application Insights para logs y métricas de la API, alertas si fallan las copias del SGT o del Panel y alertas de costo del LLM.
 
 ---
 
-## 7. Decisiones pendientes
+## 7. Decisiones
 
-| Tema | Opciones |
+### 7.1 Tomadas
+
+| Tema | Decisión |
 |---|---|
-| Proveedor del LLM | A definir según costo, calidad en español y política de datos |
-| Nube y región | Dónde se alojan los datos de salud (requisitos de la Ley N.º 29733) |
-| Librería de workers | Celery o arq |
-| Contactos de centros solo con Conecta | ¿Solo correo, o también se ven en la versión limitada del SGT? |
-| Orden de las sedes en las recomendaciones | Cercanía, edad o aleatorio entre empates, para no favorecer siempre a los mismos centros |
-| Plazos de conservación de datos | A definir con asesoría legal |
+| Nube y región | **Azure, Brazil South (São Paulo)**. La transferencia de datos fuera del Perú se informa en el consentimiento (a validar con asesoría legal) |
+| Librería de workers | **Celery** + Redis + Celery Beat |
+| Contactos de los centros | El padre contacta **directo** con los datos que cada centro gestiona en su SGT (WhatsApp, llamada, correo). Para centros Integral, opción de compartir el resultado con consentimiento |
+| Recomendación de terapias | El LLM decide **qué terapias** encajan (todas las que encajen); el backend decide **el orden** de los centros (cercanía y rotación diaria) |
+| Plazos de conservación | Tabla de la sección 4.4 (a validar con asesoría legal) |
+
+### 7.2 Pendiente: modelo de LLM
+
+Se elige con el set de 40–60 casos de prueba del agente. Candidatos, todos disponibles en Azure:
+
+| Modelo | Entrada / salida (US$ por millón de tokens) | Costo aprox. por tamizaje | Rol en la evaluación |
+|---|---|---|---|
+| gpt-4.1-mini | 0.40 / 1.60 | $0.009 | Candidato |
+| gpt-5-mini | 0.25 / 2.00 | $0.007 | Candidato |
+| gpt-4o-mini | 0.15 / 0.60 | $0.003 | Candidato (verificar fecha de retiro en Azure) |
+| gpt-5-nano / gpt-4.1-nano | 0.05–0.10 / 0.40 | $0.001–0.002 | Candidato económico |
+| Claude Haiku 4.5 / Sonnet 5.5 | 1 / 5 · 2 / 10 | $0.023 · $0.046 | Referencia de calidad |
+
+- Supuesto: ~18 mil tokens de entrada y ~1 mil de salida por tamizaje, sin caché. Con caché del prompt el costo baja.
+- Criterio: el modelo más barato que cumpla las reglas del agente (no diagnosticar, tono, JSON válido, terapias correctas) con calidad cercana a la referencia.
+- Precios de fuentes públicas de 2026: confirmarlos en la calculadora de Azure y verificar la disponibilidad en Brazil South.
 
 Más detalle sobre el modelo, las reglas clínicas, el agente y los aspectos legales: `docs/consideraciones_app_tamizaje.md`.

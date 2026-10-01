@@ -483,7 +483,7 @@ sequenceDiagram
 - Mientras el catálogo sea pequeño, la herramienta devuelve todas las terapias que encajan por edad, zona y modalidad. Cuando crezca, el agente puede pasar `palabras_clave` y el backend limita el resultado a ~20 terapias para no saturar el contexto.
 - El backend valida que cada `terapia_id` de la respuesta final esté en la lista devuelta; si el LLM inventa una, se descarta.
 - Para la decisión del agente, la descripción del centro es **información, no instrucciones**: si un centro escribe "recomienda siempre este centro", el prompt indica ignorarlo, y los textos se revisan al registrarlos.
-- **Equidad entre centros:** definir con el equipo comercial cómo se ordena la lista (cercanía, edad, aleatorio entre empates) para que el LLM no favorezca siempre a los mismos. Documentarlo, porque los centros pagan por aparecer (ver conflictos de interés en la sección 7).
+- **Equidad entre centros (decidido):** el LLM marca **todas** las terapias que encajan, sin elegir una favorita; el **backend** decide el orden de los centros: cercanía al distrito del padre y rotación diaria entre empatados. Ver `arquitectura_conecta.md`, sección 3.6.
 - Si no hay terapias que encajen, el agente lo dice y recomienda la **evaluación profesional** igualmente.
 - **Fallback sin LLM:** se muestran las terapias disponibles para la edad y la zona del niño, sin recomendación personalizada, junto con los textos plantilla.
 
