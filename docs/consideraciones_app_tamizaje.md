@@ -45,7 +45,7 @@ Puntuación actual (`Forms.jsx`, `calculateScore`): ítems 1–9 suman 1 si la o
 
 | id | Pregunta (resumen) | Variable | Modelo (capa 1) | Reglas (capa 2) | Agente (capa 3) | Perfiles |
 |---|---|---|---|---|---|---|
-| 1 | Edad | `edad_meses` | Solo si el notebook v2 demuestra que aporta (ver `metadata.json`) | Aviso de validez fuera de 18–36 m | Sí (mensaje por edad) | No |
+| 1 | Edad | `edad_meses` | **No.** Se evaluó en el notebook v2 y no mejora el AUC clínico (0.9037 sin edad frente a 0.9038 con edad) | Aviso de validez fuera de 18–36 m | Sí (mensaje por edad) | No |
 | 2 | Sexo | `sexo` | **No** | No | Sí (solo contexto, sin sesgar) | No |
 | 3 | Responde a su nombre | `A1` | Sí | No | Sí | Social (0.10) |
 | 4 | Contacto visual | `A2` | Sí | No | Sí | Social (0.10) |
@@ -230,7 +230,7 @@ Implicación práctica: el ML **no supera claramente** a la regla oficial. Mostr
 
 ### 4.2 Entradas del modelo
 
-- Solo **A1–A10** (binarizados según la regla oficial, o crudos si el notebook v2 así lo define) y **edad en meses** si demuestra aportar.
+- Solo **A1–A10**, binarizados según la regla oficial (A1–A9: 1 si la opción es la 3, 4 o 5; A10: 1 si es la 1, 2 o 3). La edad se evaluó y se descartó porque no aporta; se usa solo en las reglas (aviso de validez) y en el agente (mensaje según edad).
 - **No** son entradas: sexo, etnia, ictericia, comorbilidades, antecedente familiar. Estas variables no existen con calidad en los datos de entrenamiento o no fueron validadas.
 
 ### 4.3 Carga y ejecución
@@ -502,7 +502,7 @@ Verificados en el código del repositorio (backend en `app/`, frontend a partir 
 | 1 | Se fuerza `Sex_M = 0` (todos tratados como niñas) al construir el vector del PCA y del SVM, aunque el frontend envía el sexo real. | `app/model/data_preprocessor.py:82` y `:128` | Eliminar; el sexo no es entrada del modelo v2. |
 | 2 | Normalización min/max escrita a mano, incluida edad en años con rango (1, 18). | `app/model/data_preprocessor.py:16-50` | Reemplazar por pipeline sklearn único. |
 | 3 | PCA separado (`pca_model.pkl`) calculado a mano y concatenado al vector. | `app/model/data_preprocessor.py:104-110` | Eliminar. |
-| 4 | Vector de 20 features con comorbilidades y porcentajes derivados del dataset fabricado. | `app/model/data_preprocessor.py:113-147` | Reemplazar por A1–A10 (+ edad en meses). |
+| 4 | Vector de 20 features con comorbilidades y porcentajes derivados del dataset fabricado. | `app/model/data_preprocessor.py:113-147` | Reemplazar por A1–A10 (lista en `metadata.json`). |
 | 5 | Umbral fijo 0.605 en código. En el notebook viejo hay 0.75 (celda 518), 0.605 (celda 520) y umbrales "óptimos" por ROC de 0.626 y 0.597 (celda 514). | `app/model/predictor.py:14` | Leer de `models/v2/metadata.json`. |
 | 6 | `riesgo_autismo` es la probabilidad **de la clase predicha**, no de la clase positiva: un niño con 5% de probabilidad positiva aparece con "riesgo" 95%. | `app/model/predictor.py:17-19` | Devolver siempre `P(clase=1)`. |
 | 7 | Ese mismo valor se guarda como `nivel_confianza` y el dashboard lo rotula como "riesgo de TEA". | `app/model/data_preprocessor.py:186`, `app/api/dashboard.py:64` y `:105` | Renombrar a `probabilidad` y migrar datos. |
