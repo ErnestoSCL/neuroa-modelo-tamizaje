@@ -382,6 +382,17 @@ Estos textos deben revisarlos especialistas **[a validar con especialistas]**.
 
 Si el LLM falla, excede el tiempo o no pasa la validación: mostrar textos plantilla redactados y aprobados por especialistas para cada combinación nivel × perfil × banda de edad, con las terapias del mapeo determinista (sección 7). La app **siempre** debe poder entregar un resultado sin LLM.
 
+### 6.8.1 Dónde vive cada dato
+
+| Base | Qué guarda |
+|---|---|
+| **SQL Server 2022+ (SGT)** | Todo lo del centro: centros, sedes, terapias, planes, pacientes, citas. Incluye a los centros del plan Conecta, que usan una versión limitada del SGT (panel de autogestión), y a los del plan Integral, con el SGT completo. |
+| **PostgreSQL (Conecta)** | Todo lo de la plataforma de tamizaje: evaluaciones, respuestas, resultados, versión del modelo usada, reglas activadas, diagnósticos confirmados que devuelven los centros, versiones y métricas de los modelos, reentrenamientos. |
+
+- Conecta **lee** centros y terapias del SGT con un usuario de solo lectura (vistas o API del SGT). Opcionalmente, puede copiar el catálogo a PostgreSQL cada pocos minutos para seguir funcionando si el SGT no está disponible.
+- Conecta **escribe** hacia el SGT solo lo acordado: el paciente nuevo cuando un padre elige un centro con plan Integral.
+- El SGT **devuelve** a Conecta los diagnósticos confirmados (con consentimiento), que son las etiquetas clínicas para reentrenar el modelo.
+
 ### 6.9 Base de conocimiento curada (dentro del prompt)
 
 **Qué es:** un conjunto de textos cortos, escritos o aprobados por los especialistas, que se **pegan completos** en las instrucciones del agente en cada evaluación. No hay búsqueda: el agente siempre recibe todo.
@@ -414,7 +425,7 @@ Así se arma la llamada:
 
 ### 6.10 Herramienta `buscar_terapias` (consulta a la base de datos)
 
-Las terapias que se recomiendan **no salen de la base de conocimiento ni de la memoria del LLM**: salen de las terapias que los centros registran en la plataforma (Solución 1, panel de autogestión, o Solución 2, SGT). El agente las consulta con una **función (tool calling)** y, con lo que recibe, decide cuáles recomendar.
+Las terapias que se recomiendan **no salen de la base de conocimiento ni de la memoria del LLM**: salen de las terapias que los centros registran en el **SGT (SQL Server)**. Ahí están todos los centros: los del plan Conecta usan una versión limitada del SGT (el panel de autogestión) y los del plan Integral el SGT completo, así que hay **una sola fuente de terapias**. El agente las consulta con una **función (tool calling)** y, con lo que recibe, decide cuáles recomendar.
 
 **Flujo:**
 
@@ -422,7 +433,7 @@ Las terapias que se recomiendan **no salen de la base de conocimiento ni de la m
 sequenceDiagram
     participant API as Backend
     participant LLM as Agente LLM
-    participant DB as PostgreSQL
+    participant DB as SQL Server (SGT)
     API->>LLM: resultado + perfil + edad + respuestas + base de conocimiento
     LLM->>API: llama buscar_terapias(categorias, edad_meses, distrito)
     API->>DB: SELECT con filtros fijos (solo centros activos y afiliados)
