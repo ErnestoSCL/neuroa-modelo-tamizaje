@@ -11,6 +11,7 @@ Modelo de Machine Learning que estima el riesgo de Trastorno del Espectro Autist
 | `models/v2/metadata.json` | Variables, umbral, métricas, pesos de los perfiles y versiones |
 | `data/raw/` | Datasets públicos usados (ver abajo) |
 | `docs/consideraciones_app_tamizaje.md` | Consideraciones para construir la aplicación de tamizaje |
+| `docs/arquitectura_conecta.md` | Arquitectura técnica de Conecta y su integración con el SGT y el panel interno |
 
 ## Datos
 
