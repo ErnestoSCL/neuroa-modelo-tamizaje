@@ -2,7 +2,7 @@
 
 Arquitectura técnica de la **Solución 1: Conecta** (plataforma de tamizaje), con su frontend, su backend y su base de datos, y cómo se integra con el SGT y el Panel Startup.
 
-Versión 1.1 · 2026-10-01
+Versión 1.2 · 2026-10-01
 
 ---
 
@@ -46,7 +46,7 @@ flowchart LR
     subgraph Conecta
         WEB["Frontend<br>Next.js"]
         API["Backend<br>FastAPI"]
-        WK["Workers"]
+        WK["Worker y Jobs"]
         PG[("PostgreSQL")]
         ML["MLflow"]
     end
@@ -144,7 +144,7 @@ flowchart LR
 |---|---|
 | Lenguaje y framework | Python 3.12, FastAPI, Pydantic v2 |
 | Base de datos | PostgreSQL con SQLAlchemy 2 y migraciones con Alembic |
-| Procesos en segundo plano | **Celery** + Redis, con **Celery Beat** para las tareas programadas |
+| Procesos en segundo plano | **Cola en PostgreSQL** (p. ej. Procrastinate) para tareas a pedido + **Azure Container Apps Jobs** para tareas programadas y pesadas. Sin Redis |
 | Modelo | scikit-learn 1.6.1 (`models/v2/modelo_tamizaje_tea.pkl` + `metadata.json`) |
 | Seguimiento de modelos | MLflow (almacenamiento en PostgreSQL) |
 | Llamadas a otras APIs | httpx, con reintentos y tiempos límite |
@@ -166,7 +166,8 @@ conecta-api/
 │   ├── internal/      ← endpoints para el Panel Startup
 │   ├── integraciones/ ← clientes HTTP del SGT, del Panel, del LLM y de correo
 │   └── core/          ← configuración, seguridad, base de datos, logs
-├── workers/           ← tareas en segundo plano
+├── tareas/            ← tareas de la cola en PostgreSQL (envíos al SGT, correos)
+├── jobs/              ← jobs programados (catálogo, diagnósticos) y reentrenamiento
 ├── conocimiento/      ← base de conocimiento curada del agente (versionada)
 └── models/            ← modelo y metadata.json
 ```
@@ -205,12 +206,12 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 
 | Con | Qué | Cómo |
 |---|---|---|
-| **API SGT** | Copia de centros, sedes (con teléfono, correo y WhatsApp) y terapias, con TenantId | Worker cada 5 minutos con `actualizado_desde` |
-| **API SGT** | Paciente nuevo cuando un padre comparte su resultado con un centro Integral | Cola con reintentos |
-| **API SGT** | Diagnósticos confirmados (con consentimiento) para reentrenar | Worker diario |
-| **API Panel** | Tenants con Conecta activo | Worker cada 5 minutos + webhook del Panel ante cambios |
+| **API SGT** | Copia de centros, sedes (con teléfono, correo y WhatsApp) y terapias, con TenantId | Job programado cada 5 minutos con `actualizado_desde` |
+| **API SGT** | Paciente nuevo cuando un padre comparte su resultado con un centro Integral | Cola en PostgreSQL con reintentos |
+| **API SGT** | Diagnósticos confirmados (con consentimiento) para reentrenar | Job diario |
+| **API Panel** | Tenants con Conecta activo | Job programado cada 5 minutos + webhook del Panel ante cambios |
 | **Azure OpenAI / Foundry** | Explicación del resultado y elección de terapias | Llamada con *tool calling*; textos plantilla si falla |
-| **Correo** | Confirmaciones y resultado en PDF para el padre | Cola |
+| **Correo** | Confirmaciones y resultado en PDF para el padre | Cola en PostgreSQL |
 
 ### 3.6 Cálculo del resultado
 
@@ -253,6 +254,7 @@ Así el LLM personaliza la recomendación sin favorecer a unos centros sobre otr
 | `app` | Datos propios de Conecta: padres, evaluaciones, resultados, resultados compartidos, eventos |
 | `catalogo` | Copias de solo lectura: tenants activos (del Panel) y centros, sedes y terapias (del SGT) |
 | `ml` | Versiones del modelo, métricas, entrenamientos y diagnósticos confirmados |
+| `cola` | Tareas pendientes de la cola (estado, reintentos, errores) |
 | `mlflow` | Almacenamiento interno de MLflow |
 
 ### 4.2 Tablas principales
@@ -342,7 +344,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    participant WK as Worker
+    participant WK as Job programado
     participant P as API Panel
     participant S as API SGT
     participant DB as PostgreSQL
@@ -366,7 +368,7 @@ sequenceDiagram
     participant W as Frontend
     participant A as Backend
     participant DB as PostgreSQL
-    participant Q as Cola
+    participant Q as Cola (PostgreSQL)
     participant S as API SGT
     W->>A: GET /sedes con las terapias recomendadas
     A-->>W: Sedes ordenadas, con teléfono, correo y WhatsApp
@@ -390,11 +392,11 @@ sequenceDiagram
     participant E as Equipo startup
     participant P as API Panel
     participant A as Backend
-    participant WK as Worker
+    participant WK as Job de reentrenamiento
     participant M as MLflow
     E->>P: Reentrenar
     P->>A: POST /internal/entrenamientos
-    A->>WK: Encola el entrenamiento
+    A->>WK: Lanza el job
     WK->>M: Registra el candidato y sus métricas
     E->>P: Revisa y aprueba
     P->>A: POST /internal/modelos/{version}/promover
@@ -409,8 +411,8 @@ sequenceDiagram
 |---|---|
 | `conecta-web` (Next.js) | Azure Container Apps |
 | `conecta-api` (FastAPI) | Azure Container Apps |
-| `conecta-worker` (Celery + Celery Beat) | Azure Container Apps |
-| Redis | Azure Cache for Redis |
+| `conecta-worker` (procesa la cola en PostgreSQL) | Azure Container Apps |
+| Jobs: copia del catálogo, diagnósticos, reentrenamiento | Azure Container Apps Jobs (solo cobran mientras corren) |
 | PostgreSQL | Azure Database for PostgreSQL (Flexible Server) |
 | MLflow | Azure Container Apps + Azure Blob Storage para los modelos |
 | LLM | Azure OpenAI / Microsoft Foundry |
@@ -429,7 +431,7 @@ sequenceDiagram
 | Tema | Decisión |
 |---|---|
 | Nube y región | **Azure, Brazil South (São Paulo)**. La transferencia de datos fuera del Perú se informa en el consentimiento (a validar con asesoría legal) |
-| Librería de workers | **Celery** + Redis + Celery Beat |
+| Tareas en segundo plano | **Cola en PostgreSQL** + **Azure Container Apps Jobs**, sin Redis. Celery + Redis solo si en el futuro el volumen crece mucho; el código de las tareas queda separado para migrar sin rehacerlo |
 | Contactos de los centros | El padre contacta **directo** con los datos que cada centro gestiona en su SGT (WhatsApp, llamada, correo). Para centros Integral, opción de compartir el resultado con consentimiento |
 | Recomendación de terapias | El LLM decide **qué terapias** encajan (todas las que encajen); el backend decide **el orden** de los centros (cercanía y rotación diaria) |
 | Plazos de conservación | Tabla de la sección 4.4 (a validar con asesoría legal) |
