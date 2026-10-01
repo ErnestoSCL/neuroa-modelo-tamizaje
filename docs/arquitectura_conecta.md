@@ -119,7 +119,7 @@ flowchart TB
 
 | Endpoint | Uso |
 |---|---|
-| `GET /terapias?actualizado_desde=…` | Centros y terapias activos: categoría, rango de edad, modalidad, distrito, plan del centro. Lo usa la copia periódica |
+| `GET /terapias?actualizado_desde=…` | Centros y terapias activos: nombre, descripción, rango de edad, modalidad, distrito, plan del centro. Lo usa la copia periódica |
 | `POST /pacientes` | Crea el paciente que llega desde el tamizaje (solo centros con plan Integral) |
 | `GET /diagnosticos-confirmados?desde=…` | Diagnósticos confirmados con consentimiento, para reentrenar |
 | *(opcional)* webhook de cambios | El SGT avisa a Conecta cuando un centro modifica sus terapias, para no esperar a la próxima copia |
