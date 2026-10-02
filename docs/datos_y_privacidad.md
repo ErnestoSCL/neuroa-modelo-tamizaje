@@ -496,7 +496,7 @@ La ley **no exige tener empresa** para cumplirse: se aplica a **quien trata dato
 | Etapa | Qué pasa | Quién responde legalmente | Obligaciones vigentes |
 |---|---|---|---|
 | **0. Desarrollo** (ahora) | Se construye la plataforma con **datos sintéticos**; no hay padres reales | Nadie: todavía no hay datos personales | Ninguna. Se deja todo implementado |
-| **1. Piloto cerrado** | Pocas familias reales y pocos centros aliados, **sin cobrar** | El fundador o fundadora como **persona natural con RUC 10** | Todas las de la ley, porque ya hay datos de salud de niños. El "kit mínimo" de 16.3 |
+| **1. Piloto cerrado** | Pocas familias reales y pocos centros aliados, **sin cobrar** | El fundador o fundadora como **persona natural con RUC 10** | Todas las de la ley, porque ya hay datos de salud de niños. El mínimo legal de 16.3 |
 | **2. Lanzamiento público y cobro a centros** | Abierto a cualquier padre; se factura a los centros | Se puede iniciar con el **RUC 10**; se recomienda pasar a una **empresa (RUC 20)** al crecer | Todas, más contratos formales, opinión legal y prueba de penetración |
 
 **Por qué conviene pasar a una empresa (RUC 20) al crecer:**
@@ -525,18 +525,57 @@ La ley **no exige tener empresa** para cumplirse: se aplica a **quien trata dato
 | 14 | Prueba de penetración externa | No | No (sí presupuesto) | Etapa 2. **Ahora**, un escaneo automático gratuito (por ejemplo, OWASP ZAP) como primer filtro |
 | 15 | DPA de Microsoft y del proveedor de correo; contrato con los centros | El DPA de Microsoft se acepta **automáticamente** con los términos de Azure: solo hay que descargarlo y archivarlo. El contrato con los centros **sí** es necesario | DPA: no. Contrato con los centros: en el piloto basta un **convenio simple** firmado por el fundador; para cobrar, el contrato debe ser con la empresa | DPA: **ahora**. Convenio de piloto: etapa 1. Contrato formal: etapa 2 |
 
-### 16.3 Kit mínimo para el piloto (etapa 1, sin RUC)
+### 16.3 Mínimo legal para el piloto (etapa 1, con RUC 10)
 
-1. Consentimiento por finalidad funcionando (punto 1).
-2. Política de privacidad publicada a nombre del fundador como persona natural (punto 2).
-3. Banco de datos inscrito en el SIPDP a nombre del fundador (punto 3).
-4. Una persona con el rol de oficial de datos y el correo de privacidad activo (puntos 4 y 9).
-5. Azure configurado: región Brazil South, LLM regional, respaldos sin geo-redundancia, base sin acceso público (puntos 5 y 6).
-6. Correos y logs sin datos de salud (puntos 7 y 8).
-7. Botón "Eliminar mi cuenta" (punto 9).
-8. Plan de incidentes con responsables (punto 10).
-9. Convenio simple con cada centro del piloto (punto 15).
-10. Número limitado de familias, por invitación de los centros aliados, para acotar el riesgo mientras no haya empresa.
+Lo que la ley exige antes de recibir datos de familias reales. En Notion es la tarea "Cumplir el mínimo legal de privacidad para el piloto".
+
+1. Política de privacidad publicada, con el fundador (RUC 10) como responsable y diciendo que los datos se alojan en Brasil.
+2. Texto del consentimiento revisado y aprobado (sección 6.3).
+3. Casillas de consentimiento por finalidad en la app, guardadas con versión y fecha.
+4. Base de datos inscrita ante la ANPD en el SIPDP (`inscripcion_anpd_borrador.md`).
+5. Correo de privacidad creado y con alguien que lo atienda.
+6. Plan de incidentes de una página: quién contiene, quién avisa en 48 horas y quién comunica.
+7. Base de datos sin acceso público, MFA y permisos mínimos para el equipo, claves en Key Vault.
+8. Convenio firmado con cada centro del piloto (con la cláusula del correo del paciente si usa el SGT o el vínculo padre–centro).
+
+Recomendación adicional: limitar el piloto a pocas familias invitadas por los centros aliados mientras no haya empresa.
+
+### 16.4 Clasificación de todas las tareas
+
+- **A · Obligatoria:** la ley la exige; si falta, puede haber multa de la ANPD.
+- **B · Recomendada:** no es obligatoria, pero es barata y reduce mucho el riesgo de una filtración o de un reclamo.
+- **C · Opcional / puede esperar:** no es obligatoria; se puede postergar o eliminar sin riesgo legal.
+
+| Tarea | Tipo | Nota |
+|---|---|---|
+| Política de privacidad publicada | A | Deber de informar; debe decir que los datos se alojan en Brasil |
+| Texto del consentimiento aprobado | A | Borrador en la sección 6.3 |
+| Casillas de consentimiento con versión y fecha | A | Datos de salud de menores: consentimiento expreso y por escrito, que hay que poder probar |
+| Inscripción ante la ANPD | A | En línea y gratis |
+| Correo de privacidad | A | Canal para los pedidos de los padres (ARCO) |
+| Plan de incidentes de una página | A | Notificación en 48 horas |
+| Base de datos sin acceso público; MFA y permisos mínimos; claves en Key Vault | A | Parte de las medidas de seguridad que exige la ley |
+| Convenio con cada centro del piloto | A | Si el centro usa el SGT o el vínculo; si solo aparece en el directorio, basta su autorización para publicar sus datos de contacto |
+| Correos sin datos de salud; PDF solo desde la cuenta | B | Un correo reenviado es una filtración |
+| Logs sin datos personales ni de salud | B | La filtración más común en startups |
+| No guardar el avance en `localStorage` | B | Celulares compartidos |
+| Edad máxima (menores de 14 años; tope clínico con especialistas) | B | Con el tope, el consentimiento del padre basta |
+| Cuenta con solo correo y contraseña, con verificación del correo | B | Confirma que el correo es del padre |
+| Todo en Brazil South: modelo de IA regional, respaldos sin copia en EE. UU. | B | No es obligatorio si se informa el país real; solo es configuración |
+| Decidir quién tendrá el rol de oficial de datos | B | Plazo legal hasta 2028, pero alguien debe atender el correo y los incidentes |
+| Descargar y guardar el DPA de Microsoft | B | Ya existe; es tenerlo como prueba |
+| Acuerdos de confidencialidad | B | Deja por escrito el deber de confidencialidad |
+| Botón "Eliminar mi cuenta" | C | El correo de privacidad basta mientras haya pocos pedidos |
+| Botón de descarga de datos | C | Se atiende por correo |
+| Test que impida enviar identificadores al modelo de IA | C | Buena práctica técnica |
+| Vínculo padre–centro (aviso del SGT, `/account/centers`, vencimiento a 30 días) | C | Función del producto, no obligación legal; puede ir en fase 2 siguiendo la sección 3.8 de la arquitectura |
+| Escaneo con OWASP ZAP | C | Cuando haya tiempo |
+| Asesoría legal gratuita o barata (13 preguntas) | C | Muy recomendable antes del lanzamiento público |
+| Opinión legal formal sobre DIGEMID y la ley de IA | C | Antes del lanzamiento público |
+| Prueba de penetración externa | C | Necesita presupuesto |
+| Monitoreo de abuso modificado de Microsoft | C | Requiere contrato empresarial; mientras, se informa en la política |
+| Constituir la empresa (RUC 20) y pasarle inscripción, política y contratos | C | Protege el patrimonio personal al crecer |
+| Designación formal del oficial de datos | C | Plazo legal para microempresa: noviembre de 2028 |
 
 ## 17. Cambios que este documento pide en otros documentos
 
