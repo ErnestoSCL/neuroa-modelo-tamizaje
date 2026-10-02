@@ -13,6 +13,8 @@ Modelo de Machine Learning que estima el riesgo de Trastorno del Espectro Autist
 | `docs/consideraciones_app_tamizaje.md` | Consideraciones para construir la aplicación de tamizaje |
 | `docs/arquitectura_conecta.md` | Arquitectura técnica de Conecta y su integración con el SGT y el panel interno |
 | `docs/datos_y_privacidad.md` | Evaluación de datos y privacidad de Conecta (Ley 29733, transferencias, riesgos y plan de acción) |
+| `docs/inscripcion_anpd_borrador.md` | Borrador de las respuestas para inscribir el banco de datos ante la ANPD |
+| `docs/guia_oficial_datos.md` | Funciones y rutina del oficial de datos personales |
 
 ## Datos
 

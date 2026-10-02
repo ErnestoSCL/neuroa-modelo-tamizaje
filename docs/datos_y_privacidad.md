@@ -284,6 +284,7 @@ Al compartir con un centro:
 - La eliminación también debe quitar los datos del padre en el proveedor de correo y excluir sus evaluaciones de los entrenamientos futuros. Los modelos ya entrenados no se pueden "desentrenar"; por eso solo se entrena con datos anonimizados o con consentimiento (d).
 - Los **respaldos** conservan los datos borrados hasta que vencen (hasta 35 días en PostgreSQL Flexible). La política debe decirlo y, si se restaura un respaldo, se vuelven a aplicar las eliminaciones registradas.
 - Canal alternativo: un correo de privacidad atendido por el oficial de datos, con un registro de las solicitudes y sus respuestas.
+- **Decisión para el lanzamiento:** el botón **"Eliminar mi cuenta"** en `/account` y el correo de privacidad para el resto de pedidos (acceso, rectificación, oposición), atendidos a mano por el oficial de datos. La **descarga de datos** desde la cuenta se agrega en una fase posterior. La ley exige el canal y los plazos, no el botón.
 - Verificar la identidad antes de responder: la sesión iniciada basta; por correo, confirmar desde la dirección registrada.
 
 ---
@@ -422,7 +423,7 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 
 1. ¿Brasil tiene **nivel adecuado** de protección para la ANPD peruana, o hace falta firmar cláusulas contractuales o informar la transferencia de alguna forma especial?
 2. ¿El D.S. 016-2024-JUS exige **comunicar a la ANPD** el flujo transfronterizo?
-3. ¿Neuroa está obligada a designar un **oficial de datos personales** desde el inicio, dado que su giro incluye el tratamiento de datos sensibles? ¿Puede ser alguien del equipo, a tiempo parcial?
+3. **Oficial de datos personales:** el reglamento permite que no sea exclusivo e incluso externo, y da plazos según el tamaño de la empresa (pequeña: noviembre de 2027; micro: noviembre de 2028). Confirmar qué plazo aplica a Neuroa y qué formación se considera "acreditada". Ver `guia_oficial_datos.md`.
 4. ¿Las casillas digitales con registro de fecha, hora y versión cumplen el consentimiento **"por escrito"** para datos sensibles?
 5. ¿Basta la **declaración** de ser padre, madre o tutor, o se requiere algún mecanismo adicional de verificación?
 6. Plazos vigentes de respuesta a los derechos ARCO y si el nuevo reglamento incluye **portabilidad**.
@@ -444,14 +445,14 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 |---|---|---|---|
 | 1 | Consentimiento por finalidad con declaración de tutor, texto versionado y registro en `app.consents` | Desarrollo + asesor legal | 6 |
 | 2 | Política de privacidad publicada | Asesor legal + fundador(a) | 7 |
-| 3 | Inscribir el banco de datos "Usuarios y evaluaciones de Conecta" ante la ANPD | Oficial de datos | 2 |
-| 4 | Designar al oficial de datos personales | Fundador(a) | 2 |
+| 3 | Inscribir el banco de datos "Usuarios y evaluaciones de Conecta" en el SIPDP (gratuito, aprobación automática). Requiere empresa con RUC y vigencia de poder | Oficial de datos | `inscripcion_anpd_borrador.md` |
+| 4 | Designar al oficial de datos personales (puede tener otras funciones o ser externo; necesita formación acreditada) | Fundador(a) | `guia_oficial_datos.md` |
 | 5 | Azure OpenAI con despliegue **Standard en Brazil South** y solicitud de **monitoreo de abuso modificado** | Desarrollo | 5.2 |
 | 6 | Respaldos de PostgreSQL **sin geo-redundancia** | Desarrollo | 11.1 |
 | 7 | PostgreSQL sin acceso público, identidades administradas, MFA y acceso temporal a producción | Desarrollo | 11.1 |
 | 8 | Correos sin datos de salud; PDF solo desde la cuenta | Desarrollo | 6.5 |
 | 9 | Logs con lista blanca de campos y test que impida enviar identificadores al LLM | Desarrollo | 11.1, 12.3 |
-| 10 | Descarga y eliminación de datos desde `/account` | Desarrollo | 8 |
+| 10 | Botón "Eliminar mi cuenta" en `/account` y correo de privacidad (la descarga de datos, en una fase posterior) | Desarrollo + oficial de datos | 8 |
 | 11 | Plan de incidentes con notificación en 48 horas y responsables asignados | Oficial de datos | 11.3 |
 | 12 | Métricas para centros con mínimo 5 casos por celda | Desarrollo | 4.2 |
 | 13 | Limitar la edad a menores de 14 años | Producto | 6.5 |
