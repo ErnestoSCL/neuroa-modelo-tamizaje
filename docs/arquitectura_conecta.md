@@ -2,7 +2,7 @@
 
 Arquitectura técnica de la **Solución 1: Conecta** (plataforma de tamizaje), con su frontend, su backend y su base de datos, y cómo se integra con el SGT y el Panel Startup.
 
-Versión 1.3 · 2026-10-02
+Versión 1.4 · 2026-10-02
 
 ---
 
@@ -213,7 +213,7 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 | **API SGT** | Diagnósticos confirmados (con consentimiento) para reentrenar | Job diario |
 | **API Panel** | Tenants con Conecta activo | Job programado cada 5 minutos + webhook del Panel ante cambios |
 | **Azure OpenAI / Foundry** | Explicación del resultado y elección de terapias | Llamada con *tool calling*; textos plantilla si falla |
-| **Correo** | Confirmaciones y resultado en PDF para el padre | Cola en PostgreSQL |
+| **Correo** | Confirmaciones y aviso de que el resultado está disponible, **sin datos de salud** (el PDF se descarga desde la cuenta) | Cola en PostgreSQL |
 
 ### 3.6 Cálculo del resultado
 
@@ -302,6 +302,7 @@ erDiagram
 - Los datos de salud del niño (respuestas y resultados) son **datos sensibles** según la Ley N.º 29733: requieren consentimiento expreso del padre o tutor (a validar con asesoría legal).
 - **No se guarda el nombre del niño**; solo edad en meses y sexo.
 - Para reentrenar y para las métricas se usan **datos anonimizados** (sin padre ni contacto).
+- Evaluación completa de datos y privacidad (inventario, consentimiento, transferencias, riesgos y plan de acción): `docs/datos_y_privacidad.md`.
 - Plazos de conservación acordados (a validar con asesoría legal):
 
 | Dato | Plazo |
@@ -311,7 +312,7 @@ erDiagram
 | Datos anonimizados (reentrenamiento y métricas) | Sin plazo, porque ya no identifican a nadie |
 | Eventos de clics y visitas | 24 meses |
 | Logs técnicos | 90 días |
-| Datos enviados al LLM | Sin retención del proveedor (exigido en el contrato) |
+| Datos enviados al LLM | Sin retención: requiere que Microsoft apruebe el **monitoreo de abuso modificado** (si no, hasta 30 días para contenido marcado) |
 
 ---
 
@@ -415,9 +416,9 @@ sequenceDiagram
 | `conecta-api` (FastAPI) | Azure Container Apps |
 | `conecta-worker` (procesa la cola en PostgreSQL) | Azure Container Apps |
 | Jobs: copia del catálogo, diagnósticos, reentrenamiento | Azure Container Apps Jobs (solo cobran mientras corren) |
-| PostgreSQL | Azure Database for PostgreSQL (Flexible Server) |
+| PostgreSQL | Azure Database for PostgreSQL (Flexible Server), sin acceso público y con respaldos **sin geo-redundancia** (la región pareja de Brazil South está en EE. UU.) |
 | MLflow | Azure Container Apps + Azure Blob Storage para los modelos |
-| LLM | Azure OpenAI / Microsoft Foundry |
+| LLM | Azure OpenAI / Microsoft Foundry, despliegue **Standard (regional) en Brazil South** para que los datos no salgan de Brasil |
 | Secretos y claves | Azure Key Vault |
 
 - **Ambientes:** desarrollo, pruebas (*staging*) y producción, cada uno con su base de datos.
@@ -451,6 +452,7 @@ Se elige con el set de 40–60 casos de prueba del agente. Candidatos, todos dis
 | Claude Haiku 4.5 / Sonnet 5.5 | 1 / 5 · 2 / 10 | $0.023 · $0.046 | Referencia de calidad |
 
 - Supuesto: ~18 mil tokens de entrada y ~1 mil de salida por tamizaje, sin caché. Con caché del prompt el costo baja.
+- Requisito de privacidad: el modelo debe estar disponible como despliegue **Standard en Brazil South**; un despliegue *Global* puede procesar los datos en cualquier país (ver `datos_y_privacidad.md`, sección 5.2).
 - Criterio: el modelo más barato que cumpla las reglas del agente (no diagnosticar, tono, JSON válido, terapias correctas) con calidad cercana a la referencia.
 - Precios de fuentes públicas de 2026: confirmarlos en la calculadora de Azure y verificar la disponibilidad en Brazil South.
 

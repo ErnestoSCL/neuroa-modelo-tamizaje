@@ -591,7 +591,7 @@ Añadir el aviso de validez por edad cuando corresponda.
 
 ## 9. Privacidad y aspectos legales (Perú)
 
-Todos los puntos de esta sección son **[a validar con asesoría legal]**.
+Todos los puntos de esta sección son **[a validar con asesoría legal]**. La evaluación completa (inventario de datos, consentimiento por finalidad, transferencias, riesgos y plan de acción) está en `docs/datos_y_privacidad.md`.
 
 ### 9.1 Marco
 
