@@ -478,7 +478,9 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 
 ---
 
-## 16. Plan por etapas para una startup sin RUC
+## 16. Plan por etapas (RUC 10 hoy, empresa más adelante)
+
+**Situación actual:** el fundador o fundadora tiene **RUC 10** (persona natural con negocio). Eso permite facturar a los centros y ser el titular del banco de datos. La empresa (persona jurídica, RUC 20) se constituye más adelante.
 
 La ley **no exige tener empresa** para cumplirse: se aplica a **quien trata datos personales**, sea una empresa o una persona natural. Lo que activa las obligaciones no es el RUC sino **recoger datos reales** de padres y niños. Mientras solo haya datos de prueba, ninguna obligación está vigente todavía, pero conviene construir todo desde ya.
 
@@ -487,12 +489,12 @@ La ley **no exige tener empresa** para cumplirse: se aplica a **quien trata dato
 | Etapa | Qué pasa | Quién responde legalmente | Obligaciones vigentes |
 |---|---|---|---|
 | **0. Desarrollo** (ahora) | Se construye la plataforma con **datos sintéticos**; no hay padres reales | Nadie: todavía no hay datos personales | Ninguna. Se deja todo implementado |
-| **1. Piloto cerrado** | Pocas familias reales y pocos centros aliados, **sin cobrar** | El fundador o fundadora como **persona natural** (con su DNI) | Todas las de la ley, porque ya hay datos de salud de niños. El "kit mínimo" de 16.3 |
-| **2. Lanzamiento público y cobro a centros** | Abierto a cualquier padre; se factura a los centros | **La empresa** (con RUC) | Todas, más contratos formales, opinión legal y prueba de penetración |
+| **1. Piloto cerrado** | Pocas familias reales y pocos centros aliados, **sin cobrar** | El fundador o fundadora como **persona natural con RUC 10** | Todas las de la ley, porque ya hay datos de salud de niños. El "kit mínimo" de 16.3 |
+| **2. Lanzamiento público y cobro a centros** | Abierto a cualquier padre; se factura a los centros | Se puede iniciar con el **RUC 10**; se recomienda pasar a una **empresa (RUC 20)** al crecer | Todas, más contratos formales, opinión legal y prueba de penetración |
 
-**Por qué conviene tener empresa antes de la etapa 2:**
+**Por qué conviene pasar a una empresa (RUC 20) al crecer:**
 
-- Para **facturar** a los centros hace falta RUC. El RUC de persona natural se saca gratis y rápido en SUNAT; una empresa (por ejemplo, una S.A.C.) cuesta algo más y toma más tiempo **[verificar costos actuales]**.
+- Con el **RUC 10 ya se puede facturar** a los centros, firmar convenios e inscribir el banco de datos. Una empresa (por ejemplo, una S.A.C.) cuesta algo más y toma más tiempo **[verificar costos actuales]**.
 - Como persona natural, **las multas y reclamos recaen sobre el patrimonio personal** del fundador. Con una empresa de responsabilidad limitada, el riesgo queda en la empresa.
 - Los centros, los inversionistas y Microsoft (para algunos beneficios) piden una empresa.
 

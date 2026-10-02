@@ -21,8 +21,8 @@ Versión 1.0 · 2026-10-02
 
 **Antes de empezar:**
 
-- **Sin empresa todavía (piloto):** el titular es el fundador o fundadora como **persona natural**, con su DNI y domicilio. Las obligaciones y posibles multas recaen sobre esa persona.
-- **Con empresa (lanzamiento público):** el titular pasa a ser la empresa, con RUC; se inscribe a su nombre o se actualiza la inscripción. Ver `datos_y_privacidad.md`, sección 16.
+- **Hoy:** el titular es el fundador o fundadora como **persona natural con RUC 10**. Las obligaciones y posibles multas recaen sobre esa persona.
+- **Cuando se constituya la empresa (RUC 20):** el titular pasa a ser la empresa; se inscribe a su nombre o se actualiza la inscripción. Ver `datos_y_privacidad.md`, sección 16.
 - La plataforma ya debe tener implementado lo que se declara (consentimiento, medidas de seguridad, canal ARCO). Lo ideal es inscribir **poco antes del lanzamiento**, con la configuración de Azure ya hecha.
 - Si algo cambia (un país nuevo, una finalidad nueva, un tipo de dato nuevo), hay que **actualizar** la inscripción.
 
@@ -47,8 +47,8 @@ El resto de este borrador cubre el banco **Usuarios y evaluaciones de Conecta**.
 
 | Campo | Respuesta |
 |---|---|
-| Titular | Piloto: [nombre del fundador o fundadora, persona natural]. Lanzamiento: [razón social de la empresa] |
-| Documento | Piloto: [DNI]. Lanzamiento: [RUC] |
+| Titular | Hoy: [nombre del fundador o fundadora], persona natural con negocio. Más adelante: [razón social de la empresa] |
+| Documento | Hoy: [RUC 10] y [DNI]. Más adelante: [RUC 20] |
 | Domicilio | [Dirección fiscal] |
 | Representante legal | Solo si el titular es una empresa: [nombre, DNI] |
 | Correo de contacto | [privacidad@dominio] |
@@ -155,7 +155,7 @@ El resto de este borrador cubre el banco **Usuarios y evaluaciones de Conecta**.
 
 ## 4. Lista de verificación antes de enviar
 
-- [ ] Titular definido: el fundador como persona natural (piloto) o la empresa con RUC y vigencia de poder (lanzamiento).
+- [ ] Titular definido: hoy, el fundador con RUC 10; más adelante, la empresa con RUC 20 y vigencia de poder.
 - [ ] Oficial de datos designado y correo de privacidad activo.
 - [ ] Azure configurado como se declara: región Brazil South, LLM regional, respaldos sin geo-redundancia.
 - [ ] Consentimiento por finalidad implementado en la app.
