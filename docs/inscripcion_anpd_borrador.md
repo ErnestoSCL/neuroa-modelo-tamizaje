@@ -15,13 +15,14 @@ Versión 1.0 · 2026-10-02
 | Dónde | En línea, en la plataforma **SIPDP** del Ministerio de Justicia: [sipdp.minjus.gob.pe](https://sipdp.minjus.gob.pe/sipdp-virtual/public/login.xhtml). Ficha del trámite en [gob.pe](https://www.gob.pe/8060-inscribir-banco-de-datos-en-el-registro-nacional-de-proteccion-de-datos-personales) |
 | Costo | **Gratuito** (D.S. 016-2024-JUS) |
 | Aprobación | **Automática**, sujeta a fiscalización posterior: lo que se declara debe ser cierto y estar implementado |
-| Requisitos | 1) Formulario de inscripción. 2) Documento que acredite las **facultades del representante legal** (por ejemplo, la vigencia de poder) |
+| Requisitos | 1) Formulario de inscripción. 2) Si el titular es una empresa: documento que acredite las **facultades del representante legal** (por ejemplo, la vigencia de poder). Si es una persona natural: su DNI **[verificar en el SIPDP]** |
 | Pasos | Crear un usuario en el SIPDP, acreditar la representación, registrar un correo de contacto, llenar el formulario y enviarlo |
 | Consultas | (01) 204-8020, anexo 2410, de lunes a viernes |
 
 **Antes de empezar:**
 
-- La empresa debe estar **constituida y con RUC**: el titular del banco de datos es la empresa, no una persona del equipo.
+- **Sin empresa todavía (piloto):** el titular es el fundador o fundadora como **persona natural**, con su DNI y domicilio. Las obligaciones y posibles multas recaen sobre esa persona.
+- **Con empresa (lanzamiento público):** el titular pasa a ser la empresa, con RUC; se inscribe a su nombre o se actualiza la inscripción. Ver `datos_y_privacidad.md`, sección 16.
 - La plataforma ya debe tener implementado lo que se declara (consentimiento, medidas de seguridad, canal ARCO). Lo ideal es inscribir **poco antes del lanzamiento**, con la configuración de Azure ya hecha.
 - Si algo cambia (un país nuevo, una finalidad nueva, un tipo de dato nuevo), hay que **actualizar** la inscripción.
 
@@ -46,10 +47,10 @@ El resto de este borrador cubre el banco **Usuarios y evaluaciones de Conecta**.
 
 | Campo | Respuesta |
 |---|---|
-| Razón social | [Razón social de Neuroa] |
-| RUC | [RUC] |
+| Titular | Piloto: [nombre del fundador o fundadora, persona natural]. Lanzamiento: [razón social de la empresa] |
+| Documento | Piloto: [DNI]. Lanzamiento: [RUC] |
 | Domicilio | [Dirección fiscal] |
-| Representante legal | [Nombre, DNI] |
+| Representante legal | Solo si el titular es una empresa: [nombre, DNI] |
 | Correo de contacto | [privacidad@dominio] |
 | Oficial de datos personales | [Nombre y correo] (ver `guia_oficial_datos.md`) |
 
@@ -154,7 +155,7 @@ El resto de este borrador cubre el banco **Usuarios y evaluaciones de Conecta**.
 
 ## 4. Lista de verificación antes de enviar
 
-- [ ] Empresa constituida, con RUC y vigencia de poder del representante.
+- [ ] Titular definido: el fundador como persona natural (piloto) o la empresa con RUC y vigencia de poder (lanzamiento).
 - [ ] Oficial de datos designado y correo de privacidad activo.
 - [ ] Azure configurado como se declara: región Brazil South, LLM regional, respaldos sin geo-redundancia.
 - [ ] Consentimiento por finalidad implementado en la app.

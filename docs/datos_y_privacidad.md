@@ -320,7 +320,7 @@ Actualiza la tabla acordada en `arquitectura_conecta.md` (sección 4.4):
 | R1 | **Filtración de la base** (ataque, credencial robada, respaldo expuesto) | 2 | 3 | **Alto** | Red privada y sin acceso público a PostgreSQL, cifrado en reposo y tránsito, Entra ID con MFA, acceso privilegiado temporal, rotación de secretos en Key Vault, auditoría, pruebas de penetración | Medio |
 | R2 | **Toma de una cuenta de padre** (contraseña débil o reutilizada) y exposición del resultado del niño | 2 | 2 | Medio | Contraseña robusta, límite de intentos, verificación del correo, sesión con vencimiento, aviso por correo de inicio de sesión nuevo | Bajo |
 | R3 | **Datos de salud fuera de la región informada** (LLM Global, respaldos geo-redundantes, soporte) | 2 | 2 | Medio | Despliegue regional del LLM, respaldos sin geo-redundancia, política de soporte sin datos reales, Azure Policy que bloquee despliegues Global | Bajo |
-| R4 | **Retención en el proveedor del LLM** (monitoreo de abuso hasta 30 días) | 3 | 2 | **Alto** | Solicitar el monitoreo de abuso modificado; mientras no se apruebe, informarlo en la política; enviar solo lo necesario | Bajo (aprobado) / Medio |
+| R4 | **Retención en el proveedor del LLM** (monitoreo de abuso hasta 30 días) | 3 | 2 | **Alto** | Solicitar el monitoreo de abuso modificado (requiere contrato empresarial con Microsoft; ver 16.2); mientras tanto, informarlo en la política y enviar solo lo necesario, sin identificadores | Bajo (aprobado) / Medio |
 | R5 | **Identificadores enviados al LLM** por error | 1 | 3 | Medio | El prompt se arma con una lista blanca de campos; test automático que falla si aparece correo, nombre o teléfono | Bajo |
 | R6 | **Inyección de instrucciones** en las descripciones de terapias que escriben los centros | 2 | 1 | Bajo | El agente solo tiene los datos de esa evaluación; la salida se valida contra la lista devuelta; las descripciones se revisan al registrarlas | Bajo |
 | R7 | **Consentimiento inválido** (no lo da el tutor, casillas premarcadas, finalidades mezcladas, texto no versionado) | 2 | 2 | Medio | Sección 6: declaración de tutor, casillas separadas, versionado, prueba de UX | Bajo |
@@ -445,7 +445,7 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 |---|---|---|---|
 | 1 | Consentimiento por finalidad con declaración de tutor, texto versionado y registro en `app.consents` | Desarrollo + asesor legal | 6 |
 | 2 | Política de privacidad publicada | Asesor legal + fundador(a) | 7 |
-| 3 | Inscribir el banco de datos "Usuarios y evaluaciones de Conecta" en el SIPDP (gratuito, aprobación automática). Requiere empresa con RUC y vigencia de poder | Oficial de datos | `inscripcion_anpd_borrador.md` |
+| 3 | Inscribir el banco de datos "Usuarios y evaluaciones de Conecta" en el SIPDP (gratuito, aprobación automática). Sin empresa, a nombre del fundador como persona natural; con empresa, con RUC y vigencia de poder (ver 16) | Oficial de datos | `inscripcion_anpd_borrador.md` |
 | 4 | Designar al oficial de datos personales (puede tener otras funciones o ser externo; necesita formación acreditada) | Fundador(a) | `guia_oficial_datos.md` |
 | 5 | Azure OpenAI con despliegue **Standard en Brazil South** y solicitud de **monitoreo de abuso modificado** | Desarrollo | 5.2 |
 | 6 | Respaldos de PostgreSQL **sin geo-redundancia** | Desarrollo | 11.1 |
@@ -478,7 +478,58 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 
 ---
 
-## 16. Cambios que este documento pide en otros documentos
+## 16. Plan por etapas para una startup sin RUC
+
+La ley **no exige tener empresa** para cumplirse: se aplica a **quien trata datos personales**, sea una empresa o una persona natural. Lo que activa las obligaciones no es el RUC sino **recoger datos reales** de padres y niños. Mientras solo haya datos de prueba, ninguna obligación está vigente todavía, pero conviene construir todo desde ya.
+
+### 16.1 Etapas
+
+| Etapa | Qué pasa | Quién responde legalmente | Obligaciones vigentes |
+|---|---|---|---|
+| **0. Desarrollo** (ahora) | Se construye la plataforma con **datos sintéticos**; no hay padres reales | Nadie: todavía no hay datos personales | Ninguna. Se deja todo implementado |
+| **1. Piloto cerrado** | Pocas familias reales y pocos centros aliados, **sin cobrar** | El fundador o fundadora como **persona natural** (con su DNI) | Todas las de la ley, porque ya hay datos de salud de niños. El "kit mínimo" de 16.3 |
+| **2. Lanzamiento público y cobro a centros** | Abierto a cualquier padre; se factura a los centros | **La empresa** (con RUC) | Todas, más contratos formales, opinión legal y prueba de penetración |
+
+**Por qué conviene tener empresa antes de la etapa 2:**
+
+- Para **facturar** a los centros hace falta RUC. El RUC de persona natural se saca gratis y rápido en SUNAT; una empresa (por ejemplo, una S.A.C.) cuesta algo más y toma más tiempo **[verificar costos actuales]**.
+- Como persona natural, **las multas y reclamos recaen sobre el patrimonio personal** del fundador. Con una empresa de responsabilidad limitada, el riesgo queda en la empresa.
+- Los centros, los inversionistas y Microsoft (para algunos beneficios) piden una empresa.
+
+### 16.2 Los 15 puntos del checklist, uno por uno
+
+| # | Punto | ¿Obligatorio por ley? | ¿Necesita RUC? | ¿Cuándo? |
+|---|---|---|---|---|
+| 1 | Consentimiento por finalidad, versionado y registrado | **Sí** | No (es código) | Programarlo **ahora**; vigente desde la etapa 1 |
+| 2 | Política de privacidad publicada | **Sí** (deber de informar) | No. Sin empresa, el responsable es el fundador como persona natural (nombre, DNI, domicilio y correo) | Redactarla **ahora**; publicarla en la etapa 1; actualizarla al constituir la empresa |
+| 3 | Banco de datos inscrito ante la ANPD | **Sí** | No necesariamente: la inscripción también aplica a personas naturales titulares de un banco de datos **[verificar en el SIPDP]** | Antes de la etapa 1. Al constituir la empresa, inscribirlo a su nombre (o transferirlo) |
+| 4 | Oficial de datos personales designado | **Sí, con plazo**: una startup sin ventas es microempresa, con plazo hasta **noviembre de 2028** **[verificar]** | No | **Ahora**, de forma interna: elegir quién cumple el rol y que tome un curso corto. La designación formal, con la empresa |
+| 5 | Azure OpenAI regional y monitoreo de abuso modificado | El despliegue regional no es obligatorio, pero evita declarar envíos a otros países. El monitoreo modificado **no** es obligatorio | El despliegue regional, no. El **monitoreo modificado sí lo exige en la práctica**: Microsoft solo lo da a clientes con contrato empresarial (*Enterprise Agreement*) o gestionados por su equipo; las cuentas de pago por uso no califican | Despliegue regional: **ahora**. Monitoreo modificado: en la etapa 2, con empresa (o pedirlo vía un programa como Microsoft for Startups **[verificar]**). Mientras tanto, **informar en la política** que Microsoft puede guardar hasta 30 días el contenido marcado como abuso, sin datos de identidad |
+| 6 | Respaldos sin geo-redundancia; PostgreSQL sin acceso público | **Sí** (deber de seguridad) | No (es configuración) | **Ahora** |
+| 7 | Correos sin datos de salud; PDF solo desde la cuenta | Deriva del deber de seguridad | No | **Ahora** (diseño) |
+| 8 | Logs sin datos personales; test que impida enviar identificadores al LLM | Deriva del deber de seguridad | No | **Ahora** (código) |
+| 9 | Botón "Eliminar mi cuenta" y correo de privacidad | **Sí** (derechos ARCO) | No | **Ahora** (código y un correo) |
+| 10 | Plan de incidentes con notificación en 48 horas | **Sí** | No | **Ahora** (ya está en la guía del oficial; asignar responsables) |
+| 11 | Métricas para centros con mínimo 5 casos por celda | Buena práctica (evita que los agregados identifiquen a alguien) | No | **Ahora** (código) |
+| 12 | Edad limitada a menores de 14 años | Decisión de producto con efecto legal | No | **Ahora** |
+| 13 | Opinión legal (DIGEMID y Ley de IA) | No, pero reduce mucho el riesgo | No (sí presupuesto) | Antes de la etapa 2. Opciones sin costo o de bajo costo: consultorios jurídicos de universidades, mentores de incubadoras y programas de apoyo a startups |
+| 14 | Prueba de penetración externa | No | No (sí presupuesto) | Etapa 2. **Ahora**, un escaneo automático gratuito (por ejemplo, OWASP ZAP) como primer filtro |
+| 15 | DPA de Microsoft y del proveedor de correo; contrato con los centros | El DPA de Microsoft se acepta **automáticamente** con los términos de Azure: solo hay que descargarlo y archivarlo. El contrato con los centros **sí** es necesario | DPA: no. Contrato con los centros: en el piloto basta un **convenio simple** firmado por el fundador; para cobrar, el contrato debe ser con la empresa | DPA: **ahora**. Convenio de piloto: etapa 1. Contrato formal: etapa 2 |
+
+### 16.3 Kit mínimo para el piloto (etapa 1, sin RUC)
+
+1. Consentimiento por finalidad funcionando (punto 1).
+2. Política de privacidad publicada a nombre del fundador como persona natural (punto 2).
+3. Banco de datos inscrito en el SIPDP a nombre del fundador (punto 3).
+4. Una persona con el rol de oficial de datos y el correo de privacidad activo (puntos 4 y 9).
+5. Azure configurado: región Brazil South, LLM regional, respaldos sin geo-redundancia, base sin acceso público (puntos 5 y 6).
+6. Correos y logs sin datos de salud (puntos 7 y 8).
+7. Botón "Eliminar mi cuenta" (punto 9).
+8. Plan de incidentes con responsables (punto 10).
+9. Convenio simple con cada centro del piloto (punto 15).
+10. Número limitado de familias, por invitación de los centros aliados, para acotar el riesgo mientras no haya empresa.
+
+## 17. Cambios que este documento pide en otros documentos
 
 - `arquitectura_conecta.md`:
   - En la retención, "Datos enviados al LLM: sin retención del proveedor (exigido en el contrato)" pasa a "requiere aprobar el monitoreo de abuso modificado".
@@ -486,7 +537,7 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
   - Se agregan los respaldos sin geo-redundancia y el despliegue regional del LLM.
 - `consideraciones_app_tamizaje.md`: la sección 9 remite a este documento.
 
-## 17. Fuentes
+## 18. Fuentes
 
 - Ley N.º 29733, Ley de Protección de Datos Personales.
 - Decreto Supremo N.º 016-2024-JUS, Reglamento de la Ley N.º 29733 (publicado el 30-11-2024, vigente desde el 30-03-2025). Resúmenes: [IAPP](https://iapp.org/news/a/se-publica-el-nuevo-reglamento-de-protecci-n-de-datos-personales-en-per-), [PPU](https://ppulegal.com/ppu-legal/alerta-de-nuevo-reglamento-de-la-ley-n-29733-ley-de-proteccion-de-datos-personales/), [Garrigues](https://www.garrigues.com/es_ES/noticia/peru-publica-nuevo-reglamento-ley-proteccion-datos-personales), [LP Derecho (texto)](https://lpderecho.pe/reglamento-ley-proteccion-datos-personales-decreto-supremo-016-2024-jus/), [El Peruano: oficial de datos personales](https://elperuano.pe/noticia/288028-suplemento-legal-juridica-tratas-datos-sensibles-o-grandes-volumenes-evalua-si-debes-nombrar-un-odp).
