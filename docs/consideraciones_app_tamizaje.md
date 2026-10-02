@@ -394,7 +394,7 @@ Si el LLM falla, excede el tiempo o no pasa la validación: mostrar textos plant
 | **PostgreSQL (Conecta)** | Todo lo de la plataforma de tamizaje: evaluaciones, respuestas, resultados, versión del modelo usada, reglas activadas, diagnósticos confirmados que devuelven los centros, versiones y métricas de los modelos, reentrenamientos. |
 
 - Conecta **copia** centros, sedes y terapias desde la API del SGT al esquema `catalog` de PostgreSQL cada pocos minutos, y sigue funcionando si el SGT no está disponible (ver `arquitectura_conecta.md`, sección 3.5).
-- Conecta **escribe** hacia el SGT solo lo acordado: el paciente nuevo cuando un padre elige un centro con plan Integral.
+- Conecta **escribe** hacia el SGT solo lo acordado: el vínculo padre–centro cuando el padre lo confirma y, si lo autoriza, el resumen del tamizaje (ver `arquitectura_conecta.md`, sección 3.8).
 - El SGT **devuelve** a Conecta los diagnósticos confirmados (con consentimiento), que son las etiquetas clínicas para reentrenar el modelo.
 
 ### 6.9 Base de conocimiento curada (dentro del prompt)
@@ -557,7 +557,7 @@ Tabla **[a validar con especialistas]**.
 2. **Cuenta** (opcional, para guardar resultado, recibir PDF o contactar centros) con consentimiento expreso.
 3. **Terapias** sugeridas con explicación de qué es cada una.
 4. **Centros** aliados filtrados por distrito/ciudad, servicios, modalidad (presencial/virtual), rango de precio, cobertura de seguro.
-5. **Contacto**: la familia elige compartir su resultado con un centro concreto (consentimiento por centro, revocable). Registrar el estado del lead (enviado, contactado, cita agendada) para medir impacto.
+5. **Contacto**: la familia contacta directo al centro (WhatsApp, llamada o correo). Si el centro la registra como paciente en su SGT con el mismo correo, Conecta le pregunta al padre si llegó por Neuroa y, solo si confirma, se crea el vínculo; ahí puede compartir el tamizaje y autorizar el diagnóstico (ver `arquitectura_conecta.md`, sección 3.8).
 
 Consideraciones:
 - Criterios de orden de los centros transparentes (no solo quién paga más). Si hay centros patrocinados, indicarlo.
@@ -604,7 +604,7 @@ Todos los puntos de esta sección son **[a validar con asesoría legal]**. La ev
 |---|---|
 | Datos sensibles | Los datos de salud son sensibles; además son de **menores de edad**. |
 | Consentimiento | Consentimiento **previo, expreso, informado, inequívoco y por escrito (medio digital válido)** del padre, madre o tutor. Casillas no premarcadas, separadas por finalidad. |
-| Finalidades | Separar: (a) calcular el tamizaje; (b) guardar el historial en la cuenta; (c) compartir con un centro elegido; (d) uso anonimizado para mejorar el modelo / investigación. Cada una opcional salvo (a). |
+| Finalidades | Separar: (a) calcular el tamizaje; (b) guardar el historial en la cuenta; (c) confirmar el vínculo con un centro y, si quiere, compartirle el tamizaje; (d) uso anonimizado para mejorar el modelo / investigación. Cada una opcional salvo (a). |
 | Información | Política de privacidad clara: responsable, finalidad, destinatarios (centros, proveedor LLM, hosting), transferencias internacionales, plazo de conservación, cómo ejercer derechos. |
 | Registro | Inscribir el banco de datos personales ante el Registro Nacional de Protección de Datos Personales de la ANPD. |
 | Flujo transfronterizo | El hosting y el proveedor del LLM probablemente estén fuera del Perú: informar y cumplir los requisitos de transferencia internacional. Minimizar lo que se envía al LLM (sin identificadores). |

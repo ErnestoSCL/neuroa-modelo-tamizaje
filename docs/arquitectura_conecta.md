@@ -2,7 +2,7 @@
 
 Arquitectura técnica de la **Solución 1: Conecta** (plataforma de tamizaje), con su frontend, su backend y su base de datos, y cómo se integra con el SGT y el Panel Startup.
 
-Versión 1.5 · 2026-10-02
+Versión 1.6 · 2026-10-02
 
 ---
 
@@ -12,7 +12,7 @@ Versión 1.5 · 2026-10-02
 
 | Espacio | Tecnología | Base de datos | Dueño de… |
 |---|---|---|---|
-| **Conecta** | Next.js (frontend) + FastAPI (backend) | PostgreSQL | Tamizajes, resultados, modelo de ML, agente IA, resultados compartidos con centros, métricas de uso |
+| **Conecta** | Next.js (frontend) + FastAPI (backend) | PostgreSQL | Tamizajes, resultados, modelo de ML, agente IA, vínculos padre–centro confirmados por el padre, métricas de uso |
 | **SGT** | C# | SQL Server 2022+ | Centros, sedes (con teléfono, correo y WhatsApp), terapias, pacientes, citas. Incluye la versión limitada del SGT (panel de autogestión) para los centros que solo contratan Conecta |
 | **Panel Startup** | ASP.NET Core + React/TypeScript | Propia | **TenantId**, estado de cada centro, productos habilitados (Conecta, SGT), suscripciones, vista de modelos y métricas |
 
@@ -72,7 +72,8 @@ flowchart LR
     WK --> PG
     API --> LLM
     WK -- "catálogo, diagnósticos" --> SAPI
-    WK -- "resultados compartidos (Integral)" --> SAPI
+    WK -- "vínculos confirmados por el padre" --> SAPI
+    SAPI -- "aviso: paciente registrado con un correo" --> API
     WK -- "tenants activos" --> PAPI
     PAPI -- "/internal/models, /internal/metrics" --> API
     PAPI -- "alta de centros" --> SAPI
@@ -123,6 +124,7 @@ flowchart LR
 | `/results/[id]/therapies` | Terapias sugeridas y sedes que las ofrecen | Requiere sesión |
 | `/results/[id]/locations` | Comparación de sedes con botones de WhatsApp, llamada y correo | Requiere sesión |
 | `/account` | Historial de pruebas y datos del padre | Requiere sesión |
+| `/account/centers` | Avisos de centros que registraron al padre como paciente: confirmar, rechazar o revocar el vínculo | Requiere sesión |
 | `/privacy`, `/terms` | Textos legales | Pública |
 
 ### 2.3 Criterios
@@ -133,7 +135,7 @@ flowchart LR
 - El resultado se muestra en dos tiempos: primero el nivel y el perfil (instantáneo) y luego la explicación del agente IA (carga diferida).
 - Accesibilidad AA, español de Perú y avisos obligatorios ("esto no es un diagnóstico") en el resultado.
 - **Contacto directo:** cada sede muestra botones de **WhatsApp** (`wa.me/51…` con un mensaje precargado genérico, p. ej. *"Hola, vengo de Neuroa y quiero información sobre su terapia de lenguaje"*), **llamada** (`tel:`) y **correo** (`mailto:`). El mensaje de WhatsApp **nunca incluye el resultado del tamizaje**.
-- Solo en sedes de centros con SGT completo (plan Integral) aparece además **"Compartir mi resultado con este centro"**, con consentimiento explícito.
+- No hay botón para enviar el resultado a un centro ni se piden nombre ni teléfono. El padre contacta por su cuenta y, si quiere, muestra el PDF de su resultado. El vínculo con el centro se crea después, cuando el centro lo registra en su SGT y **el padre lo confirma** (sección 3.8).
 - Las visitas a las páginas de los centros y los clics en los botones de contacto se registran como eventos para el reporte mensual, sin datos personales.
 
 ---
@@ -162,7 +164,7 @@ conecta-api/
 │   ├── risk/          ← capa 1 (modelo), capa 2 (reglas) y perfiles
 │   ├── agent/         ← capa 3: prompt, base de conocimiento, search_therapies
 │   ├── catalog/       ← copia de centros, sedes y terapias del SGT + tenants activos del Panel
-│   ├── sharing/       ← resultados compartidos con centros Integral y envío al SGT
+│   ├── center_links/  ← vínculos padre–centro: aviso del SGT, confirmación del padre y envío al SGT
 │   ├── metrics/       ← eventos y reportes mensuales por centro
 │   ├── model_registry/ ← versiones, métricas, reentrenamiento (MLflow)
 │   ├── internal/      ← endpoints para el Panel Startup
@@ -186,12 +188,15 @@ conecta-api/
 | `GET /assessments` | Historial del padre |
 | `GET /centers`, `GET /centers/{slug}` | Directorio y página pública de un centro (solo tenants activos) |
 | `GET /locations?therapies=…&district=…` | Sedes que ofrecen las terapias recomendadas, con sus datos de contacto, en el orden definido en 3.6 |
-| `POST /shared-results` | El padre comparte su resultado con una sede de un centro Integral (requiere consentimiento) |
+| `GET /center-links` | Avisos pendientes y vínculos del padre con centros |
+| `POST /center-links/{id}/confirm` | El padre confirma que llegó por Neuroa; elige la evaluación y, opcionalmente, compartir el tamizaje y autorizar el diagnóstico |
+| `POST /center-links/{id}/reject` | El padre rechaza el aviso; no se informa nada al centro |
+| `POST /center-links/{id}/revoke` | El padre revoca lo autorizado en un vínculo confirmado |
 | `POST /events` | Visitas y clics en WhatsApp, llamada y correo, para las métricas de los centros |
 
-### 3.4 Endpoints internos (para el Panel Startup)
+### 3.4 Endpoints internos (para el Panel Startup y el SGT)
 
-Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, nunca datos individuales de niños.
+Bajo `/internal`, con autenticación entre servicios. Los del Panel devuelven **agregados**, nunca datos individuales de niños. El del SGT solo recibe avisos y no devuelve información.
 
 | Método y ruta | Uso |
 |---|---|
@@ -203,14 +208,16 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 | `POST /internal/trainings`, `GET /internal/trainings/{id}` | Lanzar y seguir un reentrenamiento |
 | `POST /internal/models/{version}/promote` | Pasar un candidato a producción (queda registrado quién lo aprobó) |
 | `POST /internal/webhooks/tenants` | El Panel avisa que cambió el estado de un tenant |
+| `POST /internal/sgt/patient-registrations` | **Llamado por el SGT:** un centro registró a un paciente con el correo de su padre o madre. Responde siempre igual (202), exista o no la cuenta, para no revelar quién usa Conecta |
 
 ### 3.5 Integraciones
 
 | Con | Qué | Cómo |
 |---|---|---|
 | **API SGT** | Copia de centros, sedes (con teléfono, correo y WhatsApp) y terapias, con TenantId | Job programado cada 5 minutos con `updated_since` |
-| **API SGT** | Paciente nuevo cuando un padre comparte su resultado con un centro Integral | Cola en PostgreSQL con reintentos |
-| **API SGT** | Diagnósticos confirmados (con consentimiento) para reentrenar | Job diario |
+| **API SGT → Conecta** | Aviso de paciente registrado (tenant y correo del padre o madre) | El SGT llama a `POST /internal/sgt/patient-registrations` |
+| **Conecta → API SGT** | Vínculo confirmado por el padre: marca "llegó por Neuroa" y, si lo autorizó, el resumen del tamizaje | Cola en PostgreSQL con reintentos |
+| **API SGT** | Diagnósticos confirmados de los vínculos con autorización de diagnóstico, para reentrenar | Job diario |
 | **API Panel** | Tenants con Conecta activo | Job programado cada 5 minutos + webhook del Panel ante cambios |
 | **Azure OpenAI / Foundry** | Explicación del resultado y elección de terapias | Llamada con *tool calling*; textos plantilla si falla |
 | **Correo** | Confirmaciones y aviso de que el resultado está disponible, **sin datos de salud** (el PDF se descarga desde la cuenta) | Cola en PostgreSQL |
@@ -245,6 +252,21 @@ Así el LLM personaliza la recomendación sin favorecer a unos centros sobre otr
 - Cifrado en tránsito (HTTPS) y en reposo (base de datos y respaldos).
 - Al proveedor del LLM solo se envían los datos necesarios, sin nombre ni contacto del padre.
 
+
+### 3.8 Vínculo padre–centro (detalle)
+
+- **Para qué:** saber si un padre se hizo paciente de un centro gracias a Neuroa, que el centro reciba el tamizaje si el padre quiere, y obtener diagnósticos reales para mejorar el modelo.
+- **Aplica a** todos los centros que registran pacientes en el SGT, completo o limitado.
+- **Privacidad:**
+  - El aviso del SGT se responde siempre igual: el centro nunca sabe si el correo tiene cuenta en Conecta.
+  - Si no hay cuenta, el aviso se descarta sin guardar el correo.
+  - El centro no recibe nada mientras el padre no confirme.
+  - Los avisos pendientes vencen a los 30 días.
+  - El padre puede revocar después lo que autorizó.
+- **Si el padre tiene varios hijos evaluados**, al confirmar elige a qué evaluación corresponde.
+- **Contrato con los centros:** debe autorizar a Neuroa a usar el correo del paciente para enviar este aviso.
+- **Limitación:** si el centro registra otro correo, o uno mal escrito, no hay coincidencia; la medición es un mínimo, no un total.
+
 ---
 
 ## 4. Base de datos (PostgreSQL)
@@ -253,7 +275,7 @@ Así el LLM personaliza la recomendación sin favorecer a unos centros sobre otr
 
 | Esquema | Contenido |
 |---|---|
-| `app` | Datos propios de Conecta: padres, evaluaciones, resultados, resultados compartidos, eventos |
+| `app` | Datos propios de Conecta: padres, evaluaciones, resultados, vínculos con centros, eventos |
 | `catalog` | Copias de solo lectura: tenants activos (del Panel) y centros, sedes y terapias (del SGT) |
 | `ml` | Versiones del modelo, métricas, entrenamientos y diagnósticos confirmados |
 | `queue` | Tareas pendientes de la cola (estado, reintentos, errores) |
@@ -269,12 +291,12 @@ Así el LLM personaliza la recomendación sin favorecer a unos centros sobre otr
 | `app.answers` | assessment_id, question_id, option_index (0–4 o sí/no/no sé), binary_value |
 | `app.results` | assessment_id, qchat10_score, probability, threshold, is_positive, base_level, final_level, triggered_rules, communication_pct, social_pct, profile, model_version, rules_version |
 | `app.explanations` | assessment_id, source (llm, template), text, suggested_therapies, prompt_version, knowledge_version |
-| `app.shared_results` | id, parent_id, assessment_id, tenant_id, location_id, consent_id, contact_name, contact_phone, sgt_sync_status, created_at. Nombre y teléfono se piden solo al compartir con un centro Integral |
+| `app.center_links` | id, parent_id, tenant_id, sgt_patient_ref, assessment_id (la elige el padre), status (pending, confirmed, rejected, expired, revoked), share_screening, allow_diagnosis, consent_id, notified_at, responded_at, sgt_sync_status. No guarda nombre ni teléfono |
 | `app.events` | id, type (page_view, whatsapp_click, call_click, email_click), tenant_id, location_id, occurred_at (sin datos personales) |
 | `catalog.tenants` | tenant_id, name, conecta_enabled, has_full_sgt, updated_at |
 | `catalog.locations` | location_id, tenant_id, name, slug, district, address, phone, email, whatsapp, updated_at |
 | `catalog.therapies` | therapy_id, tenant_id, location_id, name, description, min_age_months, max_age_months, modality, is_active, updated_at |
-| `ml.confirmed_diagnoses` | assessment_id, diagnosis, diagnosis_date, source (SGT), consent_id |
+| `ml.confirmed_diagnoses` | assessment_id, center_link_id, diagnosis, diagnosis_date, source (SGT), consent_id |
 | `ml.models` | version, status (candidate, production, retired), metrics, mlflow_run_id, approved_by, promoted_at |
 | `ml.trainings` | id, status, resulting_version, started_by, started_at, finished_at |
 
@@ -287,11 +309,11 @@ erDiagram
     ASSESSMENTS ||--|{ ANSWERS : contiene
     ASSESSMENTS ||--|| RESULTS : produce
     ASSESSMENTS ||--o| EXPLANATIONS : tiene
-    ASSESSMENTS ||--o{ SHARED_RESULTS : origina
-    PARENTS ||--o{ SHARED_RESULTS : comparte
+    ASSESSMENTS ||--o{ CENTER_LINKS : asociada
+    PARENTS ||--o{ CENTER_LINKS : confirma
     TENANTS ||--o{ LOCATIONS : tiene
     LOCATIONS ||--o{ THERAPIES : ofrece
-    LOCATIONS ||--o{ SHARED_RESULTS : recibe
+    TENANTS ||--o{ CENTER_LINKS : registra
     TENANTS ||--o{ EVENTS : acumula
     ASSESSMENTS ||--o| CONFIRMED_DIAGNOSES : confirma
     MODELS ||--o{ RESULTS : calcula
@@ -370,25 +392,45 @@ sequenceDiagram
     participant Pa as Padre
     participant W as Frontend
     participant A as Backend
-    participant DB as PostgreSQL
-    participant Q as Cola (PostgreSQL)
-    participant S as API SGT
     W->>A: GET /locations con las terapias recomendadas
     A-->>W: Sedes ordenadas, con teléfono, correo y WhatsApp
     Pa->>W: Clic en WhatsApp, llamada o correo
     W->>A: POST /events (sin datos personales)
     W-->>Pa: Abre WhatsApp, el teléfono o el correo
-    opt Centro con SGT completo (Integral)
-        Pa->>W: Compartir mi resultado (con consentimiento)
-        W->>A: POST /shared-results
-        A->>DB: Guarda el envío y el consentimiento
-        A->>Q: Encola el envío
-        Q->>S: POST paciente nuevo con evaluación resumida
-        Q->>DB: Actualiza sgt_sync_status
+```
+
+### 5.4 El centro registra al padre y el padre confirma el vínculo
+
+```mermaid
+sequenceDiagram
+    participant C as Centro
+    participant S as API SGT
+    participant A as Backend Conecta
+    participant DB as PostgreSQL
+    participant Pa as Padre
+    participant Q as Cola (PostgreSQL)
+    C->>S: Registra al paciente con el correo del padre o madre
+    S->>A: POST /internal/sgt/patient-registrations (tenant, correo, ref. del paciente)
+    A-->>S: 202 (siempre igual)
+    alt El correo tiene cuenta en Conecta
+        A->>DB: Crea vínculo pendiente (sin guardar el correo aparte)
+        A->>Pa: Correo "Un centro te registró como paciente" (sin datos de salud)
+        Pa->>A: GET /center-links
+        alt El padre confirma
+            Pa->>A: POST /center-links/{id}/confirm (evaluación, compartir tamizaje, autorizar diagnóstico)
+            A->>DB: Guarda el vínculo y el consentimiento
+            A->>Q: Encola el envío
+            Q->>S: Marca "llegó por Neuroa" y, si lo autorizó, envía el resumen del tamizaje
+        else El padre rechaza o no responde en 30 días
+            A->>DB: Rechazado o vencido; el centro no recibe nada
+        end
+    else No hay cuenta con ese correo
+        A->>A: Descarta el aviso sin guardar nada
     end
 ```
 
-### 5.4 Reentrenamiento del modelo
+
+### 5.5 Reentrenamiento del modelo
 
 ```mermaid
 sequenceDiagram
@@ -435,7 +477,8 @@ sequenceDiagram
 |---|---|
 | Nube y región | **Azure, Brazil South (São Paulo)**. La transferencia de datos fuera del Perú se informa en el consentimiento (a validar con asesoría legal) |
 | Tareas en segundo plano | **Cola en PostgreSQL** + **Azure Container Apps Jobs**, sin Redis. Celery + Redis solo si en el futuro el volumen crece mucho; el código de las tareas queda separado para migrar sin rehacerlo |
-| Contactos de los centros | El padre contacta **directo** con los datos que cada centro gestiona en su SGT (WhatsApp, llamada, correo). Para centros Integral, opción de compartir el resultado con consentimiento |
+| Contactos de los centros | El padre contacta **directo** con los datos que cada centro gestiona en su SGT (WhatsApp, llamada, correo). No se envían resultados ni se piden nombre ni teléfono |
+| Saber si el padre se hizo paciente | El centro lo registra en su SGT con el correo del padre; Conecta le pregunta al padre y **solo si confirma** se crea el vínculo (sección 3.8). En el mismo paso puede compartir el tamizaje y autorizar el diagnóstico |
 | Recomendación de terapias | El LLM decide **qué terapias** encajan (todas las que encajen); el backend decide **el orden** de los centros (cercanía y rotación diaria) |
 | Plazos de conservación | Tabla de la sección 4.4 (a validar con asesoría legal) |
 

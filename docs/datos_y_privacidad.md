@@ -20,7 +20,7 @@ Versión 1.0 · 2026-10-02
 | 2 | Daño por un resultado equivocado (falso negativo o falso positivo) | **Alto** | Avisos "no es diagnóstico", recomendar evaluación profesional siempre, monitoreo del modelo |
 | 3 | Datos enviados a países no informados (LLM "Global", respaldos geo-redundantes en EE. UU.) | **Medio** | LLM con despliegue regional, respaldos sin replicación fuera de Brasil, informarlo en el consentimiento |
 | 4 | Consentimiento inválido (no lo da el tutor, casillas premarcadas, finalidades mezcladas) | **Medio** | Consentimiento por finalidad, declaración de ser padre o tutor, registro versionado |
-| 5 | Resultado compartido con un centro sin querer o con el centro equivocado | **Medio** | Confirmación explícita por centro, registro y posibilidad de revocar |
+| 5 | Vínculo padre–centro creado sin que el padre lo quiera, o que revele al centro que la familia usó Conecta | **Medio** | Respuesta idéntica al SGT exista o no la cuenta; el centro solo se entera si el padre confirma; vencimiento a 30 días; revocación |
 | 6 | Reidentificación de niños en las métricas para centros | **Medio** | Solo agregados con mínimo 5 casos por celda |
 | 7 | Datos de salud en correos, logs o herramientas internas (Notion, WhatsApp del equipo) | **Medio** | Correos sin datos de salud, logs con lista blanca de campos, política interna |
 
@@ -77,7 +77,7 @@ Este documento funciona como **evaluación de impacto** del tratamiento y se deb
 |---|---|---|
 | **Neuroa (la startup)** | **Titular del banco de datos / responsable del tratamiento** | Cuentas de padres, evaluaciones, resultados, consentimientos, eventos, datos para reentrenar |
 | **Neuroa** | **Encargado del tratamiento** de cada centro | Datos que los centros cargan en el SGT (pacientes, citas, sedes, terapias) |
-| **Centro terapéutico** | **Responsable** de sus pacientes en el SGT | Desde que un padre le comparte su resultado, ese dato pasa a ser también del centro |
+| **Centro terapéutico** | **Responsable** de sus pacientes en el SGT | Si el padre confirma el vínculo y decide compartir su tamizaje, ese dato pasa a ser también del centro |
 | **Microsoft (Azure)** | **Encargado** (subencargado) | Alojamiento, base de datos, respaldos, monitoreo, LLM |
 | **Proveedor de correo** | **Encargado** | Correo del padre y contenido de los correos |
 | **Padre, madre o tutor** | **Titular** de sus datos y representante del niño | Ejerce los derechos ARCO por el niño |
@@ -85,9 +85,9 @@ Este documento funciona como **evaluación de impacto** del tratamiento y se deb
 
 **Consecuencias prácticas:**
 
-- Los contratos con los centros deben incluir un **acuerdo de encargo de tratamiento** (para el SGT) y reglas de **transferencia** (para los resultados compartidos).
+- Los contratos con los centros deben incluir un **acuerdo de encargo de tratamiento** (para el SGT), la **autorización para usar el correo del paciente** en el aviso de vínculo y reglas de **transferencia** (para el tamizaje que el padre decida compartir).
 - Con Microsoft rige su acuerdo de protección de datos (*Data Protection Addendum*). Hay que revisarlo y archivarlo.
-- Los diagnósticos confirmados que el SGT devuelve a Conecta son una **transferencia del centro a Neuroa**. Necesitan el consentimiento del padre para esa finalidad: se pide en el momento de compartir el resultado (sección 6).
+- Los diagnósticos confirmados que el SGT devuelve a Conecta son una **transferencia del centro a Neuroa**. Necesitan el consentimiento del padre para esa finalidad: se pide cuando confirma el vínculo con el centro (sección 6).
 
 ---
 
@@ -99,7 +99,6 @@ Este documento funciona como **evaluación de impacto** del tratamiento y se deb
 |---|---|---|---|---|---|---|---|
 | Correo (usuario de la cuenta) | Padre | Identificativo | Iniciar sesión, recuperar la contraseña, avisos de la cuenta y de incidentes | `app.parents` | Backend; soporte con permiso | Mientras la cuenta esté activa | **No** |
 | Distrito | Padre | Personal (ubicación aproximada) | Ordenar las sedes por cercanía | **No se guarda en la cuenta**: se elige en la pantalla de sedes y viaja en la consulta | Backend | Solo durante la consulta | Sí (para filtrar terapias) |
-| Nombre y teléfono de contacto | Padre | Identificativo | Que un centro Integral lo contacte | `app.shared_results` → SGT | El centro elegido | Con el envío; en el SGT, según el centro | **No** |
 | Contraseña (hash argon2) | Padre | Credencial | Autenticación | `app.parents` | Nadie la ve | Mientras la cuenta esté activa | No |
 | Fecha de nacimiento | Niño | Personal | Calcular `age_months` | **No se guarda** (se calcula y se descarta) | — | — | No |
 | Edad en meses, sexo | Niño | Personal (de un menor) | Reglas por edad, auditoría de sesgos | `app.assessments` | Backend | Con la evaluación | Edad sí; sexo solo como contexto |
@@ -109,7 +108,8 @@ Este documento funciona como **evaluación de impacto** del tratamiento y se deb
 | Probabilidad, nivel, perfil, reglas activadas | Niño | **Sensible (salud inferida)** | Resultado | `app.results` | Backend; el padre | Con la evaluación | Sí |
 | Explicación y terapias sugeridas | Niño | **Sensible** | Resultado | `app.explanations` | Backend; el padre | Con la evaluación | Es la salida del LLM |
 | Consentimientos (versión, finalidades, fechas) | Padre | Prueba de cumplimiento | Demostrar el consentimiento | `app.consents` | Backend; oficial de datos | Plazo legal posterior a la revocación **[verificar]** | No |
-| Resultados compartidos | Padre y niño | **Sensible** + transferencia | Contacto con un centro Integral | `app.shared_results` → SGT | El centro elegido | Con la evaluación; en el SGT, según el centro | No |
+| Vínculo padre–centro | Padre y niño | Personal; **sensible** si el padre comparte el tamizaje | Saber si llegó al centro por Neuroa; compartir el tamizaje y recibir el diagnóstico si lo autoriza | `app.center_links` → SGT | El centro, solo si el padre confirma | Con la evaluación; los avisos pendientes vencen a los 30 días | No |
+| Aviso de paciente registrado (correo que envía el SGT) | Padre | Identificativo | Encontrar la cuenta para preguntarle al padre | **No se guarda**: si no hay cuenta, se descarta; si la hay, solo queda el vínculo pendiente | Backend | Solo durante el procesamiento | No |
 | Diagnóstico confirmado | Niño | **Sensible** | Reentrenar el modelo | `ml.confirmed_diagnoses` | Equipo de ML | Ver sección 9 | No |
 | IP, navegador, hora de las peticiones | Padre | Técnico (personal) | Seguridad y errores | Logs y Application Insights | Equipo técnico | 90 días | No |
 | Cookie de sesión | Padre | Técnico | Mantener la sesión | Navegador | — | Hasta cerrar sesión o vencer | No |
@@ -149,7 +149,8 @@ flowchart LR
     DB -. "respaldos" .-> BK[("Respaldos<br>Brazil South")]
     A -- "respuestas y resultado,<br>sin identificadores" --> L["Azure OpenAI<br>región según despliegue"]
     A -- "correo del padre,<br>sin datos de salud" --> M["Proveedor de correo"]
-    A -- "resultado compartido<br>(con consentimiento)" --> S["SGT del centro"]
+    S -- "aviso: paciente registrado<br>con un correo" --> A
+    A -- "vínculo confirmado por el padre<br>(y tamizaje, si lo autoriza)" --> S["SGT del centro"]
     S -- "diagnóstico confirmado<br>(con consentimiento)" --> A
     A -- "agregados" --> PN["Panel Startup"]
     A -- "logs sin datos personales" --> AI["Application Insights<br>Brazil South"]
@@ -192,8 +193,8 @@ Cada finalidad lleva una casilla separada, ninguna premarcada. Ninguna finalidad
 |---|---|---|
 | **(a)** Calcular el tamizaje con las respuestas del niño, incluido el procesamiento por IA (modelo y agente con un proveedor en la nube fuera del Perú) | **Sí** (sin ella no hay servicio) | Antes de la primera pregunta |
 | **(b)** Guardar el resultado en la cuenta del padre para verlo después | Sí, si el resultado se muestra después de crear la cuenta; opcional si el tamizaje es anónimo (ver 6.4) | Al crear la cuenta |
-| **(c)** Compartir el resultado con **un centro concreto** (solo centros Integral) | No | Cada vez, por centro, en la pantalla de compartir |
-| **(d)** Autorizar que ese centro **devuelva el diagnóstico confirmado** a Neuroa para mejorar el modelo | No | Junto con (c), en casilla aparte |
+| **(c)** Confirmar el **vínculo con un centro** que lo registró como paciente y, si quiere, compartir con ese centro el tamizaje | No | Cuando le llega el aviso del centro, en `/account/centers` |
+| **(d)** Autorizar que ese centro **informe el resultado de la evaluación profesional** a Neuroa para mejorar el modelo | No | Junto con (c), en casilla aparte |
 | **(e)** Usar datos **anonimizados** del tamizaje para mejorar el modelo y para investigación | No (si son realmente anónimos, legalmente no requiere consentimiento, pero se pide por transparencia) | Al terminar el tamizaje |
 | **(f)** Recibir novedades y comunicaciones comerciales de Neuroa | No | En la cuenta, nunca por defecto |
 
@@ -203,7 +204,7 @@ Antes de aceptar (a), el padre debe ver de forma clara:
 - qué datos se recogen y para qué;
 - que se usan **sistemas de IA** y que el resultado **no es un diagnóstico**;
 - que los datos se alojan en **Brasil** (y en el país del LLM, si no es regional);
-- con quién se comparten (solo con el centro que el padre elija);
+- con quién se comparten (con ningún centro, salvo que el padre confirme el vínculo cuando un centro lo registre como paciente);
 - por cuánto tiempo se guardan;
 - cómo ejercer sus derechos y cómo revocar el consentimiento;
 - el banco de datos inscrito y el contacto del oficial de datos personales.
@@ -227,17 +228,23 @@ Borrador en lenguaje simple, para revisión legal:
 >
 > [Leer la política de privacidad completa]
 
-Al compartir con un centro:
+Cuando un centro registra al padre como paciente (en `/account/centers`):
 
-> ☐ Autorizo enviar el resultado del tamizaje de mi hijo/a y mis datos de contacto a **[Centro – Sede]** para que me contacten.
+> **[Centro]** te registró como paciente.
 >
-> ☐ Autorizo que **[Centro]** informe a Neuroa si se confirma o descarta un diagnóstico, para mejorar la precisión de la herramienta. *(opcional)*
+> ☐ Sí, llegué a este centro gracias a Neuroa.
+>
+> ☐ Quiero compartir con **[Centro]** el tamizaje de **[evaluación del (fecha)]**. *(opcional)*
+>
+> ☐ Autorizo que **[Centro]** informe a Neuroa el resultado de la evaluación profesional, para mejorar la precisión de la herramienta. *(opcional)*
+>
+> [No, no reconozco este centro / No quiero vincularlo]
 
 ### 6.4 Registro y revocación
 
 - Cada aceptación se guarda en `app.consents`: versión del texto, finalidades, fecha y hora, y referencia a la sesión. Nunca se sobrescribe; una nueva versión del texto genera un nuevo consentimiento.
 - La revocación se hace desde la cuenta con la misma facilidad que la aceptación:
-  - **(c)** detiene envíos futuros. Lo ya enviado queda en poder del centro, que es responsable de ese dato; el padre debe pedirle la eliminación al centro, y Neuroa se lo informa.
+  - **(c)** deshace el vínculo y detiene envíos futuros. Si ya compartió el tamizaje, ese dato queda en poder del centro, que es responsable de él; el padre debe pedirle la eliminación al centro, y Neuroa se lo informa.
   - **(d)** detiene la recepción de diagnósticos y elimina los ya recibidos que no se hayan anonimizado.
   - **(e)** excluye las evaluaciones de futuros entrenamientos.
 
@@ -275,7 +282,7 @@ Al compartir con un centro:
 |---|---|---|
 | **Acceso** | Botón "Descargar mis datos" en `/account`: JSON y PDF con la cuenta, las evaluaciones, los resultados, los consentimientos y los envíos a centros | 20 días hábiles **[verificar]**; la descarga es inmediata |
 | **Rectificación** | Editar los datos de la cuenta. Las respuestas de un tamizaje no se editan: se hace uno nuevo, porque el resultado depende de ellas | 10 días hábiles **[verificar]** |
-| **Cancelación (supresión)** | "Eliminar mi cuenta": borra la cuenta y sus evaluaciones (o las anonimiza si el padre aceptó la finalidad (e)), revoca los consentimientos e informa qué centros recibieron datos | 10 días hábiles **[verificar]** |
+| **Cancelación (supresión)** | "Eliminar mi cuenta": borra la cuenta y sus evaluaciones (o las anonimiza si el padre aceptó la finalidad (e)), revoca los consentimientos e informa qué centros recibieron su tamizaje | 10 días hábiles **[verificar]** |
 | **Oposición** | Revocar finalidades opcionales desde la cuenta | 10 días hábiles **[verificar]** |
 | **Portabilidad** (si el reglamento la incluye) **[verificar]** | La misma descarga en JSON | — |
 
@@ -299,7 +306,7 @@ Actualiza la tabla acordada en `arquitectura_conecta.md` (sección 4.4):
 | Evaluaciones y resultados | Mientras la cuenta esté activa, o **2 años sin actividad** (con aviso por correo 30 días antes) | Anonimización (si aceptó (e)) o eliminación |
 | Fecha de nacimiento | **No se guarda** | — |
 | Consentimientos | Mientras existan los datos, más el plazo de prescripción de posibles reclamos **[verificar]** | Eliminación |
-| Resultados compartidos (registro en Conecta) | Igual que la evaluación | Eliminación |
+| Vínculos con centros | Igual que la evaluación; los pendientes vencen a los 30 días | Eliminación |
 | Diagnósticos confirmados | Mientras el consentimiento (d) esté vigente | Se eliminan al revocar; si ya se usaron para entrenar, quedan solo en el dataset anonimizado |
 | Dataset anonimizado de entrenamiento | Sin plazo, **solo si es realmente anónimo** (sin ids, edad en bandas, sin fechas exactas, sin centro ni distrito) | — |
 | Eventos de clics y visitas | 24 meses | Eliminación |
@@ -324,7 +331,7 @@ Actualiza la tabla acordada en `arquitectura_conecta.md` (sección 4.4):
 | R5 | **Identificadores enviados al LLM** por error | 1 | 3 | Medio | El prompt se arma con una lista blanca de campos; test automático que falla si aparece correo, nombre o teléfono | Bajo |
 | R6 | **Inyección de instrucciones** en las descripciones de terapias que escriben los centros | 2 | 1 | Bajo | El agente solo tiene los datos de esa evaluación; la salida se valida contra la lista devuelta; las descripciones se revisan al registrarlas | Bajo |
 | R7 | **Consentimiento inválido** (no lo da el tutor, casillas premarcadas, finalidades mezcladas, texto no versionado) | 2 | 2 | Medio | Sección 6: declaración de tutor, casillas separadas, versionado, prueba de UX | Bajo |
-| R8 | **Resultado compartido con el centro equivocado o sin querer** | 2 | 2 | Medio | Pantalla de confirmación con el nombre del centro y la sede, consentimiento por centro, registro y revocación | Bajo |
+| R8 | **Vínculo con un centro que el padre no quiere**, o el centro deduce que la familia usó Conecta | 2 | 2 | Medio | El SGT recibe siempre la misma respuesta; nada llega al centro sin confirmación del padre; opción "no reconozco este centro"; vencimiento y revocación | Bajo |
 | R9 | **Reidentificación** en métricas para centros (distrito pequeño + edad + mes) | 2 | 2 | Medio | Solo agregados con mínimo 5 casos por celda; sin edad exacta ni distrito en los reportes a centros | Bajo |
 | R10 | **Datos de salud en correos** (PDF adjunto reenviado o leído por terceros) | 2 | 2 | Medio | Correos sin datos de salud; PDF solo desde la cuenta | Bajo |
 | R11 | **Datos personales en logs** o en Application Insights | 2 | 2 | Medio | Logs estructurados con lista blanca, sin cuerpos de petición, IP enmascarada (por defecto en Application Insights), 90 días | Bajo |
@@ -415,7 +422,7 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 | Proveedor de correo (por definir) | Correos transaccionales | Correo del padre | DPA del proveedor | Por definir |
 | GitHub | Código fuente | **Ninguno** (prohibido subir datos reales) | — | EE. UU. |
 | Notion | Gestión del equipo | **Ninguno** de padres o niños | — | EE. UU. |
-| Centros (SGT) | Destino de los resultados compartidos; origen de los diagnósticos | Resultado compartido; diagnóstico | Contrato del centro con cláusulas de encargo (SGT) y de transferencia (Conecta) | Perú |
+| Centros (SGT) | Origen del aviso de paciente registrado; destino del vínculo confirmado y del tamizaje (si el padre lo comparte); origen de los diagnósticos | Correo del paciente (aviso); vínculo; tamizaje; diagnóstico | Contrato del centro con cláusulas de encargo (SGT), uso del correo para el aviso y transferencia (Conecta) | Perú |
 
 ---
 
@@ -430,7 +437,7 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 7. Plazo recomendado para conservar los **consentimientos** después de la revocación.
 8. ¿Un tamizaje orientativo con IA requiere **registro sanitario** ante DIGEMID? ¿Qué frases de la app o del marketing lo convertirían en dispositivo médico?
 9. ¿Conecta califica como **sistema de IA de riesgo alto** bajo el D.S. 115-2025-PCM? ¿Qué registro o documentación concreta exige y ante quién?
-10. ¿El **diagnóstico** que devuelve un centro requiere, además del consentimiento del padre en Conecta, un consentimiento recogido por el propio centro?
+10. ¿El **diagnóstico** que devuelve un centro requiere, además del consentimiento del padre en Conecta, un consentimiento recogido por el propio centro? ¿Basta una cláusula en el contrato para que Neuroa, como encargado del SGT, use el correo del paciente para el aviso de vínculo?
 11. ¿El **antecedente familiar** (dato de salud de un tercero) necesita algún tratamiento especial?
 12. ¿Aplica la **LGPD** de Brasil por alojar los datos en São Paulo, o rige la excepción para datos que vienen del extranjero?
 13. Contenido mínimo del **contrato con los centros**: encargo del SGT, transferencia de resultados y responsabilidad por los datos de contacto que publican.
@@ -459,7 +466,7 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 | 14 | Opinión legal sobre DIGEMID y la Ley de IA | Asesor legal | 14 |
 | 15 | Prueba de penetración externa | Proveedor externo | 11.1 |
 | 16 | DPA de Microsoft y del proveedor de correo archivados | Oficial de datos | 13 |
-| 17 | Contrato modelo con los centros (encargo del SGT y transferencia de resultados) | Asesor legal | 3 |
+| 17 | Contrato modelo con los centros (encargo del SGT, uso del correo del paciente para el aviso de vínculo y transferencia del tamizaje) | Asesor legal | 3 |
 
 ### 15.2 Después del lanzamiento
 

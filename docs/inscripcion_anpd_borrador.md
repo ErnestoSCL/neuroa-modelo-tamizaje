@@ -67,8 +67,8 @@ El resto de este borrador cubre el banco **Usuarios y evaluaciones de Conecta**.
 1. Calcular un **tamizaje orientativo** de señales compatibles con el trastorno del espectro autista (TEA) a partir de un cuestionario respondido por el padre, madre o tutor (Q-CHAT-10 y preguntas complementarias), con apoyo de sistemas de inteligencia artificial. No es un diagnóstico.
 2. Gestionar la cuenta del usuario y guardar el historial de sus evaluaciones.
 3. Mostrar terapias y centros terapéuticos afiliados que ofrecen esas terapias.
-4. Con consentimiento expreso y por cada centro: enviar el resultado y los datos de contacto al centro elegido por el usuario.
-5. Con consentimiento expreso: recibir del centro el diagnóstico confirmado para mejorar la precisión de la herramienta.
+4. Cuando un centro afiliado registra al usuario como paciente: preguntarle si llegó por la plataforma y, con su confirmación, informarlo al centro y, si lo autoriza, compartir con ese centro el resultado del tamizaje.
+5. Con consentimiento expreso: recibir de ese centro el resultado de la evaluación profesional para mejorar la precisión de la herramienta.
 6. Con consentimiento: usar datos anonimizados para mejorar el modelo y para investigación.
 7. Generar estadísticas agregadas y anónimas de uso para los centros afiliados.
 8. Seguridad de la plataforma y atención de los derechos de los titulares.
@@ -77,7 +77,7 @@ El resto de este borrador cubre el banco **Usuarios y evaluaciones de Conecta**.
 
 | Categoría | Datos | ¿Sensible? |
 |---|---|---|
-| Identificación y contacto del usuario | Correo electrónico (usuario de la cuenta). Nombre y teléfono, solo si comparte su resultado con un centro | No |
+| Identificación y contacto del usuario | Correo electrónico (usuario de la cuenta). No se recogen nombre ni teléfono | No |
 | Credenciales | Contraseña, guardada como hash | No |
 | Características del niño o niña | Edad en meses, sexo | No (pero son datos de un **menor de edad**) |
 | **Salud** | Respuestas sobre el desarrollo del niño (cuestionario Q-CHAT-10), dificultades de habla, aprendizaje, desarrollo, conducta y ansiedad, condición genética diagnosticada, antecedente familiar de autismo, resultado del tamizaje, diagnóstico confirmado por un centro (con consentimiento) | **Sí** |
@@ -92,7 +92,7 @@ El resto de este borrador cubre el banco **Usuarios y evaluaciones de Conecta**.
 | Origen | Procedimiento |
 |---|---|
 | El propio titular (padre, madre o tutor) | Formulario web de la plataforma, previo consentimiento expreso con casillas no premarcadas por cada finalidad |
-| Centros terapéuticos afiliados | Diagnóstico confirmado, solo si el padre lo autorizó en la plataforma (finalidad 5) |
+| Centros terapéuticos afiliados | Aviso de que registraron al usuario como paciente (correo), y diagnóstico confirmado solo si el padre lo autorizó (finalidades 4 y 5) |
 
 ### 3.6 Sistema de tratamiento
 
@@ -119,7 +119,7 @@ El resto de este borrador cubre el banco **Usuarios y evaluaciones de Conecta**.
 
 | Tipo | Destinatario | País | Finalidad | Base |
 |---|---|---|---|---|
-| Nacional | Centro terapéutico elegido por el usuario | Perú | Contactar al usuario sobre las terapias | Consentimiento expreso por cada centro |
+| Nacional | Centro terapéutico que registró al usuario como paciente | Perú | Confirmar que llegó por la plataforma y, si lo autoriza, compartir el tamizaje | Consentimiento expreso del usuario en cada vínculo |
 | **Internacional (flujo transfronterizo)** | Microsoft (como encargado) | **Brasil** | Alojamiento y procesamiento | Consentimiento informado y contrato con cláusulas de protección **[verificar con el asesor si se requiere algo más]** |
 
 **Importante:** si se usa un despliegue *Global* de Azure OpenAI o respaldos geo-redundantes, aparecen otros países (EE. UU. y otros). La configuración recomendada (`datos_y_privacidad.md`, sección 5.2) mantiene todo en Brasil. Hay que declarar **lo que realmente esté configurado**.
