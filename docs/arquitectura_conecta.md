@@ -2,7 +2,7 @@
 
 Arquitectura técnica de la **Solución 1: Conecta** (plataforma de tamizaje), con su frontend, su backend y su base de datos, y cómo se integra con el SGT y el Panel Startup.
 
-Versión 1.6 · 2026-10-02
+Versión 1.7 · 2026-10-02
 
 ---
 
@@ -266,6 +266,22 @@ Así el LLM personaliza la recomendación sin favorecer a unos centros sobre otr
 - **Si el padre tiene varios hijos evaluados**, al confirmar elige a qué evaluación corresponde.
 - **Contrato con los centros:** debe autorizar a Neuroa a usar el correo del paciente para enviar este aviso.
 - **Limitación:** si el centro registra otro correo, o uno mal escrito, no hay coincidencia; la medición es un mínimo, no un total.
+
+### 3.9 Lo que Conecta necesita del SGT
+
+El SGT es un sistema aparte (C#, SQL Server) con su propio equipo. Para que Conecta funcione, el SGT debe cumplir este contrato de integración. Todas las llamadas usan autenticación entre servicios y HTTPS.
+
+| # | Qué | Dirección | Detalle |
+|---|---|---|---|
+| 1 | **Catálogo** de sedes y terapias | Conecta consulta al SGT | Endpoint con filtro `updated_since`. Sedes: TenantId, nombre, distrito, dirección, teléfono, correo, WhatsApp. Terapias: TenantId, sede, nombre, descripción, edades mínima y máxima, modalidad, activa |
+| 2 | **Aviso de paciente registrado** | El SGT llama a Conecta | Cuando un centro registra un paciente con el correo del padre o madre, el SGT llama a `POST /internal/sgt/patient-registrations` con TenantId, correo y la referencia interna del paciente. El SGT no debe mostrar al centro la respuesta, que siempre es 202 |
+| 3 | **Recibir el vínculo confirmado** | Conecta llama al SGT | Endpoint para marcar al paciente como "llegó por Neuroa" y, si el padre lo autorizó, guardar el resumen del tamizaje en su ficha. También para retirarlo si el padre revoca |
+| 4 | **Diagnósticos confirmados** | Conecta consulta al SGT | Endpoint que devuelve el resultado de la evaluación profesional solo de los pacientes con vínculo y autorización de diagnóstico, con filtro `updated_since` |
+| 5 | **Correo del padre o madre en la ficha del paciente** | — | Campo obligatorio, o muy recomendado, al registrar un paciente menor de edad; es lo que permite el vínculo |
+| 6 | **Términos del SGT** | — | El contrato del centro autoriza a Neuroa a usar el correo del paciente para el aviso de vínculo (punto 2) y a publicar en Conecta los datos de contacto de sus sedes (punto 1) |
+
+Los puntos 1 a 4 funcionan igual para el SGT completo y para la versión limitada (panel de autogestión).
+
 
 ---
 
