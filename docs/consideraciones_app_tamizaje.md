@@ -342,7 +342,7 @@ Traducir el resultado determinista a una explicación comprensible y empática p
 }
 ```
 
-- Validar contra JSON Schema. Cada `terapia_id` y `centro_id` debe estar entre los que devolvió la herramienta `buscar_terapias` en esa misma evaluación (sección 6.10); si no, se descarta.
+- Validar contra JSON Schema. Cada `terapia_id` y `centro_id` debe estar entre los que devolvió la herramienta `search_therapies` en esa misma evaluación (sección 6.10); si no, se descarta.
 - Usar la salida estructurada del proveedor (JSON con esquema) y un `max_tokens` acotado. Fijar la aleatoriedad al mínimo **si el modelo lo permite**: algunos modelos recientes ya no aceptan `temperature`, y ahí la consistencia se logra con el esquema, el prompt y la validación.
 
 ### 6.4 Guardrails (en el prompt y verificados después)
@@ -374,7 +374,7 @@ Estos textos deben revisarlos especialistas **[a validar con especialistas]**.
 
 ### 6.7 Costo, latencia y logging
 
-- Normalmente dos llamadas por evaluación (una pide `buscar_terapias`, la otra redacta la respuesta); presupuesto de latencia ~5–10 s con indicador de carga. Mostrar primero el resultado determinista y cargar la explicación después (streaming o carga diferida).
+- Normalmente dos llamadas por evaluación (una pide `search_therapies`, la otra redacta la respuesta); presupuesto de latencia ~5–10 s con indicador de carga. Mostrar primero el resultado determinista y cargar la explicación después (streaming o carga diferida).
 - Estimar costo por evaluación y fijar un tope mensual con alertas.
 - Registrar: `prompt_version`, modelo LLM, tokens, latencia, resultado de la validación, uso de fallback. **No** registrar datos personales en los logs del proveedor; revisar su política de retención.
 
@@ -423,7 +423,7 @@ Así se arma la llamada:
 - Se guarda `conocimiento_version` en cada evaluación, para saber exactamente qué información tenía el agente.
 - **Cuándo pasar a RAG:** cuando exista un chatbot de preguntas abiertas para los padres o la base crezca a guías clínicas completas. En ese caso se recomienda **pgvector** sobre PostgreSQL, con contenido editable desde un panel. El parquet sirve para contenido de solo lectura, pero obliga a redesplegar en cada cambio.
 
-### 6.10 Herramienta `buscar_terapias` (consulta a la base de datos)
+### 6.10 Herramienta `search_therapies` (consulta a la base de datos)
 
 Las terapias que se recomiendan **no salen de la base de conocimiento ni de la memoria del LLM**: salen de las terapias que los centros registran en el **SGT (SQL Server)**. Ahí están todos los centros: los del plan Conecta usan una versión limitada del SGT (el panel de autogestión) y los del plan Integral el SGT completo, así que hay **una sola fuente de terapias**. El agente las consulta con una **función (tool calling)** y, con lo que recibe, decide cuáles recomendar.
 
@@ -435,7 +435,7 @@ sequenceDiagram
     participant LLM as Agente LLM
     participant DB as SQL Server (SGT)
     API->>LLM: resultado + perfil + edad + respuestas + base de conocimiento
-    LLM->>API: llama buscar_terapias(edad_meses, distrito, palabras_clave)
+    LLM->>API: llama search_therapies(edad_meses, distrito, palabras_clave)
     API->>DB: SELECT con filtros fijos (solo centros activos y afiliados)
     DB-->>API: terapias: id, centro, nombre, descripción, edades, modalidad
     API-->>LLM: lista de terapias
@@ -447,7 +447,7 @@ sequenceDiagram
 
 ```json
 {
-  "name": "buscar_terapias",
+  "name": "search_therapies",
   "description": "Busca terapias ofrecidas por centros afiliados activos. Úsala antes de recomendar terapias; recomienda solo terapias devueltas por esta herramienta.",
   "input_schema": {
     "type": "object",
@@ -487,7 +487,7 @@ sequenceDiagram
 - Si no hay terapias que encajen, el agente lo dice y recomienda la **evaluación profesional** igualmente.
 - **Fallback sin LLM:** se muestran las terapias disponibles para la edad y la zona del niño, sin recomendación personalizada, junto con los textos plantilla.
 
-**Orquestador:** para este flujo (una herramienta y un par de llamadas) basta con el *tool calling* del SDK del proveedor, o con LangChain. **LangGraph** conviene cuando el flujo crezca en pasos y estados (chatbot con memoria, agendar citas, varias herramientas), así que se puede adoptar más adelante sin cambiar la definición de la herramienta. En modelos recientes no siempre se puede *obligar* a usar una herramienta concreta, así que la instrucción "consulta `buscar_terapias` antes de recomendar" va en el prompt, y el backend verifica que se haya llamado.
+**Orquestador:** para este flujo (una herramienta y un par de llamadas) basta con el *tool calling* del SDK del proveedor, o con LangChain. **LangGraph** conviene cuando el flujo crezca en pasos y estados (chatbot con memoria, agendar citas, varias herramientas), así que se puede adoptar más adelante sin cambiar la definición de la herramienta. En modelos recientes no siempre se puede *obligar* a usar una herramienta concreta, así que la instrucción "consulta `search_therapies` antes de recomendar" va en el prompt, y el backend verifica que se haya llamado.
 
 ---
 
@@ -695,7 +695,7 @@ Verificados en el código del repositorio (backend en `app/`, frontend a partir 
 - [ ] Accesibilidad AA verificada.
 
 ### Agente de IA
-- [ ] Prompt y base de conocimiento versionados, salida JSON validada, terapias solo desde `buscar_terapias`.
+- [ ] Prompt y base de conocimiento versionados, salida JSON validada, terapias solo desde `search_therapies`.
 - [ ] Set de 40–60 casos con 0 violaciones de guardrails.
 - [ ] Revisión humana por especialistas con rúbrica aprobada.
 - [ ] Fallback con plantillas aprobadas probado (simular caída del LLM).

@@ -2,7 +2,7 @@
 
 Arquitectura técnica de la **Solución 1: Conecta** (plataforma de tamizaje), con su frontend, su backend y su base de datos, y cómo se integra con el SGT y el Panel Startup.
 
-Versión 1.2 · 2026-10-01
+Versión 1.3 · 2026-10-02
 
 ---
 
@@ -17,6 +17,8 @@ Versión 1.2 · 2026-10-01
 | **Panel Startup** | ASP.NET Core + React/TypeScript | Propia | **TenantId**, estado de cada centro, productos habilitados (Conecta, SGT), suscripciones, vista de modelos y métricas |
 
 **Regla principal:** cada espacio es dueño de su base de datos. Los demás obtienen esos datos **a través de su API**, nunca entrando directo a la base.
+
+**Convención:** rutas, endpoints, módulos, esquemas, tablas, columnas y valores de estado se nombran **en inglés**; los textos que ve el usuario van en español.
 
 ### 0.2 TenantId y productos habilitados
 
@@ -72,7 +74,7 @@ flowchart LR
     WK -- "catálogo, diagnósticos" --> SAPI
     WK -- "resultados compartidos (Integral)" --> SAPI
     WK -- "tenants activos" --> PAPI
-    PAPI -- "/internal: modelos, métricas" --> API
+    PAPI -- "/internal/models, /internal/metrics" --> API
     PAPI -- "alta de centros" --> SAPI
     SAPI --> SQL
     PAPI --> PDB
@@ -112,16 +114,16 @@ flowchart LR
 | Ruta | Pantalla | Tipo |
 |---|---|---|
 | `/` | Landing de Conecta | Pública, generada en servidor |
-| `/centros` | Directorio de centros | Pública, generada en servidor |
-| `/centros/[slug]` | Página del centro: información, sedes, terapias y contacto | Pública, regenerada al cambiar el catálogo |
-| `/tamizaje` | Inicio de la prueba: qué es, cuánto dura, consentimiento | Pública |
-| `/tamizaje/preguntas` | Las 20 preguntas, una por pantalla, con progreso | Pública; se puede retomar |
-| `/registro` | Crear cuenta antes de ver el resultado | Pública |
-| `/resultado/[id]` | Nivel de riesgo, perfil y explicación | Requiere sesión |
-| `/resultado/[id]/terapias` | Terapias sugeridas y sedes que las ofrecen | Requiere sesión |
-| `/resultado/[id]/sedes` | Comparación de sedes con botones de WhatsApp, llamada y correo | Requiere sesión |
-| `/cuenta` | Historial de pruebas y datos del padre | Requiere sesión |
-| `/privacidad`, `/terminos` | Textos legales | Pública |
+| `/centers` | Directorio de centros | Pública, generada en servidor |
+| `/centers/[slug]` | Página del centro: información, sedes, terapias y contacto | Pública, regenerada al cambiar el catálogo |
+| `/screening` | Inicio de la prueba: qué es, cuánto dura, consentimiento | Pública |
+| `/screening/questions` | Las 20 preguntas, una por pantalla, con progreso | Pública; se puede retomar |
+| `/signup` | Crear cuenta antes de ver el resultado | Pública |
+| `/results/[id]` | Nivel de riesgo, perfil y explicación | Requiere sesión |
+| `/results/[id]/therapies` | Terapias sugeridas y sedes que las ofrecen | Requiere sesión |
+| `/results/[id]/locations` | Comparación de sedes con botones de WhatsApp, llamada y correo | Requiere sesión |
+| `/account` | Historial de pruebas y datos del padre | Requiere sesión |
+| `/privacy`, `/terms` | Textos legales | Pública |
 
 ### 2.3 Criterios
 
@@ -156,19 +158,19 @@ flowchart LR
 conecta-api/
 ├── app/
 │   ├── auth/          ← registro, login y sesión de padres
-│   ├── tamizaje/      ← evaluaciones, respuestas, puntuación Q-CHAT-10
-│   ├── riesgo/        ← capa 1 (modelo), capa 2 (reglas) y perfiles
-│   ├── agente/        ← capa 3: prompt, base de conocimiento, buscar_terapias
-│   ├── catalogo/      ← copia de centros, sedes y terapias del SGT + tenants activos del Panel
-│   ├── contactos/     ← resultados compartidos con centros Integral y envío al SGT
-│   ├── metricas/      ← eventos y reportes mensuales por centro
-│   ├── modelos/       ← versiones, métricas, reentrenamiento (MLflow)
+│   ├── screening/     ← evaluaciones, respuestas, puntuación Q-CHAT-10
+│   ├── risk/          ← capa 1 (modelo), capa 2 (reglas) y perfiles
+│   ├── agent/         ← capa 3: prompt, base de conocimiento, search_therapies
+│   ├── catalog/       ← copia de centros, sedes y terapias del SGT + tenants activos del Panel
+│   ├── sharing/       ← resultados compartidos con centros Integral y envío al SGT
+│   ├── metrics/       ← eventos y reportes mensuales por centro
+│   ├── model_registry/ ← versiones, métricas, reentrenamiento (MLflow)
 │   ├── internal/      ← endpoints para el Panel Startup
-│   ├── integraciones/ ← clientes HTTP del SGT, del Panel, del LLM y de correo
+│   ├── integrations/  ← clientes HTTP del SGT, del Panel, del LLM y de correo
 │   └── core/          ← configuración, seguridad, base de datos, logs
-├── tareas/            ← tareas de la cola en PostgreSQL (envíos al SGT, correos)
+├── tasks/             ← tareas de la cola en PostgreSQL (envíos al SGT, correos)
 ├── jobs/              ← jobs programados (catálogo, diagnósticos) y reentrenamiento
-├── conocimiento/      ← base de conocimiento curada del agente (versionada)
+├── knowledge/         ← base de conocimiento curada del agente (versionada)
 └── models/            ← modelo y metadata.json
 ```
 
@@ -176,16 +178,16 @@ conecta-api/
 
 | Método y ruta | Uso |
 |---|---|
-| `POST /auth/registro`, `POST /auth/login`, `POST /auth/logout` | Cuenta del padre |
-| `POST /consentimientos` | Registrar el consentimiento del padre o tutor |
-| `POST /evaluaciones` | Enviar las respuestas de la prueba; devuelve el id de la evaluación |
-| `GET /evaluaciones/{id}/resultado` | Nivel, probabilidad, perfil y reglas activadas |
-| `GET /evaluaciones/{id}/explicacion` | Explicación y terapias sugeridas por el agente IA |
-| `GET /evaluaciones` | Historial del padre |
-| `GET /centros`, `GET /centros/{slug}` | Directorio y página pública de un centro (solo tenants activos) |
-| `GET /sedes?terapias=…&distrito=…` | Sedes que ofrecen las terapias recomendadas, con sus datos de contacto, en el orden definido en 3.6 |
-| `POST /resultados-compartidos` | El padre comparte su resultado con una sede de un centro Integral (requiere consentimiento) |
-| `POST /eventos` | Visitas y clics en WhatsApp, llamada y correo, para las métricas de los centros |
+| `POST /auth/register`, `POST /auth/login`, `POST /auth/logout` | Cuenta del padre |
+| `POST /consents` | Registrar el consentimiento del padre o tutor |
+| `POST /assessments` | Enviar las respuestas de la prueba; devuelve el id de la evaluación |
+| `GET /assessments/{id}/result` | Nivel, probabilidad, perfil y reglas activadas |
+| `GET /assessments/{id}/explanation` | Explicación y terapias sugeridas por el agente IA |
+| `GET /assessments` | Historial del padre |
+| `GET /centers`, `GET /centers/{slug}` | Directorio y página pública de un centro (solo tenants activos) |
+| `GET /locations?therapies=…&district=…` | Sedes que ofrecen las terapias recomendadas, con sus datos de contacto, en el orden definido en 3.6 |
+| `POST /shared-results` | El padre comparte su resultado con una sede de un centro Integral (requiere consentimiento) |
+| `POST /events` | Visitas y clics en WhatsApp, llamada y correo, para las métricas de los centros |
 
 ### 3.4 Endpoints internos (para el Panel Startup)
 
@@ -193,20 +195,20 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 
 | Método y ruta | Uso |
 |---|---|
-| `GET /internal/modelos` | Versión en producción y candidatos |
-| `GET /internal/modelos/{version}/metricas` | AUC, sensibilidad y especificidad: de validación y reales |
-| `GET /internal/metricas/uso` | Tamizajes por día y distribución de niveles de riesgo |
-| `GET /internal/metricas/centros/{tenant_id}` | Visitas, clics de contacto y conversión por centro (reporte mensual) |
-| `GET /internal/metricas/sesgos` | Rendimiento por sexo y edad |
-| `POST /internal/entrenamientos`, `GET /internal/entrenamientos/{id}` | Lanzar y seguir un reentrenamiento |
-| `POST /internal/modelos/{version}/promover` | Pasar un candidato a producción (queda registrado quién lo aprobó) |
+| `GET /internal/models` | Versión en producción y candidatos |
+| `GET /internal/models/{version}/metrics` | AUC, sensibilidad y especificidad: de validación y reales |
+| `GET /internal/metrics/usage` | Tamizajes por día y distribución de niveles de riesgo |
+| `GET /internal/metrics/centers/{tenant_id}` | Visitas, clics de contacto y conversión por centro (reporte mensual) |
+| `GET /internal/metrics/bias` | Rendimiento por sexo y edad |
+| `POST /internal/trainings`, `GET /internal/trainings/{id}` | Lanzar y seguir un reentrenamiento |
+| `POST /internal/models/{version}/promote` | Pasar un candidato a producción (queda registrado quién lo aprobó) |
 | `POST /internal/webhooks/tenants` | El Panel avisa que cambió el estado de un tenant |
 
 ### 3.5 Integraciones
 
 | Con | Qué | Cómo |
 |---|---|---|
-| **API SGT** | Copia de centros, sedes (con teléfono, correo y WhatsApp) y terapias, con TenantId | Job programado cada 5 minutos con `actualizado_desde` |
+| **API SGT** | Copia de centros, sedes (con teléfono, correo y WhatsApp) y terapias, con TenantId | Job programado cada 5 minutos con `updated_since` |
 | **API SGT** | Paciente nuevo cuando un padre comparte su resultado con un centro Integral | Cola en PostgreSQL con reintentos |
 | **API SGT** | Diagnósticos confirmados (con consentimiento) para reentrenar | Job diario |
 | **API Panel** | Tenants con Conecta activo | Job programado cada 5 minutos + webhook del Panel ante cambios |
@@ -215,7 +217,7 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 
 ### 3.6 Cálculo del resultado
 
-`POST /evaluaciones` ejecuta en orden:
+`POST /assessments` ejecuta en orden:
 
 1. **Validación** de las 20 respuestas (Pydantic) y del consentimiento.
 2. **Puntuación** de A1–A10 igual que el Q-CHAT-10 oficial.
@@ -223,7 +225,7 @@ Bajo `/internal`, con autenticación entre servicios. Devuelven **agregados**, n
 4. **Capa 2 (reglas clínicas):** comorbilidades, antecedente familiar y edad pueden subir el nivel (Bajo / Moderado / Alto / Prioritario).
 5. **Perfil:** porcentajes comunicativo y social con los pesos validados por especialistas.
 6. Se guarda todo con las **versiones** del modelo y de las reglas, y se devuelve el resultado.
-7. **Capa 3 (agente IA):** se genera la explicación aparte. El agente llama a `buscar_terapias`, que consulta la copia del catálogo filtrando por tenants activos, edad y zona. El backend valida la salida; si falla, se usan textos plantilla.
+7. **Capa 3 (agente IA):** se genera la explicación aparte. El agente llama a `search_therapies`, que consulta la copia del catálogo filtrando por tenants activos, edad y zona. El backend valida la salida; si falla, se usan textos plantilla.
 
 **Quién decide qué:**
 
@@ -252,47 +254,47 @@ Así el LLM personaliza la recomendación sin favorecer a unos centros sobre otr
 | Esquema | Contenido |
 |---|---|
 | `app` | Datos propios de Conecta: padres, evaluaciones, resultados, resultados compartidos, eventos |
-| `catalogo` | Copias de solo lectura: tenants activos (del Panel) y centros, sedes y terapias (del SGT) |
+| `catalog` | Copias de solo lectura: tenants activos (del Panel) y centros, sedes y terapias (del SGT) |
 | `ml` | Versiones del modelo, métricas, entrenamientos y diagnósticos confirmados |
-| `cola` | Tareas pendientes de la cola (estado, reintentos, errores) |
+| `queue` | Tareas pendientes de la cola (estado, reintentos, errores) |
 | `mlflow` | Almacenamiento interno de MLflow |
 
 ### 4.2 Tablas principales
 
 | Tabla | Campos clave |
 |---|---|
-| `app.padres` | id, correo, nombre, teléfono, distrito, creado_en |
-| `app.consentimientos` | id, padre_id, version_texto, finalidades, aceptado_en, revocado_en |
-| `app.evaluaciones` | id, padre_id, edad_meses, sexo, estado, iniciada_en, finalizada_en |
-| `app.respuestas` | evaluacion_id, pregunta_id, opcion_indice (0–4 o sí/no/no sé), valor_binario |
-| `app.resultados` | evaluacion_id, qchat10_puntaje, probabilidad, umbral, positivo, nivel_base, nivel_final, reglas_activadas, comunicacion_pct, social_pct, perfil, version_modelo, version_reglas |
-| `app.explicaciones` | evaluacion_id, fuente (llm o plantilla), texto, terapias_sugeridas, version_prompt, version_conocimiento |
-| `app.resultados_compartidos` | id, padre_id, evaluacion_id, tenant_id, sede_id, consentimiento_id, estado_envio_sgt, creado_en |
-| `app.eventos` | id, tipo (visita, clic_whatsapp, clic_llamada, clic_correo), tenant_id, sede_id, fecha (sin datos personales) |
-| `catalogo.tenants` | tenant_id, nombre, conecta_activo, sgt_completo, actualizado_en |
-| `catalogo.sedes` | sede_id, tenant_id, nombre, slug, distrito, direccion, telefono, correo, whatsapp, actualizado_en |
-| `catalogo.terapias` | terapia_id, tenant_id, sede_id, nombre, descripcion, edad_min_meses, edad_max_meses, modalidad, activa, actualizado_en |
-| `ml.diagnosticos_confirmados` | evaluacion_id, diagnostico, fecha_diagnostico, origen (SGT), consentimiento_id |
-| `ml.modelos` | version, estado (candidato, produccion, retirado), metricas, mlflow_run_id, aprobado_por, promovido_en |
-| `ml.entrenamientos` | id, estado, version_resultante, iniciado_por, iniciado_en, finalizado_en |
+| `app.parents` | id, email, full_name, phone, district, created_at |
+| `app.consents` | id, parent_id, text_version, purposes, accepted_at, revoked_at |
+| `app.assessments` | id, parent_id, age_months, sex, status, started_at, completed_at |
+| `app.answers` | assessment_id, question_id, option_index (0–4 o sí/no/no sé), binary_value |
+| `app.results` | assessment_id, qchat10_score, probability, threshold, is_positive, base_level, final_level, triggered_rules, communication_pct, social_pct, profile, model_version, rules_version |
+| `app.explanations` | assessment_id, source (llm, template), text, suggested_therapies, prompt_version, knowledge_version |
+| `app.shared_results` | id, parent_id, assessment_id, tenant_id, location_id, consent_id, sgt_sync_status, created_at |
+| `app.events` | id, type (page_view, whatsapp_click, call_click, email_click), tenant_id, location_id, occurred_at (sin datos personales) |
+| `catalog.tenants` | tenant_id, name, conecta_enabled, has_full_sgt, updated_at |
+| `catalog.locations` | location_id, tenant_id, name, slug, district, address, phone, email, whatsapp, updated_at |
+| `catalog.therapies` | therapy_id, tenant_id, location_id, name, description, min_age_months, max_age_months, modality, is_active, updated_at |
+| `ml.confirmed_diagnoses` | assessment_id, diagnosis, diagnosis_date, source (SGT), consent_id |
+| `ml.models` | version, status (candidate, production, retired), metrics, mlflow_run_id, approved_by, promoted_at |
+| `ml.trainings` | id, status, resulting_version, started_by, started_at, finished_at |
 
 ### 4.3 Diagrama entidad-relación
 
 ```mermaid
 erDiagram
-    PADRES ||--o{ CONSENTIMIENTOS : otorga
-    PADRES ||--o{ EVALUACIONES : realiza
-    EVALUACIONES ||--|{ RESPUESTAS : contiene
-    EVALUACIONES ||--|| RESULTADOS : produce
-    EVALUACIONES ||--o| EXPLICACIONES : tiene
-    EVALUACIONES ||--o{ RESULTADOS_COMPARTIDOS : origina
-    PADRES ||--o{ RESULTADOS_COMPARTIDOS : comparte
-    TENANTS ||--o{ SEDES : tiene
-    SEDES ||--o{ TERAPIAS : ofrece
-    SEDES ||--o{ RESULTADOS_COMPARTIDOS : recibe
-    TENANTS ||--o{ EVENTOS : acumula
-    EVALUACIONES ||--o| DIAGNOSTICOS_CONFIRMADOS : confirma
-    MODELOS ||--o{ RESULTADOS : calcula
+    PARENTS ||--o{ CONSENTS : otorga
+    PARENTS ||--o{ ASSESSMENTS : realiza
+    ASSESSMENTS ||--|{ ANSWERS : contiene
+    ASSESSMENTS ||--|| RESULTS : produce
+    ASSESSMENTS ||--o| EXPLANATIONS : tiene
+    ASSESSMENTS ||--o{ SHARED_RESULTS : origina
+    PARENTS ||--o{ SHARED_RESULTS : comparte
+    TENANTS ||--o{ LOCATIONS : tiene
+    LOCATIONS ||--o{ THERAPIES : ofrece
+    LOCATIONS ||--o{ SHARED_RESULTS : recibe
+    TENANTS ||--o{ EVENTS : acumula
+    ASSESSMENTS ||--o| CONFIRMED_DIAGNOSES : confirma
+    MODELS ||--o{ RESULTS : calcula
 ```
 
 ### 4.4 Datos sensibles y retención
@@ -325,14 +327,14 @@ sequenceDiagram
     participant DB as PostgreSQL
     participant L as LLM
     Pa->>W: Responde las 20 preguntas
-    W->>A: POST /auth/registro + /consentimientos
-    W->>A: POST /evaluaciones
+    W->>A: POST /auth/register + /consents
+    W->>A: POST /assessments
     A->>A: Puntuación, modelo, reglas, perfil
     A->>DB: Guarda evaluación y resultado
     A-->>W: Nivel, perfil, reglas
-    W->>A: GET /evaluaciones/{id}/explicacion
+    W->>A: GET /assessments/{id}/explanation
     A->>L: Resultado + base de conocimiento
-    L->>A: buscar_terapias
+    L->>A: search_therapies
     A->>DB: Terapias de tenants activos por edad y zona
     A-->>L: Lista de terapias
     L-->>A: Explicación y terapias elegidas
@@ -351,10 +353,10 @@ sequenceDiagram
     loop Cada 5 minutos
         WK->>P: GET tenants con Conecta activo
         P-->>WK: Lista de tenants
-        WK->>DB: Actualiza catalogo.tenants
+        WK->>DB: Actualiza catalog.tenants
         WK->>S: GET terapias y sedes actualizadas desde la última copia
         S-->>WK: Sedes y terapias con TenantId
-        WK->>DB: Actualiza catalogo.sedes y catalogo.terapias
+        WK->>DB: Actualiza catalog.locations y catalog.therapies
     end
     P->>WK: Webhook: cambió un tenant
     WK->>DB: Actualiza ese tenant al instante
@@ -370,18 +372,18 @@ sequenceDiagram
     participant DB as PostgreSQL
     participant Q as Cola (PostgreSQL)
     participant S as API SGT
-    W->>A: GET /sedes con las terapias recomendadas
+    W->>A: GET /locations con las terapias recomendadas
     A-->>W: Sedes ordenadas, con teléfono, correo y WhatsApp
     Pa->>W: Clic en WhatsApp, llamada o correo
-    W->>A: POST /eventos (sin datos personales)
+    W->>A: POST /events (sin datos personales)
     W-->>Pa: Abre WhatsApp, el teléfono o el correo
     opt Centro con SGT completo (Integral)
         Pa->>W: Compartir mi resultado (con consentimiento)
-        W->>A: POST /resultados-compartidos
+        W->>A: POST /shared-results
         A->>DB: Guarda el envío y el consentimiento
         A->>Q: Encola el envío
         Q->>S: POST paciente nuevo con evaluación resumida
-        Q->>DB: Actualiza estado_envio_sgt
+        Q->>DB: Actualiza sgt_sync_status
     end
 ```
 
@@ -395,11 +397,11 @@ sequenceDiagram
     participant WK as Job de reentrenamiento
     participant M as MLflow
     E->>P: Reentrenar
-    P->>A: POST /internal/entrenamientos
+    P->>A: POST /internal/trainings
     A->>WK: Lanza el job
     WK->>M: Registra el candidato y sus métricas
     E->>P: Revisa y aprueba
-    P->>A: POST /internal/modelos/{version}/promover
+    P->>A: POST /internal/models/{version}/promote
     A->>A: Carga la nueva versión en producción
 ```
 
