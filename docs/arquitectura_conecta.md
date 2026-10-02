@@ -2,7 +2,7 @@
 
 Arquitectura técnica de la **Solución 1: Conecta** (plataforma de tamizaje), con su frontend, su backend y su base de datos, y cómo se integra con el SGT y el Panel Startup.
 
-Versión 1.4 · 2026-10-02
+Versión 1.5 · 2026-10-02
 
 ---
 
@@ -263,13 +263,13 @@ Así el LLM personaliza la recomendación sin favorecer a unos centros sobre otr
 
 | Tabla | Campos clave |
 |---|---|
-| `app.parents` | id, email, full_name, phone, district, created_at |
+| `app.parents` | id, email (usuario), password_hash, email_verified_at, created_at. La cuenta no guarda nombre, teléfono ni distrito |
 | `app.consents` | id, parent_id, text_version, purposes, accepted_at, revoked_at |
 | `app.assessments` | id, parent_id, age_months, sex, status, started_at, completed_at |
 | `app.answers` | assessment_id, question_id, option_index (0–4 o sí/no/no sé), binary_value |
 | `app.results` | assessment_id, qchat10_score, probability, threshold, is_positive, base_level, final_level, triggered_rules, communication_pct, social_pct, profile, model_version, rules_version |
 | `app.explanations` | assessment_id, source (llm, template), text, suggested_therapies, prompt_version, knowledge_version |
-| `app.shared_results` | id, parent_id, assessment_id, tenant_id, location_id, consent_id, sgt_sync_status, created_at |
+| `app.shared_results` | id, parent_id, assessment_id, tenant_id, location_id, consent_id, contact_name, contact_phone, sgt_sync_status, created_at. Nombre y teléfono se piden solo al compartir con un centro Integral |
 | `app.events` | id, type (page_view, whatsapp_click, call_click, email_click), tenant_id, location_id, occurred_at (sin datos personales) |
 | `catalog.tenants` | tenant_id, name, conecta_enabled, has_full_sgt, updated_at |
 | `catalog.locations` | location_id, tenant_id, name, slug, district, address, phone, email, whatsapp, updated_at |

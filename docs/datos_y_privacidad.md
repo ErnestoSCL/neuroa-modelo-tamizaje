@@ -97,7 +97,9 @@ Este documento funciona como **evaluación de impacto** del tratamiento y se deb
 
 | Dato | De quién | Categoría | Finalidad | Dónde se guarda | Quién accede | Conservación | ¿Va al LLM? |
 |---|---|---|---|---|---|---|---|
-| Correo, nombre, teléfono, distrito | Padre | Identificativo | Cuenta, comunicación, cercanía de sedes | `app.parents` | Backend; soporte con permiso | Mientras la cuenta esté activa | **No** (el distrito sí, sin el resto) |
+| Correo (usuario de la cuenta) | Padre | Identificativo | Iniciar sesión, recuperar la contraseña, avisos de la cuenta y de incidentes | `app.parents` | Backend; soporte con permiso | Mientras la cuenta esté activa | **No** |
+| Distrito | Padre | Personal (ubicación aproximada) | Ordenar las sedes por cercanía | **No se guarda en la cuenta**: se elige en la pantalla de sedes y viaja en la consulta | Backend | Solo durante la consulta | Sí (para filtrar terapias) |
+| Nombre y teléfono de contacto | Padre | Identificativo | Que un centro Integral lo contacte | `app.shared_results` → SGT | El centro elegido | Con el envío; en el SGT, según el centro | **No** |
 | Contraseña (hash argon2) | Padre | Credencial | Autenticación | `app.parents` | Nadie la ve | Mientras la cuenta esté activa | No |
 | Fecha de nacimiento | Niño | Personal | Calcular `age_months` | **No se guarda** (se calcula y se descarta) | — | — | No |
 | Edad en meses, sexo | Niño | Personal (de un menor) | Reglas por edad, auditoría de sesgos | `app.assessments` | Backend | Con la evaluación | Edad sí; sexo solo como contexto |
@@ -161,7 +163,7 @@ flowchart LR
 | **Respaldos geo-redundantes** de PostgreSQL | Todos | **EE. UU.** (la región pareja de Brazil South es South Central US) | **Recomendación: no activarlos.** Usar respaldos con redundancia local o por zonas dentro de Brasil |
 | **Azure OpenAI con despliegue *Global*** | Respuestas, resultado, edad, distrito | **Cualquier región de Azure** (incluido EE. UU.) | Evitarlo, o informarlo como transferencia a EE. UU. y otros países |
 | **Azure OpenAI con despliegue *Standard* (regional) en Brazil South** | Igual | **Brasil** | **Recomendado.** Confirmar qué modelos hay disponibles en esa región |
-| Proveedor de correo | Correo y nombre del padre | Según el proveedor | Elegir uno con DPA; preferir Azure Communication Services con datos en Brasil **[verificar disponibilidad]** |
+| Proveedor de correo | Correo del padre | Según el proveedor | Elegir uno con DPA; preferir Azure Communication Services con datos en Brasil **[verificar disponibilidad]** |
 | Soporte técnico de Microsoft | Solo si se abre un caso | Variable | No compartir datos reales en los casos de soporte |
 
 **Sobre el LLM (Azure OpenAI):**
@@ -180,7 +182,7 @@ flowchart LR
 
 ### 6.1 Por qué hace falta consentimiento
 
-Los datos de salud son **sensibles** y su tratamiento requiere consentimiento **expreso y por escrito** del titular; en medios digitales se admite la firma electrónica o un mecanismo equivalente, como casillas no premarcadas con registro. Como el titular es un niño **menor de 14 años**, consiente **quien ejerce la patria potestad o la tutela**. Para los datos de la cuenta del padre (correo, nombre) la base es la **ejecución del servicio** que solicita, pero conviene cubrirlos en el mismo acto.
+Los datos de salud son **sensibles** y su tratamiento requiere consentimiento **expreso y por escrito** del titular; en medios digitales se admite la firma electrónica o un mecanismo equivalente, como casillas no premarcadas con registro. Como el titular es un niño **menor de 14 años**, consiente **quien ejerce la patria potestad o la tutela**. Para la cuenta del padre (solo correo y contraseña) la base es la **ejecución del servicio** que solicita, pero conviene cubrirlos en el mismo acto.
 
 ### 6.2 Finalidades
 
@@ -243,7 +245,7 @@ Al compartir con un centro:
 
 | Tema | Hoy | Recomendación |
 |---|---|---|
-| **¿Cuenta antes del resultado?** | La arquitectura exige crear la cuenta antes de ver el resultado (`/signup`). Las consideraciones (7.4) proponían un tamizaje anónimo | Por minimización, lo ideal es mostrar el resultado sin cuenta y pedir la cuenta solo para guardarlo o contactar centros. Si el negocio necesita la cuenta antes, es legal, pero la finalidad (b) pasa a ser obligatoria y debe decirse antes de empezar. **Decisión pendiente del equipo** |
+| **¿Cuenta antes del resultado?** | **Decidido:** la cuenta se crea antes de ver el resultado y **solo pide correo y contraseña** | Aceptable: la cuenta es mínima y sirve para guardar el resultado y ejercer los derechos ARCO. La finalidad (b) pasa a ser obligatoria y debe decirse antes de empezar. Nombre y teléfono solo se piden al compartir con un centro Integral. Usar el **correo** como usuario (no un nombre de usuario libre): sin correo no hay recuperación de contraseña ni forma de avisar al padre de un incidente |
 | **Edad máxima aceptada** | 12–216 meses (hasta 18 años) | Limitar a **menores de 14 años** (< 168 meses). El Q-CHAT-10 es para niños pequeños, y entre los 14 y los 17 años las reglas de consentimiento del adolescente cambian. Con eso todo el servicio queda bajo el consentimiento de quien ejerce la patria potestad o la tutela |
 | **Antecedente familiar** | Pregunta por familiares con autismo | Mantener solo sí/no y el grado (primer grado u otro), sin identificar a la persona |
 | **PDF del resultado** | Se envía por correo | **No adjuntar datos de salud al correo**. El correo solo avisa que el resultado está disponible; el PDF se descarga desde la cuenta |
@@ -409,7 +411,7 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 | Proveedor | Servicio | Datos | Contrato a revisar | País |
 |---|---|---|---|---|
 | Microsoft Azure | Hosting, PostgreSQL, Blob, Key Vault, Monitor, Azure OpenAI | Todos | Microsoft Products and Services DPA; solicitud de monitoreo de abuso modificado | Brasil (y otros si se usa Global) |
-| Proveedor de correo (por definir) | Correos transaccionales | Correo y nombre del padre | DPA del proveedor | Por definir |
+| Proveedor de correo (por definir) | Correos transaccionales | Correo del padre | DPA del proveedor | Por definir |
 | GitHub | Código fuente | **Ninguno** (prohibido subir datos reales) | — | EE. UU. |
 | Notion | Gestión del equipo | **Ninguno** de padres o niños | — | EE. UU. |
 | Centros (SGT) | Destino de los resultados compartidos; origen de los diagnósticos | Resultado compartido; diagnóstico | Contrato del centro con cláusulas de encargo (SGT) y de transferencia (Conecta) | Perú |
@@ -469,7 +471,6 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 
 | Decisión | Recomendación |
 |---|---|
-| ¿Resultado antes o después de crear la cuenta? | Antes (minimización), con cuenta opcional para guardar y contactar centros |
 | ¿Edad máxima? | Menores de 14 años |
 | ¿Modelo LLM? | Elegir solo entre los disponibles como **Standard en Brazil South**; si el mejor solo existe en Global, decidir si se informa la transferencia o se elige otro |
 | ¿Proveedor de correo? | Uno con DPA y datos en Brasil, de preferencia dentro de Azure |
