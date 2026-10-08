@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentOutput",
+  "description": "Respuesta del agente de Conecta (prompt-2026.1). Se usa como salida estructurada estricta del proveedor y se valida de nuevo en el backend.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "profile_explanation", "next_steps", "suggested_therapies", "no_matching_therapies"],
+  "properties": {
+    "summary": {
+      "type": "string",
+      "description": "Qué significa el resultado para esta familia, con 1 o 2 respuestas concretas. Hasta 120 palabras.",
+      "minLength": 40,
+      "maxLength": 900
+    },
+    "profile_explanation": {
+      "type": "string",
+      "description": "En qué área aparecieron más señales, con ejemplos de sus respuestas. Hasta 80 palabras.",
+      "minLength": 20,
+      "maxLength": 600
+    },
+    "next_steps": {
+      "type": "array",
+      "description": "De 2 a 4 acciones concretas, coherentes con el nivel. Incluye el sistema público y los centros afiliados.",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": {"type": "string", "minLength": 10, "maxLength": 250}
+    },
+    "suggested_therapies": {
+      "type": "array",
+      "description": "Todas las terapias del catálogo devuelto por search_therapies que encajan.",
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["therapy_id", "reason"],
+        "properties": {
+          "therapy_id": {"type": "string", "description": "therapy_id exacto devuelto por la herramienta"},
+          "reason": {"type": "string", "description": "Para qué le serviría a este niño, en una frase", "minLength": 10, "maxLength": 200}
+        }
+      }
+    },
+    "no_matching_therapies": {
+      "type": "boolean",
+      "description": "true si ninguna terapia del catálogo encaja"
+    }
+  }
+}
