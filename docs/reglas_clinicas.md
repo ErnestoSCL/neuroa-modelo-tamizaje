@@ -32,6 +32,10 @@ El modelo da una probabilidad calibrada a partir de las 10 preguntas del Q-CHAT-
 | **Alto** | 0.50 o más | 3 a 10 | 121 | 110 (90.9 %) |
 | **Prioritario** | Solo por reglas (R02, R05) | — | — | — |
 
+**Los niveles salen de la probabilidad del modelo**, no del puntaje. El puntaje se muestra solo como referencia: el modelo da a cada pregunta un peso parecido (de 0.92 a 1.22 en la regresión logística; los más altos son A9 gestos y A2 contacto visual), por eso sus resultados se parecen al puntaje. Donde difieren es en los casos límite: con 3 puntos, un niño cae en Moderado o en Alto según **cuáles** preguntas marcó (probabilidad de 0.44 a 0.53).
+
+**Solo en la mitad de prueba** (126 niños que no se usaron para calibrar ni para elegir el umbral): Bajo 43 niños, 0 con TEA; Moderado 22, 11 con TEA (50 %); Alto 61, 56 con TEA (91.8 %). Los cortes se eligieron mirando toda la muestra, así que estas cifras son algo optimistas; la validación local en el Perú dará la medida real.
+
 **Cómo se eligieron:**
 
 - **Bajo < 0.20:** el 97 % de los niños con TEA de la muestra queda en Moderado o más (sensibilidad 0.97). Se prioriza no dejar pasar casos.
