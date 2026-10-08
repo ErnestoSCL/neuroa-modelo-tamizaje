@@ -1,0 +1,21 @@
+{
+  "knowledge_version": "kb-2026.1",
+  "date": "2026-10-08",
+  "status": "draft",
+  "approved_by": null,
+  "approved_at": null,
+  "depends_on": {
+    "form": "docs/formulario_tamizaje.md v1.3",
+    "rules": "docs/reglas_clinicas.md v1.1 (rules-2026.1)",
+    "model": "models/v2/metadata.json"
+  },
+  "files": [
+    "levels.md",
+    "profiles.md",
+    "recommendations.md",
+    "questions.md",
+    "age_messages.md",
+    "therapy_reference.md",
+    "notices.md"
+  ]
+}
