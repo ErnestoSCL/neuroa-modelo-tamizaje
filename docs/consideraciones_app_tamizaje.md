@@ -295,21 +295,25 @@ Implicación práctica: el ML **no supera claramente** a la regla oficial. Mostr
 - Cada regla cita literatura y tiene un responsable clínico que la aprobó.
 - Respuestas "No sé" se tratan explícitamente (en general no activan reglas, pero pueden generar una recomendación de consulta).
 
-### 5.2 Nivel base
+### 5.2 Nivel base y reglas
 
-El nivel base sale del modelo: bandas de probabilidad definidas en `metadata.json` (p. ej. Bajo < umbral de bajo riesgo ≤ Moderado < umbral ≤ Alto). **Prioritario** solo se alcanza por reglas. Las bandas se acuerdan con especialistas priorizando sensibilidad.
+**Decidido:** la propuesta completa está en **`reglas_clinicas.md`**. Resumen:
 
-### 5.3 Plantilla de reglas
+- **Nivel base** desde la probabilidad del modelo (cortes a validar con especialistas): Bajo < 0.20, Moderado 0.20–0.50, Alto ≥ 0.50. **Prioritario** solo por reglas.
+- **Dos tipos de reglas:** de nivel (suben el nivel) y de recomendación (agregan un consejo sin cambiar el nivel).
+- **No se acumulan:** el nivel final es el más alto que indique cualquier regla. "Subir un nivel" llega como máximo a Alto.
 
-| ID | Condición | Efecto | Justificación / literatura | Aprobado por | Versión |
-|---|---|---|---|---|---|
-| R01 | Hermano/a, padre o madre con diagnóstico de TEA **y** nivel base Bajo | Subir a Moderado; recomendar vigilancia y repetir tamizaje | Riesgo de recurrencia en hermanos ~20% (Ozonoff et al., *Pediatrics* 2011; *JAMA Netw Open* 2024) | [pendiente] | reglas-2026.1 |
-| R02 | Retraso del habla/lenguaje **y** retraso global del desarrollo (id13 y id17 = sí) | Subir a Prioritario; recomendar evaluación del desarrollo pronta | Signos de alarma que justifican evaluación independiente del tamizaje (AAP, Hyman et al., *Pediatrics* 2020) | [pendiente] | reglas-2026.1 |
-| R03 | Diagnóstico de condición genética asociada (id15 = sí) | Subir un nivel; sugerir seguimiento con genética/neuropediatría | Mayor prevalencia de TEA en ciertos síndromes genéticos [citar con especialistas] | [pendiente] | reglas-2026.1 |
-| R04 | Edad de 1 año, o de 3 años o más (`age_validity` distinto de `validated`) | No cambia nivel; añade aviso de validez y recomendación de evaluación profesional | Rango de validación del Q-CHAT-10 (Allison et al., 2012) | [pendiente] | reglas-2026.1 |
-| R05 | Regresión reportada (pregunta 21 = sí) | Sube el nivel y recomienda evaluación pronta; cuánto (un nivel o Prioritario) lo deciden los especialistas | Signo de alarma clásico [citar con especialistas] | [pendiente] | — |
-
-Las reglas anteriores son **ejemplos de formato**, no reglas aprobadas **[a validar con especialistas]**.
+| Regla | Se activa si… | Efecto |
+|---|---|---|
+| R01 | Padre, madre o hermano/a con autismo (20) | Sube un nivel (máx. Alto) |
+| R02 | Retraso del habla (13) y del desarrollo (17) | Prioritario |
+| R03 | Condición genética (15) | Sube un nivel (máx. Alto) |
+| R04 | Edad fuera del rango validado | Aviso por edad |
+| R05 | Regresión (21) | Prioritario (propuesta) |
+| R06 | Retraso del desarrollo (17) sin retraso del habla | Sube un nivel (máx. Alto) |
+| R07 | Ánimo bajo persistente (16) | Recomendación: hablarlo con el pediatra |
+| R08 | Otro familiar con autismo (20) | Recomendación: mencionarlo al pediatra |
+| R09 | "No sé" en 13, 15, 17 o 21; o 3 o más "No sé" | Recomendación: consultar la duda; aviso de resultado incompleto |
 
 ### 5.4 Gobernanza
 

@@ -12,6 +12,7 @@ Modelo de Machine Learning que estima el riesgo de Trastorno del Espectro Autist
 | `data/raw/` | Datasets públicos usados (ver abajo) |
 | `docs/consideraciones_app_tamizaje.md` | Consideraciones para construir la aplicación de tamizaje |
 | `docs/formulario_tamizaje.md` | Formulario final propuesto (21 preguntas) y hoja de validación para especialistas |
+| `docs/reglas_clinicas.md` | Niveles de riesgo, reglas clínicas (R01–R09), casos de ejemplo y hoja de validación |
 | `docs/arquitectura_conecta.md` | Arquitectura técnica de Conecta y su integración con el SGT y el panel interno |
 | `docs/datos_y_privacidad.md` | Evaluación de datos y privacidad de Conecta (Ley 29733, transferencias, riesgos y plan de acción) |
 | `docs/inscripcion_anpd_borrador.md` | Borrador de las respuestas para inscribir el banco de datos ante la ANPD |
