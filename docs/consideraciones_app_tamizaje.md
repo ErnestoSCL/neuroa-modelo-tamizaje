@@ -79,7 +79,7 @@ Guardar **la respuesta cruda (índice 0–4)** de cada ítem además del valor b
 | 1 año | `check_age` | Sí, con aviso: si tiene menos de 1 año y 6 meses, el resultado es orientativo |
 | 2 años | `validated` | Sí (rango validado del Q-CHAT-10: 18–36 meses) |
 | 3 a 5 años | `less_precise` | Sí, con aviso de menor precisión |
-| 6 a 13 años | `beyond_clinical_cap` | Sí, con aviso: la prueba se aplica con confianza hasta los 5 años (tope clínico de confianza, a validar con especialistas); después el resultado es solo referencial |
+| 6 a 13 años | `beyond_clinical_cap` | Sí, con aviso: la prueba se aplica con confianza hasta los 5 años (tope clínico de confianza, decidido); después el resultado es solo referencial |
 
 Textos exactos de los avisos en `formulario_tamizaje.md`, sección 2.
 

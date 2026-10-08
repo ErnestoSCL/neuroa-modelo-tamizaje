@@ -59,7 +59,7 @@ Se guarda en `app.consents` con la versión del texto, las finalidades aceptadas
 | 3 a 5 años | `less_precise` | Sí | "Este cuestionario fue validado en niños pequeños; a la edad de su hijo/a el resultado es menos preciso. Si tiene dudas sobre su desarrollo, le recomendamos una evaluación profesional." |
 | 6 a 13 años | `beyond_clinical_cap` | Sí | "Esta prueba se aplica con confianza hasta los 5 años. Puede completarla, pero a la edad de su hijo/a el resultado es solo referencial. Le recomendamos una evaluación con un especialista." |
 
-**Tope clínico de confianza: 5 años [a validar con especialistas].** No es un límite: la prueba se puede hacer hasta los 13 años (límite legal). Desde los 6 años solo se muestra el aviso de que el resultado es referencial y se recomienda una evaluación con un especialista.
+**Tope clínico de confianza: 5 años (decidido).** No es un límite: la prueba se puede hacer hasta los 13 años (límite legal). Desde los 6 años solo se muestra el aviso de que el resultado es referencial y se recomienda una evaluación con un especialista.
 
 **Nota sobre la precisión:** con la edad en años no se distingue a un niño de 13 meses de uno de 23. Por eso "1 año" lleva siempre un aviso. La edad **no** entra al modelo (el notebook v2 mostró que no mejora el resultado), así que esto solo afecta los avisos y los mensajes del agente.
 
@@ -214,10 +214,10 @@ Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. La
 
 **Preguntas abiertas para los especialistas:**
 
-1. ¿Confirman 5 años como tope clínico de confianza (después se permite la prueba con aviso)?
-2. ¿La pregunta 16 (ánimo) aporta algo en niños de 1 a 3 años, o conviene quitarla?
+1. ~~¿Confirman 5 años como tope clínico de confianza?~~ **Decidido: sí**, con aviso después de los 5 años.
+2. ~~¿La pregunta 16 (ánimo) aporta algo en niños de 1 a 3 años?~~ **Decidido: se mantiene.**
 3. ¿Se agrega una pregunta sobre **regresión** ("¿Su hijo/a dejó de decir palabras o de hacer cosas que ya hacía?")? Es un signo de alarma importante y está propuesta como regla R05 en `consideraciones_app_tamizaje.md`.
-4. ¿Las redacciones de las preguntas 13 a 19 cambian los pesos de los perfiles? (Los pesos actuales se definieron con las preguntas anteriores.)
+4. ~~¿Las redacciones de las preguntas 13 a 19 cambian los pesos de los perfiles?~~ **Decidido: los pesos se mantienen.**
 
 ---
 
