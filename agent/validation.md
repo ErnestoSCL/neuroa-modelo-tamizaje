@@ -17,6 +17,10 @@ El backend revisa cada respuesta **antes** de mostrarla. Si falla, reintenta **u
 | V9 | Datos personales | Aparece un correo, un teléfono o un DNI |
 | V10 | Opciones públicas | `next_steps` no menciona el sistema público (CRED, establecimiento de salud, MINSA o EsSalud) |
 
+## Red de seguridad clínica (después de validar)
+
+Con nivel **Alto o Prioritario**, si la respuesta válida no incluye ninguna terapia de evaluación (nombre o descripción con "evaluación", "diagnóstico", "neuropediatría" o "interdisciplinaria") y la herramienta devolvió alguna, **el backend la agrega primera**, con el motivo fijo: "Para conocer cómo va su desarrollo con una evaluación profesional." Así, la recomendación clínica más importante no depende del modelo de IA.
+
 ## Registro
 
 Por cada evaluación se guarda en `app.explanations`: `source` (`llm` o `template`), `prompt_version`, `knowledge_version`, los controles que fallaron y si hubo reintento. Nunca se guardan datos personales en los registros del proveedor.

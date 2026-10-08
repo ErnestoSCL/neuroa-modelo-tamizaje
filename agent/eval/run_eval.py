@@ -25,7 +25,7 @@ from check_output import CATALOG, check_case, validate
 HERE = Path(__file__).resolve().parent
 AGENT = HERE.parent
 ROOT = AGENT.parent
-PROMPT_VERSION = "prompt-2026.2"
+PROMPT_VERSION = "prompt-2026.3"
 USAGE = {}
 
 
@@ -44,6 +44,12 @@ def search_therapies(age_years, district="", modality="any", keywords=None, **_)
         rows = [t for t in rows if any(k in (t["name"] + " " + t["description"]).lower() for k in kws)]
     rows.sort(key=lambda t: t["district"] != district)
     return [{k: v for k, v in t.items() if k != "eval_type"} for t in rows[:20]]
+
+
+def search_therapies_tool(**kw):
+    """Respuesta de la herramienta tal como la ve el agente."""
+    rows = search_therapies(**kw)
+    return {"therapies": rows, "truncated": len(rows) >= 20}
 
 
 def system_prompt():
@@ -109,9 +115,9 @@ def llm_agent(case, client, deployment):
             messages.append(msg.model_dump(exclude_none=True))
             for call in msg.tool_calls:
                 called = True
-                rows = search_therapies(**json.loads(call.function.arguments))
-                returned |= {r["therapy_id"] for r in rows}
-                messages.append({"role": "tool", "tool_call_id": call.id, "content": json.dumps(rows, ensure_ascii=False)})
+                result = search_therapies_tool(**json.loads(call.function.arguments))
+                returned |= {r["therapy_id"] for r in result["therapies"]}
+                messages.append({"role": "tool", "tool_call_id": call.id, "content": json.dumps(result, ensure_ascii=False)})
             continue
         USAGE.update(usage)
         return json.loads(msg.content), returned, called

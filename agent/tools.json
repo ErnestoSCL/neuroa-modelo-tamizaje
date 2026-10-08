@@ -13,13 +13,13 @@
           "type": "array",
           "items": {"type": "string"},
           "maxItems": 5,
-          "description": "Opcional. Palabras para buscar en el nombre y la descripción (por ejemplo: lenguaje, ocupacional, social, evaluación)"
+          "description": "Opcional. Solo si la primera llamada devolvió truncated: true. Palabras para buscar en el nombre y la descripción (por ejemplo: lenguaje, ocupacional, social, evaluación)"
         }
       },
       "required": ["age_years"]
     },
     "returns": {
-      "description": "Lista de hasta 20 terapias que encajan por edad, distrito (o cercanos) y modalidad. Sin datos de contacto: esos los agrega la app.",
+      "description": "Objeto con therapies (hasta 20 que encajan por edad, distrito o cercanos, y modalidad) y truncated (true si había más de 20). Sin datos de contacto: esos los agrega la app.",
       "item": {
         "therapy_id": "string",
         "location_id": "string",

@@ -2,7 +2,7 @@
 
 El agente **explica** el resultado del tamizaje en lenguaje simple y elige, del catálogo de los centros afiliados, las terapias que encajan con el niño o niña. **No decide nada clínico:** el nivel, el perfil y las reglas vienen del modelo de ML y de las reglas clínicas (`docs/reglas_clinicas.md`).
 
-Versión del prompt: `prompt-2026.2` · 2026-10-08 · Estado: **borrador; pendiente de evaluación**
+Versión del prompt: `prompt-2026.3` · 2026-10-08 · Estado: **borrador; pendiente de evaluación**
 
 | Archivo | Contenido |
 |---|---|
