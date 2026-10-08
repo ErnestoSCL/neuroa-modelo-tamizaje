@@ -1,6 +1,6 @@
 # Formulario de tamizaje de Conecta
 
-Versión final propuesta de las 21 preguntas que responde el padre, madre o tutor, con la hoja de validación para los especialistas. Parte del formulario actual del frontend (`components/form-comp/questions.js`) y de las decisiones de `consideraciones_app_tamizaje.md` y `datos_y_privacidad.md`.
+Versión final propuesta de las 21 preguntas que responde el padre, madre o tutor, con la hoja de validación para los especialistas. Parte del formulario de TEAnimo (`components/form-comp/questions.js`), usado solo como referencia, y de las decisiones de `consideraciones_app_tamizaje.md` y `datos_y_privacidad.md`.
 
 Versión 1.2 · 2026-10-08 · Estado: **pendiente de validación por especialistas**
 
@@ -245,13 +245,15 @@ Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. La
 
 ---
 
-## 9. Pendientes antes de implementar
+## 9. Pendientes fuera de esta tarea
 
-| Pendiente | Responsable |
+El diseño del formulario está cerrado. Lo que falta depende de otras personas o de otras etapas:
+
+| Pendiente | Dónde se sigue |
 |---|---|
-| Pedir al Autism Research Centre autorización para usar el Q-CHAT-10 en Conecta | Fundador |
-| Validación de los especialistas (sección 8) | Especialistas |
-| Prueba con 5 a 10 padres en celular: comprensión y tiempo | Equipo |
-| Actualizar el frontend (`questions.js`, `Forms.jsx`) y el esquema del backend | Desarrollo |
+| Autorización del Autism Research Centre para usar el Q-CHAT-10 en Conecta | Tarea "Cumplir el mínimo legal de privacidad para el piloto" (permisos antes del piloto) |
+| Revisión de los especialistas (sección 8) | Tarea "Validar reglas clínicas con especialistas": formulario y reglas se revisan en la misma sesión |
+| Construir el formulario en Conecta (Next.js, ruta `/screening/questions`) y su validación en `POST /assessments` | Desarrollo de Conecta. Es un proyecto nuevo: TEAnimo solo sirvió de referencia, no se modifica su código |
+| Prueba con 5 a 10 padres en celular (comprensión y tiempo) | Cuando el formulario esté construido en Conecta |
 
 **Fuentes:** Allison C. et al. (2012), *Toward brief "Red Flags" for autism screening: the Short Autism Spectrum Quotient and the Short Quantitative Checklist in 1,000 cases and 3,000 controls*, J Am Acad Child Adolesc Psychiatry · [Autism Research Centre: Q-CHAT-10](https://www.autismresearchcentre.com/tests/quantitative-checklist-for-autism-in-toddlers-10-items-q-chat-10/) · [Q-CHAT en Chile (estudio psicométrico)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11215167/)
