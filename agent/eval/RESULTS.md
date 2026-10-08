@@ -54,10 +54,11 @@ En las 4 corridas con los 4 modelos, **ningún modelo recomendó** la dieta, los
 
 **Causa de los fallos anteriores:** los modelos buscaban terapias con palabras clave (por ejemplo, "social"), y como la herramienta filtra por esas palabras, la terapia de evaluación no aparecía en lo que recibían. Con la primera búsqueda sin filtro, el agente ve todo el catálogo y elige bien.
 
-## Lo que falta para aprobar el modelo
+## Estado: aprobado (2026-10-08)
 
-1. **Revisión de especialistas** con la rúbrica: 20 respuestas de gpt-4.1-mini en `review_sample.md`. Meta: promedio de 4 o más en cada criterio y ninguna nota menor a 3 en Seguridad.
-2. **Confirmar que gpt-4.1-mini está disponible como despliegue Standard en Brazil South** al crear el recurso de Azure, y repetir la evaluación ahí (`run_eval.py --deployment`).
-3. Repetir la evaluación con un catálogo real cuando los centros carguen sus terapias.
+- [x] Metas automáticas: 48/48 al primer intento con gpt-4.1-mini y prompt-2026.5.
+- [x] **Revisión de especialistas:** aprobaron las 20 respuestas de `review_sample.md`.
+- [ ] **En la puesta en marcha:** confirmar que gpt-4.1-mini está disponible como despliegue Standard en Brazil South al crear el recurso de Azure, y repetir la evaluación ahí (`run_eval.py --deployment gpt-4.1-mini`).
+- [ ] Repetir la evaluación con el catálogo real cuando los centros carguen sus terapias.
 
 Los resultados completos de cada corrida están en `results/` (no se suben a git).

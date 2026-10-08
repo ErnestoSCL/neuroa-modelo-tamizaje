@@ -2,7 +2,7 @@
 
 El agente **explica** el resultado del tamizaje en lenguaje simple y elige, del catálogo de los centros afiliados, las terapias que encajan con el niño o niña. **No decide nada clínico:** el nivel, el perfil y las reglas vienen del modelo de ML y de las reglas clínicas (`docs/reglas_clinicas.md`).
 
-Versión del prompt: `prompt-2026.5` · 2026-10-08 · Estado: **evaluado** (48/48 al primer intento con gpt-4.1-mini en dos corridas; ver `eval/RESULTS.md`); pendiente de revisión de especialistas
+Versión del prompt: `prompt-2026.5` · 2026-10-08 · Estado: **aprobado** (48/48 al primer intento con gpt-4.1-mini en dos corridas, ver `eval/RESULTS.md`; muestra de 20 respuestas aprobada por especialistas el 2026-10-08). La prueba en Azure Brazil South queda para la puesta en marcha
 
 **Configuración de la llamada al modelo:** salida estructurada en modo estricto (`strict: true`, la API obliga a cumplir `output_schema.json`, por ejemplo, de 2 a 4 pasos) y `temperature: 0.2` (menos variación entre respuestas).
 

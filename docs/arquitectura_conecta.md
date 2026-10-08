@@ -504,7 +504,7 @@ sequenceDiagram
 
 **Por qué no los más baratos:** gpt-4.1-nano inventa terapias sin consultar el catálogo y gpt-4o-mini omite la opción pública; el ahorro (US$ 1 a 3 cada 1000 tamizajes) no compensa el riesgo.
 
-**Antes de producción:** revisión de especialistas con la rúbrica (`agent/eval/review_sample.md`) y verificar que esté disponible como despliegue Standard en Brazil South, repitiendo ahí la evaluación.
+**Aprobado por especialistas** el 2026-10-08 (prompt-2026.5, `agent/eval/review_sample.md`). **En la puesta en marcha:** verificar que gpt-4.1-mini esté disponible como despliegue Standard en Brazil South y repetir ahí la evaluación.
 
 Tabla de referencia usada para elegir los candidatos:
 
