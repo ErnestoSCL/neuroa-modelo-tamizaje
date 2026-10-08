@@ -25,9 +25,11 @@ from check_output import CATALOG, check_case, validate
 HERE = Path(__file__).resolve().parent
 AGENT = HERE.parent
 ROOT = AGENT.parent
-PROMPT_VERSION = "prompt-2026.4"
+PROMPT_VERSION = "prompt-2026.5"
 USAGE = {}
 LAST = {}  # contexto del último intento, para el reintento
+STRICT = True  # la API obliga a cumplir output_schema.json (por ejemplo, máximo 4 pasos)
+TEMPERATURE = 0.2  # menos variación entre respuestas
 
 
 def load_cases():
@@ -113,8 +115,8 @@ def llm_agent(case, client, deployment, retry=None):
     for _ in range(4):
         resp = client.chat.completions.create(
             model=deployment, messages=messages, tools=tools,
-            response_format={"type": "json_schema", "json_schema": {"name": "AgentOutput", "schema": schema, "strict": False}},
-            max_completion_tokens=1500)
+            response_format={"type": "json_schema", "json_schema": {"name": "AgentOutput", "schema": schema, "strict": STRICT}},
+            max_completion_tokens=1500, temperature=TEMPERATURE)
         msg = resp.choices[0].message
         if resp.usage:
             usage["input"] += resp.usage.prompt_tokens

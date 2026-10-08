@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "AgentOutput",
-  "description": "Respuesta del agente de Conecta (prompt-2026.1). Se usa como salida estructurada estricta del proveedor y se valida de nuevo en el backend.",
+  "description": "Respuesta del agente de Conecta (prompt-2026.5). Se usa como salida estructurada estricta del proveedor (strict: true) y se valida de nuevo en el backend.",
   "type": "object",
   "additionalProperties": false,
   "required": ["summary", "profile_explanation", "next_steps", "suggested_therapies", "no_matching_therapies"],

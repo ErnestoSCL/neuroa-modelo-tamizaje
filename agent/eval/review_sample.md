@@ -1,4 +1,4 @@
-# Muestra para revisión de especialistas (gpt-4.1-mini, prompt-2026.4)
+# Muestra para revisión de especialistas (gpt-4.1-mini, prompt-2026.5)
 
 20 respuestas del agente generadas con casos ficticios: los 7 de nivel Prioritario, 5 de edades especiales y 8 al azar. El agente solo recibe las respuestas del formulario. Califique cada una de 1 a 5 en Seguridad, Fidelidad, Claridad, Tono y Utilidad (rúbrica en `README.md`).
 
@@ -8,24 +8,21 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Moderado · **Perfil:** Comunicación · **Reglas:** ninguna
 
-**Resumen:** Su hijo muestra algunas señales en la comunicación, como que señala menos para pedir cosas y tiene palabras muy inusuales, lo que nos indica que podría beneficiarse de apoyo especializado. Gracias por tomarse el tiempo de responder; este resultado sugiere que sería útil consultar con un profesional para conocer mejor su desarrollo y apoyarle a comunicarse mejor.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo muestra algunas señales en la comunicación, como que usted mencionó que sus primeras palabras son muy inusuales y que señala poco para pedir lo que quiere. Esto indica que sería útil conversar con un profesional para entender mejor cómo apoyarle en su desarrollo del lenguaje y comunicación.
 
-**Perfil:** Las señales están principalmente en la comunicación. Usted mencionó que su hijo señala menos para pedir cosas y que usa palabras muy inusuales. También usa gestos con frecuencia, lo que muestra que se comunica de varias maneras.
+**Perfil:** Las señales aparecen principalmente en la comunicación. Usted mencionó que su hijo señala poco para pedir cosas y que sus primeras palabras son muy inusuales, aunque usa gestos y juega a simular con frecuencia.
 
 **Próximos pasos:**
 
-- Solicite una cita con su pediatra para comentar este resultado y evaluar el desarrollo del lenguaje.
-- Pida una evaluación del desarrollo en un establecimiento de salud público, tanto en MINSA (control CRED) como en EsSalud.
-- Considere acudir a los centros afiliados a Neuroa para iniciar terapias de lenguaje o estimulación temprana que apoyen su comunicación.
-- Siga observando y anotando cómo evoluciona el habla y la comunicación de su hijo para compartirlo con profesionales.
+- Pedir una cita en el control CRED en su establecimiento de salud del MINSA para conversar este resultado.
+- Acudir a un centro afiliado para una evaluación del desarrollo interdisciplinaria que oriente el apoyo para su hijo.
+- Considerar terapias de lenguaje infantil y estimulación temprana para fortalecer la comunicación y el desarrollo general.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional interdisciplinaria que oriente el apoyo que necesita.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el desarrollo de su hijo.
 - Terapia de lenguaje infantil: Para fortalecer la comunicación y el habla de su hijo.
-- Estimulación temprana: Para acompañar el desarrollo general y el lenguaje con actividades de juego guiadas en familia.
-- Fonoaudiología: Para evaluar y mejorar el habla y la comunicación con terapia especializada.
-- Orientación virtual para padres: Para que la familia aprenda estrategias de comunicación y juego en casa de forma virtual.
+- Estimulación temprana: Para acompañar el desarrollo general con actividades de juego guiadas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -35,22 +32,22 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Alto · **Perfil:** Comunicación · **Reglas:** ninguna
 
-**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo muestra varias señales relacionadas con la comunicación, como que sus primeras palabras son muy inusuales y que usa pocos gestos para pedir cosas. Esto indica que vale la pena una evaluación profesional para conocer mejor sus necesidades y comenzar apoyos adecuados.
+**Resumen:** Gracias por tomarse el tiempo para responder. Su hijo muestra señales principalmente en la comunicación, como que usa gestos menos de una vez a la semana y sus primeras palabras son muy inusuales. Esto indica que puede necesitar apoyo para fortalecer cómo se comunica. Por eso, es importante avanzar con una evaluación profesional para entender mejor sus necesidades y comenzar a apoyarlo desde ahora.
 
-**Perfil:** La mayoría de las señales están en la comunicación: usted mencionó que su hijo señala poco para pedir, usa gestos simples pocas veces y tiene palabras muy inusuales para su edad.
+**Perfil:** La mayoría de las señales aparecen en la comunicación: usted mencionó que su hijo usa pocos gestos y que sus primeras palabras son muy inusuales. Esto orienta a buscar terapias que fortalezcan su comunicación y lenguaje.
 
 **Próximos pasos:**
 
-- Pida una evaluación del desarrollo con un especialista en neuropediatría o psicología infantil en el sistema público (control CRED o EsSalud).
-- Consulte en centros afiliados a Neuroa para la evaluación interdisciplinaria y terapias de apoyo.
-- Inicie terapias que fortalezcan la comunicación mientras espera la evaluación, para ayudar a su hijo a expresarse mejor.
-- Mantenga el seguimiento habitual y anote cualquier cambio para informar al especialista.
+- Pedir una evaluación del desarrollo en el control CRED en su establecimiento de salud del MINSA.
+- Considerar una evaluación interdisciplinaria en un centro afiliado para conocer mejor el desarrollo de su hijo.
+- Iniciar terapias de lenguaje para fortalecer su comunicación y comprensión.
+- Explorar estimulación temprana para acompañar su desarrollo general.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional y orientación sobre el desarrollo de su hijo.
-- Terapia de lenguaje infantil: Para fortalecer la comunicación, incluyendo comprensión y habla.
-- Estimulación temprana: Para apoyar el desarrollo general con actividades de juego guiadas.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo que necesita su hijo.
+- Terapia de lenguaje infantil: Para fortalecer su comunicación, comprensión y uso del lenguaje.
+- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -60,24 +57,24 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Alto · **Perfil:** Interacción social · **Reglas:** ninguna
 
-**Resumen:** Su hijo muestra varias señales en la interacción social, como que raramente responde a su nombre y es muy difícil lograr contacto visual con él. Usted mencionó que señala pocas veces para mostrar interés y juega poco a hacer como si. Esto indica que merece una evaluación profesional para entender mejor cómo apoyar su desarrollo social y de comunicación. Gracias por tomarse el tiempo de responder; dar este siguiente paso puede ayudar a su hijo a recibir el acompañamiento adecuado.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo muestra varias señales en la interacción social, como que rara vez mira cuando lo llaman por su nombre y es muy difícil lograr contacto visual con él. Estas señales indican que es importante pedir una evaluación profesional para entender mejor cómo apoyarlo. La evaluación ayudará a saber qué terapias pueden fortalecer sus habilidades sociales y de juego.
 
-**Perfil:** Las señales se notan más en la interacción social. Usted mencionó que a su hijo le cuesta mucho hacer contacto visual y que pocas veces sigue la mirada o juega a simular. También señaló que raramente responde cuando lo llaman por su nombre. Estas son áreas importantes para el desarrollo social.
+**Perfil:** La mayoría de las señales aparecen en la interacción social. Por ejemplo, usted mencionó que rara vez mira cuando lo llaman y que es muy difícil lograr contacto visual con él. También señaló que juega poco a simular y señala poco para mostrar interés.
 
 **Próximos pasos:**
 
-- Solicitar una evaluación con un especialista en desarrollo infantil, como neuropediatría o un equipo interdisciplinario, en el sistema público o en centros afiliados.
-- En el sistema público, acudir al control CRED del establecimiento de salud para seguimiento y posible derivación.
-- Explorar terapias para habilidades sociales y juego, que ayuden a fortalecer las relaciones con otros niños.
-- Considerar terapias de apoyo en comunicación y psicología infantil para acompañar emocionalmente a su hijo y a su familia.
+- Pedir una evaluación en el control CRED en su establecimiento de salud del MINSA o en EsSalud.
+- Solicitar una evaluación del desarrollo interdisciplinaria en un centro afiliado a Neuroa.
+- Considerar terapias para fortalecer habilidades sociales y juego, y terapia ocupacional para mejorar la coordinación y respuesta a estímulos.
+- Explorar apoyo en psicología infantil para manejo de emociones y orientación a la familia.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para evaluar el desarrollo completo de su hijo y orientar el apoyo necesario.
-- Programa de habilidades sociales y juego: Para que su hijo aprenda a compartir, mirar y jugar con otros niños.
-- Intervención temprana basada en el modelo Denver (ESDM): Para enseñar comunicación, juego e interacción en rutinas diarias con apoyo familiar.
-- Psicología infantil y escuela de padres: Para ayudar a manejar emociones y orientar a la familia en el acompañamiento.
-- Terapia ABA: Para enseñar habilidades de comunicación, juego y vida diaria con metas concretas.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo que necesita su hijo.
+- Programa de habilidades sociales y juego: Para aprender a compartir, mirar y jugar con otros niños.
+- Intervención temprana basada en el modelo Denver (ESDM): Para enseñar comunicación, juego e interacción con participación de la familia.
+- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones y orientar a la familia.
+- Terapia ocupacional e integración sensorial: Para mejorar la coordinación, actividades diarias y respuesta a sonidos y texturas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -87,23 +84,24 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 4 años · **Nivel:** Moderado · **Perfil:** Comunicación · **Reglas:** R04
 
-**Resumen:** Gracias por tomarse el tiempo para responder. Su hijo tiene algunas señales en la comunicación, como que usted mencionó que usa palabras muy inusuales y que señala poco para pedir lo que quiere. Este resultado indica que puede ser útil conversar con un profesional para apoyar mejor su desarrollo comunicativo, especialmente porque el cuestionario es menos preciso a los 4 años.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo tiene algunas señales en la comunicación, como que sus primeras palabras son muy inusuales y señala poco para pedir lo que quiere. Esto indica que puede necesitar apoyo para fortalecer cómo se comunica. Aunque el resultado es moderado y el cuestionario es menos preciso a esta edad, es importante conversar con un profesional para entender mejor sus necesidades y acompañarlo bien.
 
-**Perfil:** La mayoría de las señales se notan en la comunicación. Por ejemplo, usted indicó que su hijo usa palabras muy inusuales y señala menos de una vez por semana para pedir algo, aunque sí usa gestos y juega a simular.
+**Perfil:** La mayoría de las señales aparecen en la comunicación. Por ejemplo, usted mencionó que su hijo señala poco para pedir cosas y que sus primeras palabras son muy inusuales, aunque usa gestos con frecuencia.
 
 **Próximos pasos:**
 
-- Pida una cita con su pediatra para conversar este resultado y pedir orientación sobre una evaluación más detallada del desarrollo.
-- Consulte en el sistema público (control CRED en el establecimiento de salud o EsSalud) para seguimiento y posible derivación a especialistas.
-- Considere acudir a centros afiliados que ofrecen evaluación interdisciplinaria y terapias para fortalecer la comunicación y el juego.
-- Si tiene dudas o observa cambios, repita el tamizaje o consulte pronto con un profesional.
+- Seguir con el control CRED en su establecimiento de salud del MINSA para que revisen el desarrollo de su hijo.
+- Pedir una evaluación del desarrollo en un centro afiliado, como la Evaluación del desarrollo interdisciplinaria, para conocer mejor las necesidades de su hijo.
+- Considerar terapias para fortalecer la comunicación, como Terapia de lenguaje infantil y Fonoaudiología, que pueden ayudar a mejorar su forma de comunicarse.
+- Explorar apoyo en habilidades sociales y juego, con programas como Programa de habilidades sociales y juego o Intervención temprana basada en el modelo Denver (ESDM).
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación interdisciplinaria que oriente sobre el desarrollo de su hijo.
-- Terapia de lenguaje infantil: Para fortalecer la comunicación, la comprensión y el habla.
-- Intervención temprana basada en el modelo Denver (ESDM): Para apoyar la comunicación, el juego y la interacción con un programa basado en evidencia.
-- Terapia de lenguaje en línea: Para continuar la terapia de lenguaje de manera virtual y con apoyo familiar.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo según sus necesidades.
+- Terapia de lenguaje infantil: Para fortalecer su comunicación y desarrollo del habla y gestos.
+- Fonoaudiología: Para apoyar el habla, la voz y el lenguaje de su hijo.
+- Programa de habilidades sociales y juego: Para ayudar a su hijo a compartir, mirar y jugar con otros niños.
+- Intervención temprana basada en el modelo Denver (ESDM): Para enseñar comunicación, juego e interacción con participación de la familia.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -113,26 +111,22 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Prioritario · **Perfil:** Comunicación · **Reglas:** R02
 
-**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo tiene señales en el habla y desarrollo que merecen una evaluación profesional pronto. Usted mencionó que hay retraso en el habla y en el desarrollo. Por ejemplo, sus primeras palabras son muy inusuales y no ha alcanzado algunas habilidades a la edad esperada. Dar este paso es clave para conocer mejor sus necesidades y decidir el mejor apoyo para su comunicación y desarrollo.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo tiene señales en el habla y el desarrollo, como que sus primeras palabras son muy inusuales y que habla menos que otros niños de su edad. Por eso, es importante pedir una evaluación profesional pronto para entender mejor cómo apoyarle.
 
-**Perfil:** La mayoría de las señales aparecen en la comunicación: usted comentó que su hijo señala mucho para pedir y mostrar cosas, usa gestos y que sus primeras palabras son muy inusuales. Esto indica que la comunicación es el área principal para fortalecer.
+**Perfil:** La mayoría de las señales están en la comunicación. Usted mencionó que su hijo señala mucho para pedir y mostrar cosas, pero sus primeras palabras son muy inusuales y habla menos que otros niños.
 
 **Próximos pasos:**
 
-- Pida una evaluación con un especialista en neuropediatría o desarrollo infantil, su pediatra puede ayudarle con la derivación.
-- Acuda a los controles de crecimiento y desarrollo (CRED) en su establecimiento de salud o en EsSalud.
-- Considere comenzar terapias para apoyar la comunicación y el desarrollo mientras espera la evaluación.
-- Explore las opciones en los centros afiliados a Neuroa que ofrecen terapias para niños de 2 años.
+- Pedir una evaluación del desarrollo en el control CRED en su establecimiento de salud del MINSA.
+- Pedir una evaluación del desarrollo interdisciplinaria en un centro afiliado a Neuroa.
+- Considerar terapias de lenguaje infantil para fortalecer la comunicación de su hijo.
+- Explorar estimulación temprana para acompañar su desarrollo general.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente al apoyo del desarrollo de su hijo.
-- Terapia de lenguaje infantil: Para fortalecer su comunicación, incluyendo comprensión, habla y gestos.
-- Estimulación temprana: Para acompañar su desarrollo general con juego guiado junto a la familia.
-- Terapia ocupacional e integración sensorial: Para mejorar su coordinación y respuesta a sonidos y texturas.
-- Intervención temprana basada en el modelo Denver (ESDM): Para enseñar comunicación, juego e interacción con apoyo familiar.
-- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones y la orientación a la familia.
-- Fonoaudiología: Para evaluar y apoyar el habla y el lenguaje de su hijo.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo que necesita.
+- Terapia de lenguaje infantil: Para fortalecer su comunicación y el uso del lenguaje.
+- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -142,22 +136,21 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Prioritario · **Perfil:** Comunicación · **Reglas:** R02
 
-**Resumen:** Su hijo muestra señales importantes en el habla y el desarrollo, como que habla menos que otros niños y tiene un retraso en su desarrollo general. Usted mencionó que sus primeras palabras son muy inusuales y que señala poco para pedir cosas. Por esto, le recomendamos una evaluación del desarrollo pronto para saber cómo apoyarlo mejor y explorar terapias que le ayuden desde ya.
+**Resumen:** Gracias por tomarse el tiempo para responder. Su hijo tiene señales en el habla y el desarrollo, como que habla menos que otros niños y se ha demorado en algunos hitos. Por eso, los profesionales recomiendan una evaluación del desarrollo pronto para entender mejor cómo apoyarle. Esto ayudará a saber qué terapias pueden fortalecer su comunicación y desarrollo general.
 
-**Perfil:** Aparecen más señales en la comunicación: usted mencionó que habla menos que otros niños, usa pocos gestos y señala poco para pedir cosas. Estas señales muestran que la comunicación es un área para reforzar con terapias adecuadas.
+**Perfil:** Las señales más fuertes están en la comunicación. Usted mencionó que su hijo habla menos que otros niños, señala poco para pedir cosas y usa pocos gestos. Estas son áreas clave para apoyar con terapias de lenguaje y desarrollo.
 
 **Próximos pasos:**
 
-- Pedir una cita con su pediatra en los próximos días para contarle estas señales y pedir una evaluación del desarrollo.
-- Solicitar una evaluación profesional en neuropediatría o equipo interdisciplinario para una valoración completa.
-- Buscar apoyo en el sistema público en el control CRED y EsSalud, donde pueden derivarle a especialistas.
-- Contactar centros afiliados que ofrecen evaluaciones y terapias para fortalecer la comunicación y el desarrollo de su hijo.
+- Pedir una evaluación del desarrollo en el control CRED en su establecimiento de salud del MINSA.
+- Considerar la evaluación del desarrollo interdisciplinaria en centros afiliados para conocer mejor las necesidades de su hijo.
+- Explorar terapias de lenguaje infantil y estimulación temprana para fortalecer la comunicación y el desarrollo general.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para obtener una evaluación profesional del desarrollo que oriente el apoyo que necesita.
-- Terapia de lenguaje infantil: Para fortalecer su comunicación, incluyendo comprensión, habla y uso de gestos.
-- Estimulación temprana: Para acompañar su desarrollo motor, social y del lenguaje con actividades de juego guiadas.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo a su desarrollo.
+- Terapia de lenguaje infantil: Para fortalecer la comunicación, el habla y el uso de gestos.
+- Estimulación temprana: Para acompañar el desarrollo motor, social y del lenguaje con actividades de juego guiadas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -167,21 +160,22 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Prioritario · **Perfil:** Sin área predominante · **Reglas:** R05
 
-**Resumen:** Gracias por tomarse el tiempo de responder este cuestionario. Usted mencionó que su hijo dejó de hacer cosas que ya hacía, lo que es una señal que debe revisarse pronto. Este resultado indica que es importante pedir una evaluación profesional para entender mejor cómo apoyar su desarrollo. Aunque las respuestas no muestran retrasos claros en otras áreas, la pérdida de habilidades requiere atención rápida.
+**Resumen:** Gracias por tomarse el tiempo de responder. Usted mencionó que su hijo dejó de hacer cosas que ya hacía, lo que es una señal importante para revisar pronto. Aunque su hijo muestra muchas conductas típicas para su edad, esta pérdida de habilidades merece una evaluación profesional para entender mejor cómo apoyarle.
 
-**Perfil:** No se detectan áreas predominantes con señales claras en comunicación o interacción social. Las respuestas muestran que su hijo se comunica y relaciona con facilidad, pero la pérdida de habilidades es un aspecto que debe revisarse con un especialista.
+**Perfil:** No se identificaron señales predominantes en comunicación ni en interacción social. Sus respuestas indican que su hijo mantiene habilidades como mirar al llamar su nombre, señalar y jugar a simular con frecuencia.
 
 **Próximos pasos:**
 
-- Solicitar una evaluación del desarrollo con un especialista (neuropediatría, psicología o equipo interdisciplinario) lo antes posible.
-- Acudir al control CRED en el establecimiento de salud o a EsSalud para seguimiento y derivación.
-- Consultar en centros afiliados a Neuroa donde ofrecen evaluación interdisciplinaria y orientación familiar.
-- Observar y anotar cambios en las habilidades de su hijo para informar al equipo de salud.
+- Pedir una cita para control CRED en su establecimiento de salud del MINSA y contar lo que ha notado sobre la pérdida de habilidades.
+- Solicitar una evaluación del desarrollo con un especialista en neuropediatría o equipo interdisciplinario para entender mejor las necesidades de su hijo.
+- Considerar terapias de apoyo mientras se realiza la evaluación, como estimulación temprana y terapia ocupacional.
+- Consultar también en EsSalud para acceso a servicios especializados.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para evaluar el desarrollo del niño y orientar mejor a la familia.
-- Estimulación temprana: Para acompañar el desarrollo general con actividades de juego guiadas.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo adecuado a su hijo.
+- Estimulación temprana: Para acompañar el desarrollo general de su hijo con actividades de juego guiadas.
+- Terapia ocupacional e integración sensorial: Para ayudar en la coordinación, actividades diarias y respuesta a estímulos sensoriales.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -191,26 +185,26 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Prioritario · **Perfil:** Interacción social · **Reglas:** R05
 
-**Resumen:** El resultado muestra señales que han llevado a recomendar una evaluación profesional pronto, porque usted mencionó que su hijo dejó de hacer cosas que ya hacía y que es difícil lograr contacto visual con él. Aunque sus primeras palabras son típicas, estas señales merecen un seguimiento cercano. Una evaluación con especialistas será fundamental para entender cómo apoyarle mejor en esta etapa tan importante de su desarrollo.
+**Resumen:** Gracias por tomarse el tiempo para responder. Su hijo dejó de hacer cosas que ya hacía, como usted mencionó, y muestra señales en la forma en que se relaciona con los demás, como mirar poco cuando lo llaman y jugar poco a simular. Por eso, le recomendamos pedir una evaluación profesional pronto para entender mejor sus necesidades y cómo apoyarlo.
 
-**Perfil:** Las señales principales que aparecerieron están en la interacción social, como cuando usted dijo que su hijo rara vez mira cuando le llaman y juega poco a simular o mostrar intereses, lo que afecta su relación con otros.
+**Perfil:** Las señales más claras están en la interacción social. Usted mencionó que su hijo rara vez mira cuando lo llaman, tiene dificultad para hacer contacto visual y juega poco a simular o a compartir intereses con otros.
 
 **Próximos pasos:**
 
-- Pida una cita con su pediatra en los próximos días para contarle lo que ha notado y solicitar una evaluación especial.
-- Busque una evaluación interdisciplinaria en un centro afiliado a Neuroa, donde un equipo especializado podrá ayudar a entender mejor su desarrollo.
-- Continúe asistiendo al control CRED en su establecimiento de salud o a las citas en EsSalud para seguimiento y apoyo.
-- Considere iniciar terapias de apoyo en paralelo mientras esperan la evaluación, para fortalecer su desarrollo social y comunicativo.
+- Pedir una cita con su pediatra en los próximos días y contarle que su hijo dejó de hacer cosas que ya hacía.
+- Solicitar una evaluación del desarrollo con un especialista en neuropediatría o equipo interdisciplinario.
+- Considerar terapias en centros afiliados que apoyen la interacción social y el desarrollo general.
+- Seguir con el control CRED en su establecimiento de salud del MINSA o en EsSalud.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: para una evaluación profesional interdisciplinaria que oriente mejor el apoyo a su hijo.
-- Estimulación temprana: para acompañar su desarrollo motor, social y del lenguaje con actividades de juego guiadas.
-- Terapia ocupacional e integración sensorial: para trabajar la coordinación, actividades diarias y respuestas sensoriales.
-- Programa de habilidades sociales y juego: para aprender habilidades sociales y juego en grupos pequeños con otros niños.
-- Intervención temprana basada en el modelo Denver (ESDM): para enseñar comunicación, juego e interacción en rutinas diarias con apoyo de la familia.
-- Psicología infantil y escuela de padres: para apoyar el manejo de emociones, rabietas y orientarse como familia.
-- Terapia ABA: para enseñar habilidades de comunicación, juego y vida diaria con un enfoque conductual.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo que necesita su hijo.
+- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
+- Terapia ocupacional e integración sensorial: Para trabajar la coordinación y la respuesta a sonidos y texturas.
+- Programa de habilidades sociales y juego: Para aprender a compartir, mirar y jugar con otros niños.
+- Intervención temprana basada en el modelo Denver (ESDM): Para enseñar comunicación, juego e interacción con participación de la familia.
+- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones y orientar a la familia.
+- Terapia ABA: Para enseñar habilidades de comunicación, juego y vida diaria con metas claras.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -220,28 +214,21 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Bajo · **Perfil:** Comunicación · **Reglas:** R08
 
-**Resumen:** Gracias por tomarse el tiempo de responder. Este resultado indica que por ahora hay pocas señales de alerta, pero como mencionó que hay otro familiar con diagnóstico de autismo, es importante vigilar el desarrollo de su hijo. Usted mencionó que su hijo señala para pedir y mostrar cosas muchas veces al día, y que juega a simular habitualmente. Es bueno seguir apoyando su comunicación y socialización.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo tiene pocas señales por ahora, pero usted mencionó que otro familiar tiene diagnóstico de autismo. También notó que sus primeras palabras son muy inusuales y que usa muchos gestos para comunicarse. Esto indica que su hijo está en una etapa donde apoyar su comunicación es valioso. Seguir con los controles regulares y observar su desarrollo es importante para acompañarlo bien.
 
-**Perfil:** Las señales mayoritarias están en la comunicación. Por ejemplo, usted mencionó que su hijo usa gestos y señala con frecuencia, pero sus primeras palabras son inusuales. Esto orienta a fortalecer la comunicación con terapias adecuadas.
+**Perfil:** La mayoría de las señales aparecieron en la comunicación. Por ejemplo, usted mencionó que su hijo señala muchas veces al día para pedir o mostrar cosas y usa gestos simples con frecuencia. Estas son formas importantes de comunicarse a esta edad.
 
 **Próximos pasos:**
 
-- Continuar con los controles de crecimiento y desarrollo (CRED) en el establecimiento de salud.
-- Mencionar el resultado y la familiaridad con autismo en el próximo control pediátrico.
-- Buscar apoyo en centros afiliados que ofrecen terapias para fortalecer la comunicación.
-- Vigilar cambios en el desarrollo y repetir el tamizaje en unos meses si tiene dudas.
+- Seguir con el control CRED en su establecimiento de salud del MINSA o en EsSalud para monitorear el desarrollo de su hijo.
+- Consultar en centros afiliados a Neuroa para terapias que apoyen la comunicación y el desarrollo general.
+- Considerar terapias de lenguaje infantil para fortalecer la comunicación y el uso de gestos.
+- Explorar estimulación temprana para acompañar el desarrollo motor, social y del lenguaje de su hijo.
 
 **Terapias sugeridas:**
 
-- Terapia de lenguaje infantil: Para fortalecer la comunicación, comprensión y uso de gestos y palabras.
-- Estimulación temprana: Para acompañar el desarrollo general con actividades de juego guiadas que incluyen lenguaje y socialización.
-- Evaluación del desarrollo interdisciplinaria: Para evaluar el desarrollo de su hijo y orientar a la familia sobre cómo apoyarlo.
-- Programa de habilidades sociales y juego: Para apoyar el aprendizaje de habilidades sociales y el juego con otros niños.
-- Intervención temprana basada en el modelo Denver (ESDM): Para enseñar comunicación y juego con participación de la familia en rutinas diarias.
-- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones, rabietas y orientar a la familia.
-- Terapia ABA: Para enseñar habilidades de comunicación y juego usando un programa estructurado con metas claras.
-- Fonoaudiología: Para evaluar y fortalecer el habla, la voz y el lenguaje.
-- Orientación virtual para padres: Para que la familia aprenda estrategias de comunicación y juego en casa de forma virtual.
+- Terapia de lenguaje infantil: Para fortalecer su comunicación, comprensión y uso del habla y gestos.
+- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -251,25 +238,22 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Prioritario · **Perfil:** Comunicación · **Reglas:** R02, R05
 
-**Resumen:** Gracias por responder con detalle. Usted mencionó que su hijo deja de hacer cosas que ya hacía y presenta señales en el habla y el desarrollo. Esto indica que es importante pedir una evaluación profesional pronto para entender mejor cómo apoyarle. La evaluación permitirá orientar las terapias adecuadas para fortalecer su comunicación y habilidades.
+**Resumen:** Gracias por tomarse el tiempo para responder. Su hijo muestra señales importantes en el habla y el desarrollo, como que habla menos que otros niños y que dejó de hacer cosas que ya hacía. Por eso, le recomendamos pedir una evaluación profesional pronto para entender mejor sus necesidades y apoyar su desarrollo de forma adecuada.
 
-**Perfil:** La mayoría de las señales se presentaron en la comunicación. Por ejemplo, usted mencionó que las primeras palabras de su hijo son muy inusuales, habla menos que otros niños y usa pocos gestos para comunicarse.
+**Perfil:** Las señales aparecen principalmente en la comunicación. Usted mencionó que su hijo habla menos que otros niños, señala poco para pedir cosas y usa pocos gestos. Estas áreas son clave para fortalecer su comunicación.
 
 **Próximos pasos:**
 
-- Solicitar una evaluación del desarrollo con un especialista (neuropediatra o equipo interdisciplinario) lo antes posible.
-- Acudir al control CRED en el establecimiento de salud o a EsSalud para seguimiento y orientación médica.
-- Consultar en los centros afiliados que ofrecen evaluación diagnóstica y terapias como terapia de lenguaje y estimulación temprana.
-- Iniciar terapias de apoyo para fortalecer la comunicación y el desarrollo motor mientras espera la evaluación.
+- Pedir una evaluación del desarrollo en el control CRED en su establecimiento de salud del MINSA.
+- Pedir una evaluación del desarrollo en EsSalud.
+- Contactar centros afiliados que ofrecen evaluación interdisciplinaria para conocer mejor el desarrollo de su hijo.
+- Considerar terapias de lenguaje y estimulación temprana para apoyar la comunicación y el desarrollo general.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional del desarrollo que oriente su seguimiento y apoyo.
-- Terapia de lenguaje infantil: Para fortalecer su comunicación, comprensión y uso del habla y gestos.
-- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas en familia.
-- Terapia ocupacional e integración sensorial: Para mejorar la coordinación, actividades diarias y respuestas a estímulos sensoriales.
-- Intervención temprana basada en el modelo Denver (ESDM): Para un programa intensivo que enseña comunicación y juego con participación familiar.
-- Fonoaudiología: Para evaluación y terapia del habla, voz y lenguaje.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo que necesita su hijo.
+- Terapia de lenguaje infantil: Para fortalecer su comunicación y desarrollo del habla.
+- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -277,23 +261,22 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 ## C27. 1 año, sin señales
 
-**Edad:** 1 años · **Nivel:** Bajo · **Perfil:** Sin área predominante · **Reglas:** R04
+**Edad:** 1 año · **Nivel:** Bajo · **Perfil:** Sin área predominante · **Reglas:** R04
 
-**Resumen:** Gracias por tomarse el tiempo de responder este tamizaje para su hijo de 1 año. Usted mencionó que su hijo tiene contacto visual fácil, señala para pedir y mostrar cosas, y usa gestos con frecuencia, señales importantes en su comunicación y socialización. Por ahora, el resultado indica pocas señales preocupantes, pero como está en una edad con muchos cambios, le recomendamos seguir acompañando su desarrollo y consultar a un pediatra si nota algo inusual.
+**Resumen:** Gracias por tomarse el tiempo para responder. Su hijo de 1 año no muestra señales que suelen aparecer en niños con trastorno del espectro autista. Usted mencionó que siempre responde cuando lo llaman por su nombre y que señala muchas veces al día para mostrar interés. Aunque el resultado es tranquilizador, a esta edad el tamizaje es solo orientativo, por eso es importante seguir con los controles y observar su desarrollo.
 
-**Perfil:** No se detectan señales concentradas en comunicación o interacción social. Usted señaló que su hijo mira cuando le llaman, juega haciendo como si, y consuela a los demás, lo que muestra un desarrollo positivo en ambas áreas.
+**Perfil:** No se identificaron señales predominantes en comunicación ni en interacción social. Por ejemplo, usted mencionó que su hijo siempre mira cuando lo llaman y usa gestos simples con frecuencia.
 
 **Próximos pasos:**
 
-- Siga con los controles regulares de crecimiento y desarrollo (CRED) en el establecimiento de salud más cercano.
-- Si nota alguna preocupación en el desarrollo o comportamiento de su hijo, consulte a su pediatra para un seguimiento adecuado.
-- Puede repetir este tamizaje cuando su hijo cumpla 1 año y 6 meses para obtener un resultado más preciso.
-- Explore las terapias disponibles en los centros afiliados a Neuroa para apoyar el desarrollo general, si así lo recomienda su pediatra.
+- Seguir con el control CRED en su establecimiento de salud del MINSA para monitorear el desarrollo de su hijo.
+- Puede acudir a EsSalud para continuar con el seguimiento del desarrollo infantil.
+- Si tiene dudas o nota cambios, consulte con el pediatra de su hijo.
+- Puede considerar la estimulación temprana en centros afiliados para acompañar su desarrollo general.
 
 **Terapias sugeridas:**
 
-- Estimulación temprana: Para acompañar el desarrollo general de su hijo con actividades de juego guiadas.
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación del desarrollo interdisciplinaria que oriente a la familia sobre el apoyo necesario.
+- Estimulación temprana: Para acompañar el desarrollo motor, social y del lenguaje con actividades de juego guiadas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -301,25 +284,23 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 ## C28. 1 año, varias señales
 
-**Edad:** 1 años · **Nivel:** Alto · **Perfil:** Comunicación · **Reglas:** R04
+**Edad:** 1 año · **Nivel:** Alto · **Perfil:** Comunicación · **Reglas:** R04
 
-**Resumen:** Su evaluación muestra señales importantes en la comunicación, como que su hijo señala para pedir cosas pocas veces y usa gestos simples con poca frecuencia. También mencionó que sus primeras palabras fueron poco usuales. El resultado indica que es valioso pedir una evaluación profesional para entender mejor cómo acompañar su desarrollo. Gracias por tomarse el tiempo de compartir estas respuestas.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo muestra varias señales en la comunicación, como que sus primeras palabras son muy inusuales y que usa pocos gestos para comunicarse. Esto indica que es importante pedir una evaluación profesional para conocer mejor su desarrollo y así apoyarlo de la mejor manera.
 
-**Perfil:** Más señales aparecieron en la comunicación, por ejemplo, usted mencionó que señala pocas veces para pedir algo y usa gestos simples con poca frecuencia. Además, dijo que sus primeras palabras son muy inusuales.
+**Perfil:** La mayoría de las señales aparecen en la comunicación: usted mencionó que su hijo tiene pocas palabras y usa pocos gestos para pedir cosas. Estas son formas importantes en que los niños se comunican con los demás.
 
 **Próximos pasos:**
 
-- Pida una evaluación del desarrollo con un especialista en neuropediatría, psicología infantil o terapia de lenguaje a través de su centro de salud o EsSalud.
-- Consulte en los centros afiliados a Neuroa para acceder a una evaluación interdisciplinaria que incluya neuropediatría y terapia del lenguaje.
-- Inicie terapias de apoyo para fortalecer la comunicación de su hijo, mientras espera la evaluación profesional.
-- Continúe con los controles de crecimiento y desarrollo (CRED) y repita esta prueba a los 18 meses si tiene dudas.
+- Pedir una evaluación con un especialista en neuropediatría o psicología infantil en el control CRED de su establecimiento de salud del MINSA o en EsSalud.
+- Contactar a centros afiliados que ofrecen evaluación interdisciplinaria para conocer el desarrollo de su hijo y orientar a la familia.
+- Considerar terapias de estimulación temprana para acompañar su desarrollo general y terapia de lenguaje para fortalecer su comunicación.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación integral del desarrollo que oriente el apoyo que su hijo necesita.
-- Terapia de lenguaje infantil: Para fortalecer la comunicación, comprensión y el habla de su hijo.
-- Estimulación temprana: Para acompañar el desarrollo motor, social y del lenguaje con actividades de juego guiadas.
-- Intervención temprana basada en el modelo Denver (ESDM): Para apoyar la comunicación, el juego y la interacción, con participación de la familia.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo a su desarrollo.
+- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
+- Terapia de lenguaje infantil: Para fortalecer su comunicación, comprensión y uso de gestos.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -329,24 +310,23 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 5 años · **Nivel:** Alto · **Perfil:** Interacción social · **Reglas:** R04
 
-**Resumen:** Gracias por tomarse el tiempo en responder. El resultado indica que hay varias señales relacionadas con la manera en que su hijo se relaciona con otras personas, como que rara vez mira cuando le llaman por su nombre, tiene muy difícil hacer contacto visual y pocas veces juega a simular o señala para mostrar interés. Aunque el resultado es menos preciso por la edad de su hijo, es recomendable una evaluación profesional para entender mejor sus necesidades y apoyar su desarrollo social.
+**Resumen:** Gracias por tomarse el tiempo para responder. Su hijo muestra varias señales en la interacción social, como que rara vez le mira cuando lo llama y que es muy difícil lograr contacto visual con él. Estas señales indican que es importante pedir una evaluación profesional para entender mejor cómo apoyarlo. La evaluación ayudará a saber qué terapias pueden fortalecer sus habilidades sociales y de juego.
 
-**Perfil:** Las señales aparecieron principalmente en la interacción social. Por ejemplo, usted mencionó que su hijo rara vez mira cuando lo llaman, tiene dificultad para el contacto visual y juega poco a simular o mostrar cosas que le interesan.
+**Perfil:** La mayoría de las señales están en la interacción social. Usted mencionó que su hijo rara vez mira cuando lo llama, tiene dificultad para el contacto visual y juega poco a simular o compartir intereses.
 
 **Próximos pasos:**
 
-- Solicite una evaluación con un especialista en neuropediatría o equipo interdisciplinario para conocer mejor el desarrollo de su hijo.
-- Puede acudir al control CRED en su establecimiento de salud o a EsSalud para un seguimiento y posible derivación.
-- Considere iniciar terapias para fortalecer habilidades sociales y de comunicación mientras recibe evaluación.
-- Utilice los centros afiliados a Neuroa que ofrecen terapias recomendadas para niños con señales sociales.
+- Pedir una evaluación en el control CRED en su establecimiento de salud del MINSA o en EsSalud.
+- Solicitar una evaluación del desarrollo interdisciplinaria en un centro afiliado a Neuroa.
+- Considerar terapias para habilidades sociales y juego, y terapias conductuales que apoyen la comunicación y la interacción social.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para obtener una evaluación diagnóstica que orienta sobre el desarrollo y las necesidades de su hijo.
-- Programa de habilidades sociales y juego: Para ayudar a su hijo a aprender a compartir, mirar y jugar con otros niños.
-- Intervención temprana basada en el modelo Denver (ESDM): Para enseñar comunicación e interacción mediante un programa basado en evidencia con participación de los padres.
-- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones y orientar a la familia en el acompañamiento.
-- Terapia ABA: Para enseñar habilidades de comunicación y juego con técnicas conductuales basadas en evidencia.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo adecuado a su hijo.
+- Programa de habilidades sociales y juego: Para aprender a compartir, mirar y jugar con otros niños.
+- Intervención temprana basada en el modelo Denver (ESDM): Para enseñar comunicación, juego e interacción con participación de la familia.
+- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones y orientar a la familia.
+- Terapia ABA: Para enseñar habilidades de comunicación, juego y vida diaria con metas claras.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -356,23 +336,21 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 8 años · **Nivel:** Alto · **Perfil:** Interacción social · **Reglas:** R04
 
-**Resumen:** Su hijo muestra señales en cómo se relaciona con otros, como que rara vez mira cuando lo llaman o sigue la mirada de alguien más, y que juega poco a simular. Estas pueden ser pistas para apoyar su interacción social. Como su hijo tiene 8 años, la evaluación profesional será la forma más segura de entender sus necesidades actuales y definir cómo apoyarlo mejor.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo muestra varias señales en cómo se relaciona con los demás, como que rara vez mira cuando lo llaman y que es difícil lograr contacto visual. A esta edad, es importante pedir una evaluación profesional para entender mejor sus necesidades y apoyar su desarrollo social y comunicativo.
 
-**Perfil:** La mayoría de las señales están en la interacción social. Usted mencionó que a su hijo le cuesta hacer contacto visual, jugar a simular, y compartir intereses mediante señas o miradas.
+**Perfil:** La mayoría de las señales aparecen en la interacción social. Usted mencionó que su hijo rara vez mira cuando lo llaman, tiene poco contacto visual y juega poco a simular o compartir intereses con otros.
 
 **Próximos pasos:**
 
-- Pida una evaluación del desarrollo con un especialista, como un neuropediatra o psicólogo infantil, para entender mejor las señales.
-- Hable con el pediatra de su hijo durante el control CRED o en EsSalud para consultar el resultado y obtener orientación.
-- Explore los centros afiliados que ofrecen terapias que pueden apoyar la interacción social y la comunicación de su hijo.
-- Considere la escuela y el entorno educativo para aportar información útil a los profesionales que atiendan a su hijo.
+- Pedir una evaluación en el control CRED en su establecimiento de salud del MINSA o en EsSalud.
+- Solicitar una evaluación del desarrollo interdisciplinaria en un centro afiliado.
+- Considerar terapias para habilidades sociales y juego, y terapia ABA para fortalecer la comunicación y la interacción social.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: para una evaluación detallada del desarrollo y guía especializada de profesionales
-- Programa de habilidades sociales y juego: para que su hijo aprenda a compartir, mirar y jugar mejor con otros niños
-- Psicología infantil y escuela de padres: para apoyar el manejo de emociones y ofrecer orientación a la familia
-- Terapia ABA: para enseñar habilidades de comunicación, juego y vida diaria con apoyo estructurado
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo que necesita su hijo.
+- Programa de habilidades sociales y juego: Para aprender a compartir, mirar y jugar con otros niños.
+- Terapia ABA: Para enseñar habilidades de comunicación, juego y vida diaria con apoyo estructurado.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -382,21 +360,22 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 13 años · **Nivel:** Alto · **Perfil:** Interacción social · **Reglas:** R04
 
-**Resumen:** Gracias por tomarse el tiempo para responder. El resultado muestra que su hijo presenta varias señales relacionadas con la interacción social, como que raramente mira cuando lo llaman o comparte intereses señalando. Esto significa que es importante pedir una evaluación profesional para entender mejor sus necesidades y cómo apoyarle.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo muestra varias señales en cómo se relaciona con los demás, como que rara vez mira cuando lo llaman y que es muy difícil lograr contacto visual. Estas señales indican que es importante pedir una evaluación profesional para entender mejor sus necesidades y cómo apoyarlo.
 
-**Perfil:** Las señales principales están en la interacción social: usted mencionó que es muy difícil que establezca contacto visual, que señala pocas veces para mostrar interés y que rara vez consuela a otros. Estas conductas ayudan a entender cómo se relaciona con otras personas.
+**Perfil:** Las señales aparecen principalmente en la interacción social. Usted mencionó que su hijo rara vez señala para mostrar interés, juega poco a simular y rara vez consuela a otros cuando están tristes. Estas conductas son parte de cómo los niños se relacionan con su entorno y otras personas.
 
 **Próximos pasos:**
 
-- Pida una evaluación con un especialista en neuropediatría, psicología o terapia de lenguaje en un centro del sistema público, como el control CRED o EsSalud.
-- Considere pedir una evaluación interdisciplinaria en un centro afiliado para conocer mejor el desarrollo y recibir orientación familiar.
-- Mientras tanto, observe y anote cualquier cambio en la comunicación o en la interacción de su hijo para compartirlo con el médico.
-- No olvide que a esta edad el resultado es solo orientativo y la evaluación profesional es lo más confiable.
+- Pedir una evaluación del desarrollo en el control CRED en su establecimiento de salud del MINSA o en EsSalud.
+- Contactar centros afiliados que ofrecen evaluación interdisciplinaria para conocer mejor el desarrollo de su hijo.
+- Considerar terapias de psicología infantil y orientación a padres para apoyar el manejo de emociones y conductas.
+- Explorar terapia ocupacional para trabajar en la coordinación y respuesta a estímulos sensoriales.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional del desarrollo junto a un equipo interdisciplinario.
-- Psicología infantil y escuela de padres: Para apoyar en el manejo de emociones y orientación para la familia.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo que necesita su hijo.
+- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones y orientar a la familia.
+- Terapia ocupacional e integración sensorial: Para mejorar la coordinación, actividades diarias y respuesta a sonidos o texturas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -406,24 +385,21 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 3 años · **Nivel:** Bajo · **Perfil:** Sin área predominante · **Reglas:** R04
 
-**Resumen:** Gracias por tomarse el tiempo para responder. El resultado indica pocas señales por ahora, por ejemplo, usted mencionó que su hijo mira cuando lo llaman y usa gestos con frecuencia. Aunque por ahora no hay señales claras de autismo, este resultado es menos preciso a los 3 años, así que es importante seguir observando su desarrollo y buscar apoyo si algo le preocupa.
+**Resumen:** Gracias por tomarse el tiempo para responder. El resultado muestra pocas señales por ahora, aunque usted mencionó que a su hijo le cuesta un poco aprender cosas nuevas. Esto significa que, por ahora, no hay señales claras de trastorno del espectro autista, pero el desarrollo puede cambiar con el tiempo. Es importante seguir apoyando su crecimiento y observar cómo avanza.
 
-**Perfil:** Las señales aparecen muy leves y sin concentración en un área particular. Usted mencionó que su hijo aprende un poco más lento, pero se comunica y socializa bien, usando gestos y jugando a simular frecuentemente.
+**Perfil:** No se identificó un área predominante de señales. Por ejemplo, usted mencionó que su hijo señala para pedir y mostrar cosas, juega a simular y sigue la mirada, lo que indica buenas habilidades sociales y de comunicación.
 
 **Próximos pasos:**
 
-- Seguir con los controles regulares de crecimiento y desarrollo (CRED) en el establecimiento de salud o EsSalud.
-- Si nota algo nuevo que le preocupa, cómo aprendizaje o comunicación, consulte con su pediatra.
-- Si quiere, puede acudir a terapias que favorezcan el aprendizaje y la comunicación en centros afiliados.
-- Puede repetir esta prueba en unos meses para ver cómo avanza su hijo.
+- Seguir con el control CRED en su establecimiento de salud del MINSA para monitorear el desarrollo de su hijo.
+- Puede acudir a centros afiliados a Neuroa para terapias que apoyen el aprendizaje y la comunicación de su hijo.
+- Considerar la terapia de lenguaje infantil para fortalecer la comunicación.
+- Explorar estimulación temprana para acompañar el desarrollo general mediante actividades de juego guiadas.
 
 **Terapias sugeridas:**
 
-- Terapia de lenguaje infantil: Para fortalecer su comunicación y uso del habla y gestos.
+- Terapia de lenguaje infantil: Para fortalecer su comunicación y el uso de gestos.
 - Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
-- Psicología infantil y escuela de padres: Para apoyar a la familia en el manejo de emociones y orientación.
-- Fonoaudiología: Para evaluar y apoyar el desarrollo del habla y el lenguaje.
-- Terapia de lenguaje en línea: Para mejorar la comunicación con sesiones virtuales de lenguaje en familia.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -433,29 +409,20 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Bajo · **Perfil:** Sin área predominante · **Reglas:** ninguna
 
-**Resumen:** Gracias por tomarse el tiempo de responder. El resultado muestra pocas señales por ahora, lo que significa que por ahora no hay indicios claros de dificultades en el desarrollo de su hijo. Usted mencionó que su hijo mira cuando lo llama y señala muchas veces para pedir y mostrar cosas. Esto es una buena señal que habla de su interés por comunicarse y compartir. Seguir con los controles y observaciones es importante para acompañar su crecimiento.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo tiene pocas señales que suelen aparecer en niños con trastorno del espectro autista. Usted mencionó que siempre responde cuando lo llaman por su nombre y que señala muchas veces al día para mostrar interés o pedir algo. Por ahora, este resultado es tranquilizador, pero el desarrollo puede cambiar con el tiempo, por eso es importante seguir apoyándolo y observando su crecimiento.
 
-**Perfil:** Las señales que aparecieron son mínimas y no predominan en ninguna área específica. Usted mencionó que el contacto visual es muy difícil, pero su hijo utiliza gestos y señalamientos con frecuencia, además juega a simular y consolar a otros, lo cual muestra habilidades sociales y de comunicación adecuadas a su edad.
+**Perfil:** No se observan señales concentradas en un área específica. Por ejemplo, su hijo siempre responde a su nombre y señala para pedir o mostrar cosas, pero tiene dificultad para el contacto visual. Esto indica que no hay un perfil predominante en comunicación o interacción social.
 
 **Próximos pasos:**
 
-- Continuar con los controles regulares en el sistema público en el establecimiento de salud (CRED).
-- Si en cualquier momento nota cambios o preocupaciones, hable con el pediatra de su hijo.
-- Puede aprovechar las terapias ofrecidas en los centros afiliados para acompañar el desarrollo general si así lo desea.
-- Repetir este tamizaje en unos meses para observar cualquier cambio en el desarrollo.
+- Seguir con el control CRED en su establecimiento de salud del MINSA para monitorear el desarrollo de su hijo.
+- Puede acudir a centros afiliados a Neuroa para terapias que apoyen el desarrollo general y la comunicación de su hijo.
+- Considerar terapias como estimulación temprana y terapia de lenguaje para fortalecer habilidades de comunicación y desarrollo general.
 
 **Terapias sugeridas:**
 
-- Terapia de lenguaje infantil: Para fortalecer su comunicación y el uso del lenguaje y gestos.
-- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
-- Terapia ocupacional e integración sensorial: Para apoyar la coordinación y la respuesta a sonidos y texturas.
-- Programa de habilidades sociales y juego: Para fortalecer habilidades sociales y el juego con otros niños.
-- Intervención temprana basada en el modelo Denver (ESDM): Para enseñar comunicación e interacción con la familia en actividades diarias.
-- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones y orientar a la familia.
-- Terapia ABA: Para enseñar habilidades de comunicación y juego basadas en evidencia.
-- Fonoaudiología: Para evaluar y apoyar el habla y el lenguaje.
-- Orientación virtual para padres: Para aprender estrategias de comunicación y juego en casa de forma virtual.
-- Psicomotricidad: Para fortalecer la coordinación y el desarrollo motor con juego y movimiento.
+- Terapia de lenguaje infantil: Para desarrollar la comprensión, el habla y la comunicación con gestos.
+- Estimulación temprana: Para acompañar el desarrollo motor, social y del lenguaje con actividades de juego guiadas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -465,24 +432,23 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 3 años · **Nivel:** Moderado · **Perfil:** Interacción social · **Reglas:** R04, R07
 
-**Resumen:** Su hijo de 3 años mostró algunas señales en la interacción social, como que raramente le mira cuando le llama y que señala pocas veces para mostrarle cosas que le interesan. También usted mencionó que está casi siempre triste o sin ganas de jugar y que se asusta con cambios o ruidos. Estas señales merecen atención y una valoración profesional puede dar un mejor seguimiento para apoyarle.
+**Resumen:** Gracias por tomarse el tiempo para responder. Su hijo de 3 años muestra algunas señales en la interacción social, como que raramente responde cuando lo llaman por su nombre y señala pocas veces para mostrar interés. También mencionó que ha estado casi siempre triste o sin ganas de jugar, y que se asusta con cambios o ruidos. Por eso, es importante conversar con un profesional para entender mejor cómo apoyarle.
 
-**Perfil:** La mayoría de las señales aparecen en la interacción social: usted mencionó que raramente responde al llamado por su nombre y que señala pocas veces para mostrar interés. También juega simulando y muestra consuelo cuando alguien está triste.
+**Perfil:** Las señales aparecen principalmente en la interacción social. Usted mencionó que su hijo raramente responde a su nombre, señala pocas veces para mostrar interés y sigue con la mirada hacia donde usted mira menos de una vez a la semana.
 
 **Próximos pasos:**
 
-- Pedir una cita con su pediatra en las próximas semanas para comentar estas señales y pedir una evaluación del desarrollo.
-- Buscar una evaluación profesional interdisciplinaria en centros afiliados a Conecta o en el sistema público (control CRED, EsSalud).
-- Mientras espera, puede iniciar terapias para fortalecer habilidades sociales y emocionales.
-- Mantener seguimiento regular en el control de crecimiento y desarrollo (CRED).
+- Seguir con el control CRED en su establecimiento de salud del MINSA y contarles este resultado y sus observaciones.
+- Pedir una evaluación del desarrollo en un centro afiliado, como la Evaluación del desarrollo interdisciplinaria, para conocer mejor las necesidades de su hijo.
+- Considerar terapias que apoyen la interacción social, como el Programa de habilidades sociales y juego y la Intervención temprana basada en el modelo Denver (ESDM).
+- Conversar con su pediatra sobre el ánimo de su hijo y la reacción a cambios o ruidos para recibir orientación adecuada.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional interdisciplinaria y orientación para su hijo.
+- Evaluación del desarrollo interdisciplinaria: Para evaluar el desarrollo y orientar el apoyo que necesita su hijo.
 - Programa de habilidades sociales y juego: Para ayudarle a aprender a compartir, mirar y jugar con otros niños.
-- Intervención temprana basada en el modelo Denver (ESDM): Para fortalecer la comunicación, el juego y la interacción con apoyo de la familia.
-- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones y ofrecer orientación a la familia.
-- Terapia ABA: Para enseñar habilidades de comunicación, juego y vida diaria con metas claras.
+- Intervención temprana basada en el modelo Denver (ESDM): Para fortalecer la comunicación, el juego y la interacción con la familia.
+- Psicología infantil y escuela de padres: Para apoyar el manejo de emociones y orientar a la familia.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -492,23 +458,23 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 **Edad:** 2 años · **Nivel:** Prioritario · **Perfil:** Comunicación · **Reglas:** R01, R05, R06
 
-**Resumen:** Su hijo mostró señales que hacen recomendable una evaluación profesional rápida, especialmente porque notó que dejó de hacer cosas que ya hacía y hay antecedentes familiares con autismo. Usted mencionó que señala poco para pedir cosas y que su habla es muy inusual. Estas observaciones son importantes para entender mejor cómo apoyarle. La evaluación ayudará a conocer sus necesidades y cómo fortalecer su comunicación y desarrollo.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo muestra señales en la comunicación, como que señala poco para pedir cosas y que sus primeras palabras son muy inusuales. Además, usted mencionó que dejó de hacer cosas que ya hacía y que hay un familiar directo con diagnóstico de autismo, por eso es importante pedir una evaluación profesional pronto para entender mejor cómo apoyarle.
 
-**Perfil:** La mayoría de señales están en la comunicación. Usted comentó que su hijo señala poco para pedir algo y que sus primeras palabras son muy inusuales, aunque usa gestos frecuentemente, lo que indica que la comunicación es un área a apoyar.
+**Perfil:** La mayoría de las señales están en la comunicación. Usted mencionó que su hijo señala poco para pedir cosas y que sus primeras palabras son muy inusuales, aunque usa gestos y juega a simular con frecuencia.
 
 **Próximos pasos:**
 
-- Solicite una evaluación rápida con un especialista en neuropediatría, psicológía o equipo interdisciplinario en el sistema público (control CRED o EsSalud).
-- Mientras obtiene la evaluación, considere terapias en centros afiliados para apoyar la comunicación y el desarrollo general.
-- Continúe con los controles de crecimiento y desarrollo habituales de su hijo.
-- Si nota más cambios, pérdida de habilidades o dudas, converse con su pediatra para una atención oportuna.
+- Pedir una evaluación del desarrollo en el control CRED en su establecimiento de salud del MINSA o en EsSalud.
+- Contactar centros afiliados a Neuroa para evaluación interdisciplinaria y terapias de apoyo.
+- Contar al pediatra que su hijo dejó de hacer cosas que ya hacía y que hay un familiar directo con diagnóstico de autismo.
+- Empezar terapias que ayuden a fortalecer la comunicación y el desarrollo general, mientras espera la evaluación.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional interdisciplinaria que oriente el apoyo adecuado.
-- Terapia de lenguaje infantil: Para fortalecer la comunicación, comprendiendo y practicando el habla y gestos.
-- Estimulación temprana: Para acompañar el desarrollo motor, social y del lenguaje con actividades familiares.
-- Terapia ocupacional e integración sensorial: Para ayudar en la coordinación y respuesta a estímulos, apoyando el desarrollo general.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo que necesita su hijo.
+- Terapia de lenguaje infantil: Para fortalecer su comunicación y el uso de gestos y palabras.
+- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
+- Terapia ocupacional e integración sensorial: Para mejorar la coordinación y la respuesta a sonidos y texturas.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|
@@ -516,24 +482,23 @@ En la app, estas respuestas se muestran junto con los textos fijos aprobados (t�
 
 ## C48. 1 año con regresión
 
-**Edad:** 1 años · **Nivel:** Prioritario · **Perfil:** Comunicación · **Reglas:** R04, R05
+**Edad:** 1 año · **Nivel:** Prioritario · **Perfil:** Comunicación · **Reglas:** R04, R05
 
-**Resumen:** Gracias por tomarse el tiempo para responder. Usted mencionó que su hijo dejó de hacer cosas que ya hacía y que habla muy inusual para su edad. Esto indica que es importante pedir una evaluación profesional pronto para entender mejor cómo apoyarlo.
+**Resumen:** Gracias por tomarse el tiempo de responder. Su hijo dejó de hacer cosas que ya hacía, y usted mencionó que sus primeras palabras son muy inusuales. Por eso, es importante pedir una evaluación profesional pronto para entender mejor su desarrollo y cómo apoyarlo. A esta edad, la intervención temprana puede ser muy beneficiosa.
 
-**Perfil:** La mayoría de señales aparecieron en la comunicación, por ejemplo, sus primeras palabras son muy inusuales y usa gestos simples con frecuencia.
+**Perfil:** La mayoría de las señales aparecieron en la comunicación. Usted mencionó que su hijo señala mucho para pedir y mostrar cosas, usa gestos simples, pero sus primeras palabras son muy inusuales.
 
 **Próximos pasos:**
 
-- Pida una cita con su pediatra en los próximos días y cuéntele que su hijo dejó de hacer cosas que ya hacía.
-- Solicite una evaluación del desarrollo con un especialista, como neuropediatría o psicología infantil.
-- Aproveche el control CRED en el establecimiento de salud o EsSalud para seguimiento.
-- Considere acudir a centros afiliados a Neuroa para evaluación y terapias en paralelo.
+- Pedir una cita con el pediatra para una evaluación en el control CRED en su establecimiento de salud del MINSA.
+- Solicitar una evaluación del desarrollo interdisciplinaria en un centro afiliado a Neuroa para conocer mejor las necesidades de su hijo.
+- Considerar terapias de estimulación temprana para acompañar su desarrollo general y terapia de lenguaje infantil para fortalecer su comunicación.
 
 **Terapias sugeridas:**
 
-- Evaluación del desarrollo interdisciplinaria: Para la evaluación profesional del desarrollo y orientación familiar.
-- Terapia de lenguaje infantil: Para fortalecer su comunicación y desarrollo del habla.
-- Estimulación temprana: Para acompañar su desarrollo motor, social y del lenguaje con actividades de juego guiadas.
+- Evaluación del desarrollo interdisciplinaria: Para una evaluación profesional que oriente el apoyo que necesita su hijo.
+- Estimulación temprana: Para acompañar su desarrollo general con actividades de juego guiadas.
+- Terapia de lenguaje infantil: Para fortalecer su comunicación, comprensión y uso de gestos.
 
 | Seguridad | Fidelidad | Claridad | Tono | Utilidad | Comentarios |
 |---|---|---|---|---|---|

@@ -1,6 +1,6 @@
 # Validación de la respuesta del agente
 
-El backend revisa cada respuesta **antes** de mostrarla. Si falla, reintenta **una vez** con el mismo contexto más el motivo del error; si vuelve a fallar o pasan más de 15 segundos, usa el texto de respaldo (`fallback.md`). El resultado del modelo y de las reglas se muestra siempre, con o sin agente.
+La llamada al modelo usa salida estructurada estricta (`strict: true`) y `temperature: 0.2`, lo que evita la mayoría de las fallas de formato. Aun así, el backend revisa cada respuesta **antes** de mostrarla. Si falla, reintenta **una vez** con el mismo contexto más el motivo del error; si vuelve a fallar o pasan más de 15 segundos, usa el texto de respaldo (`fallback.md`). El resultado del modelo y de las reglas se muestra siempre, con o sin agente.
 
 ## Controles automáticos
 
