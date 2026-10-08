@@ -26,6 +26,7 @@ HERE = Path(__file__).resolve().parent
 AGENT = HERE.parent
 ROOT = AGENT.parent
 PROMPT_VERSION = "prompt-2026.1"
+USAGE = {}
 
 
 def load_cases():
@@ -92,12 +93,18 @@ def llm_agent(case, client, deployment):
     messages = [{"role": "system", "content": system_prompt()},
                 {"role": "user", "content": json.dumps(case["input"], ensure_ascii=False)}]
     returned, called = set(), False
+    usage = {"input": 0, "cached": 0, "output": 0}
     for _ in range(4):
         resp = client.chat.completions.create(
             model=deployment, messages=messages, tools=tools,
             response_format={"type": "json_schema", "json_schema": {"name": "AgentOutput", "schema": schema, "strict": False}},
             max_completion_tokens=1500)
         msg = resp.choices[0].message
+        if resp.usage:
+            usage["input"] += resp.usage.prompt_tokens
+            usage["output"] += resp.usage.completion_tokens
+            det = getattr(resp.usage, "prompt_tokens_details", None)
+            usage["cached"] += (getattr(det, "cached_tokens", 0) or 0) if det else 0
         if msg.tool_calls:
             messages.append(msg.model_dump(exclude_none=True))
             for call in msg.tool_calls:
@@ -106,6 +113,7 @@ def llm_agent(case, client, deployment):
                 returned |= {r["therapy_id"] for r in rows}
                 messages.append({"role": "tool", "tool_call_id": call.id, "content": json.dumps(rows, ensure_ascii=False)})
             continue
+        USAGE.update(usage)
         return json.loads(msg.content), returned, called
     raise RuntimeError("El agente no terminó en 4 turnos")
 
@@ -134,6 +142,7 @@ def main():
     with open(HERE / "results" / f"{mode}.jsonl", "w", encoding="utf-8") as f:
         for case in load_cases()[: args.limit]:
             t0 = time.time()
+            USAGE.clear()
             try:
                 out, returned, called = mock_agent(case) if args.mock else llm_agent(case, client, model)
                 v, e = validate(out, returned, called), check_case(out, case)
@@ -146,7 +155,7 @@ def main():
                 key = err.split(" ")[0]
                 totals["errors"][key] = totals["errors"].get(key, 0) + 1
             f.write(json.dumps({"id": case["id"], "prompt_version": PROMPT_VERSION, "seconds": round(time.time() - t0, 2),
-                                "validation": v, "case_checks": e, "output": out}, ensure_ascii=False) + "\n")
+                                "validation": v, "case_checks": e, "usage": dict(USAGE), "output": out}, ensure_ascii=False) + "\n")
     print(json.dumps(totals, ensure_ascii=False, indent=2))
 
 
