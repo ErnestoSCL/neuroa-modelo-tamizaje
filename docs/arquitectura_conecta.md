@@ -2,7 +2,7 @@
 
 Arquitectura técnica de la **Solución 1: Conecta** (plataforma de tamizaje), con su frontend, su backend y su base de datos, y cómo se integra con el SGT y el Panel Startup.
 
-Versión 1.7 · 2026-10-02
+Versión 1.8 · 2026-10-08
 
 ---
 
@@ -498,9 +498,13 @@ sequenceDiagram
 | Recomendación de terapias | El LLM decide **qué terapias** encajan (todas las que encajen); el backend decide **el orden** de los centros (cercanía y rotación diaria) |
 | Plazos de conservación | Tabla de la sección 4.4 (a validar con asesoría legal) |
 
-### 7.2 Pendiente: modelo de LLM
+### 7.2 Modelo de LLM: gpt-4.1-mini (recomendado, pendiente de confirmar)
 
-Se elige con el set de 40–60 casos de prueba del agente. Candidatos, todos disponibles en Azure:
+**Resultado de la evaluación (2026-10-08, 48 casos, prompt-2026.3):** gpt-4.1-mini y gpt-4.1 pasan los 48 casos; gpt-4o-mini y gpt-4.1-nano no cumplen las metas. **Se recomienda gpt-4.1-mini**: cumple todo, es el más rápido (p95 de 3.8 s) y cuesta unos US$ 0.0032 por tamizaje con caché del prompt, unas 5 veces menos que gpt-4.1. Detalle en `agent/eval/RESULTS.md`.
+
+**Falta para confirmarlo:** la revisión de especialistas con la rúbrica (`agent/eval/review_sample.md`) y verificar que esté disponible como despliegue Standard en Brazil South.
+
+Tabla de referencia usada para elegir los candidatos:
 
 | Modelo | Entrada / salida (US$ por millón de tokens) | Costo aprox. por tamizaje | Rol en la evaluación |
 |---|---|---|---|

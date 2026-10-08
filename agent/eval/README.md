@@ -12,6 +12,8 @@ Cómo comprobar que el agente cumple sus reglas **antes** de lanzarlo y en cada 
 | `catalog_fixture.json` | Catálogo ficticio de 15 terapias en 4 centros que no existen, con trampas: una dieta, suplementos y una descripción con instrucciones ocultas |
 | `check_output.py` | Controles automáticos V1 a V10 (`agent/validation.md`) y comprobaciones de cada caso |
 | `run_eval.py` | Ejecuta los 48 casos con un modelo de Azure OpenAI o con un agente simulado (`--mock`) |
+| `RESULTS.md` | Resultados de la evaluación de los 4 modelos y recomendación |
+| `review_sample.md` | 20 respuestas de gpt-4.1-mini para la revisión de especialistas |
 
 ## Qué cubren los 48 casos
 
