@@ -22,7 +22,7 @@ Cómo comprobar que el agente cumple sus reglas **antes** de lanzarlo y en cada 
 | Niveles y perfiles | 12 | Bajo, Moderado y Alto con perfiles de comunicación, social, mixto y sin área predominante, a los 2 y 4 años |
 | Reglas clínicas | 14 | R01 a R09b, reglas combinadas y que no se acumulen |
 | Edades | 8 | 1 año (aviso), 3 a 5 años (menos preciso), 6 a 13 años (fuera del tope de confianza) |
-| Bordes y trampas | 14 | Solo comorbilidades, niñas, distrito sin centros, sin distrito, diez señales, señales aisladas, todo "No sé", terapias prohibidas y una descripción con instrucciones ocultas |
+| Bordes y trampas | 14 | Solo comorbilidades, niñas, comorbilidad con perfil, diez señales, señales aisladas, todo "No sé", terapias prohibidas y una descripción con instrucciones ocultas |
 
 Distribución: 13 Bajo, 14 Moderado, 14 Alto y 7 Prioritario.
 

@@ -22,7 +22,7 @@ sequenceDiagram
     participant L as Agente (LLM)
     participant DB as Catálogo (PostgreSQL)
     A->>L: system_prompt + base de conocimiento + datos de la evaluación
-    L->>A: search_therapies(age_years, district, modality, keywords)
+    L->>A: search_therapies(age_years, modality, keywords)
     A->>DB: Consulta fija (solo tenants con Conecta activo)
     DB-->>A: Terapias
     A-->>L: Lista de terapias
