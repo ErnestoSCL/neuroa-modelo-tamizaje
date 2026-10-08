@@ -1,0 +1,215 @@
+# Formulario de tamizaje de Conecta
+
+Versión final propuesta de las 20 preguntas que responde el padre, madre o tutor, con la hoja de validación para los especialistas. Parte del formulario actual del frontend (`components/form-comp/questions.js`) y de las decisiones de `consideraciones_app_tamizaje.md` y `datos_y_privacidad.md`.
+
+Versión 1.0 · 2026-10-08 · Estado: **pendiente de validación por especialistas**
+
+---
+
+## 0. Resumen
+
+| Bloque | Preguntas | ¿Entra al modelo de ML? | Para qué se usa | Cambio principal |
+|---|---|---|---|---|
+| Consentimiento | Pantalla inicial | — | Requisito legal | **Nuevo** |
+| 1. Datos del niño | 1 Edad, 2 Sexo | No | Avisos por edad, mensajes del agente, revisión de sesgos | Edad en **años**, de "Menos de 1 año" a "13 años" |
+| 2. Q-CHAT-10 | 3 a 12 (A1–A10) | **Sí** (las únicas) | Probabilidad, perfiles y agente | Trato de "usted" y traducción fiel al original; no cambia el sentido ni la puntuación |
+| 3. Salud y desarrollo | 13 a 19 | No | Reglas clínicas y perfiles | Redactadas como diagnóstico recibido o conducta observada, con opción **"No sé"** |
+| 4. Familia | 20 | No | Regla clínica | Separa familia directa de otros familiares, con "No sé" |
+
+**Reglas generales:**
+
+- Trato de **usted** en todo el formulario.
+- **Una pregunta por pantalla**, con barra de progreso y botón "Atrás".
+- Se guarda **el índice de la opción elegida** (no solo el valor binario), para poder reentrenar el modelo y revisar puntos de corte en el futuro.
+- Todas las preguntas son obligatorias; "No sé" cuenta como respuesta.
+- El avance se guarda en memoria o en `sessionStorage`, no en `localStorage` (ver `datos_y_privacidad.md`).
+
+---
+
+## 1. Pantalla inicial: consentimiento
+
+Antes de la pregunta 1. Texto completo en `datos_y_privacidad.md`, sección 6.3.
+
+- ☐ Declaro que soy padre, madre o tutor legal del niño o niña, y autorizo el uso de sus respuestas para calcular el resultado del tamizaje. *(obligatoria)*
+- ☐ Autorizo usar las respuestas, sin datos que nos identifiquen, para mejorar el modelo y para investigación. *(opcional)*
+
+Se guarda en `app.consents` con la versión del texto, las finalidades aceptadas y la fecha.
+
+---
+
+## 2. Bloque 1: datos del niño o niña
+
+### Pregunta 1. Edad
+
+| Campo | Valor |
+|---|---|
+| Texto | ¿Cuántos años tiene su hijo/a? |
+| Tipo | Lista de opciones (no campo libre) |
+| Opciones | Menos de 1 año · 1 año · 2 años · 3 años · … · 13 años |
+| Se guarda como | `age_years`: 0 (menos de 1 año) a 13 |
+| Validación | Obligatoria. No hay opciones de 14 años o más (límite legal: el consentimiento lo da quien ejerce la patria potestad o la tutela solo hasta los 13 años) |
+
+**Qué pasa según la edad.** El Q-CHAT-10 está validado entre los **18 y los 36 meses** (1 año y medio a 3 años).
+
+| Edad | `age_validity` | ¿Se hace la prueba? | Aviso que ve el padre |
+|---|---|---|---|
+| Menos de 1 año | `not_applicable` | **No** | "Este cuestionario es para niños desde el año y medio. Le recomendamos seguir los controles de crecimiento y desarrollo (CRED) de su hijo/a y volver cuando cumpla 1 año y 6 meses." |
+| 1 año | `check_age` | Sí | "Si su hijo/a tiene menos de 1 año y 6 meses, el resultado es solo orientativo. Le recomendamos repetir la prueba cuando cumpla 1 año y 6 meses y conversarlo con su pediatra." |
+| 2 años | `validated` | Sí | — |
+| 3 a 13 años | `less_precise` | Sí | "Este cuestionario fue validado en niños pequeños; a la edad de su hijo/a el resultado es menos preciso. Si tiene dudas sobre su desarrollo, le recomendamos una evaluación profesional." |
+
+**Tope clínico [a validar con especialistas]:** la ley permite hasta 13 años, pero el cuestionario pierde precisión mucho antes. Propuesta: aceptar hasta **5 años** con el aviso y, desde los **6 años**, no hacer la prueba y mostrar: "Esta prueba es para niños pequeños. Para su hijo/a le recomendamos una evaluación con un especialista", junto con los centros cercanos. Los especialistas deciden la edad exacta.
+
+**Nota sobre la precisión:** con la edad en años no se distingue a un niño de 13 meses de uno de 23. Por eso "1 año" lleva siempre un aviso. La edad **no** entra al modelo (el notebook v2 mostró que no mejora el resultado), así que esto solo afecta los avisos y los mensajes del agente.
+
+### Pregunta 2. Sexo
+
+| Campo | Valor |
+|---|---|
+| Texto | ¿Cuál es el sexo de su hijo/a? |
+| Opciones | Masculino · Femenino |
+| Se guarda como | `sex`: `M` o `F` |
+| Uso | No entra al modelo. Contexto para el agente y revisión de sesgos (sensibilidad y especificidad por sexo) |
+| Cambio | "género" pasa a "sexo", que es el dato que se usa para revisar sesgos |
+
+---
+
+## 3. Bloque 2: Q-CHAT-10 (preguntas 3 a 12)
+
+**No se reescriben.** El Q-CHAT-10 es un cuestionario validado; cambiar el sentido de una pregunta afecta su validez y la del modelo, que se entrenó con él. Los cambios propuestos solo unifican el trato de "usted" y acercan el texto al original en inglés (Allison et al., 2012).
+
+**Recomendación principal:** reemplazar estas traducciones por la **versión oficial en español del Q-CHAT-10** publicada por el Autism Research Centre de la Universidad de Cambridge (traducción de INECO, Argentina; también hay una versión chilena), y ajustar solo el vocabulario local con permiso. Antes de lanzar hay que **revisar la licencia**: confirmar si el uso en un servicio comercial requiere autorización del Autism Research Centre **[verificar]**.
+
+**Puntuación (no cambia):** preguntas 3 a 11 (A1–A9) suman 1 si la opción elegida es la 3.ª, 4.ª o 5.ª (índice 2, 3 o 4). La pregunta 12 (A10) suma 1 si es la 1.ª, 2.ª o 3.ª (índice 0, 1 o 2).
+
+| # | Ítem | Texto actual | Texto propuesto | Ejemplo propuesto | Opciones (índice 0 → 4) |
+|---|---|---|---|---|---|
+| 3 | A1 | ¿Tu hijo te mira cuando lo llamas por su nombre? | ¿Su hijo/a le mira cuando usted le llama por su nombre? | Voltea a mirarle o reacciona cuando usted dice su nombre | Siempre · Usualmente · A veces · Raramente · Nunca |
+| 4 | A2 | ¿Qué tan fácil es para ti lograr contacto visual con tu hijo? | ¿Qué tan fácil es para usted lograr que su hijo/a le mire a los ojos? | Cuando usted le habla, le sostiene la mirada o la evita | Muy fácil · Bastante fácil · Bastante difícil · Muy difícil · Imposible |
+| 5 | A3 | ¿Tu hijo señala para indicar que quiere algo? | ¿Su hijo/a señala con el dedo para indicar que quiere algo? | Señala un juguete que no alcanza | Muchas veces al día · Unas cuantas veces al día · Unas cuantas veces por semana · Menos de una vez por semana · Nunca |
+| 6 | A4 | ¿Tu hijo señala para compartir interés contigo? | ¿Su hijo/a señala con el dedo para compartir con usted algo que le interesa? | Señala un avión o un perro para que usted también lo mire | Igual que la 5 |
+| 7 | A5 | ¿Tu hijo finge? | ¿Su hijo/a juega a fingir o "hacer como si"? | Le da de comer a una muñeca o habla por un teléfono de juguete | Igual que la 5 |
+| 8 | A6 | ¿Tu hijo sigue con la mirada hacia donde tú estás mirando? | ¿Su hijo/a mira hacia donde usted está mirando? | Si usted mira una lámpara, él o ella también la mira | Igual que la 5 |
+| 9 | A7 | ¿Tu hijo muestra señales de querer consolar? | Si usted u otra persona de la familia está visiblemente triste o molesta, ¿su hijo/a muestra señales de querer consolarla? | Le acaricia el pelo o le abraza | Siempre · Usualmente · A veces · Raramente · Nunca |
+| 10 | A8 | ¿Cómo describirías las primeras palabras de tu hijo? | ¿Cómo describiría las primeras palabras de su hijo/a? | Decía "mamá", "agua" o palabras parecidas, como otros niños | Muy típicas · Bastante típicas · Ligeramente inusuales · Muy inusuales · Mi hijo/a no habla |
+| 11 | A9 | ¿Tu hijo usa gestos simples? | ¿Su hijo/a usa gestos simples? | Dice adiós con la mano o mueve la cabeza para decir sí o no | Igual que la 5 |
+| 12 | A10 | ¿Tu hijo se queda mirando fijamente a la nada sin un propósito aparente? | ¿Su hijo/a se queda mirando fijamente a la nada, sin un propósito aparente? | Tiene la mirada perdida, sin fijarse en nada concreto | Igual que la 5 |
+
+**Cambios que sí tocan el contenido (revisar con prioridad):**
+
+- **Pregunta 9 (A7):** el texto actual omite la condición del original ("si usted u otra persona de la familia está visiblemente triste o molesta"). Sin ella, el padre puede responder pensando en otras situaciones.
+- **Pregunta 11 (A9):** el ejemplo actual incluye "señala lo que quiere", que es la pregunta 5. Se quita para no mezclar ítems.
+- **Pregunta 3 (A1):** el ejemplo actual usa un nombre propio ("Juan"); se cambia por uno neutro.
+
+---
+
+## 4. Bloque 3: salud y desarrollo (preguntas 13 a 19)
+
+No entran al modelo. Se usan en las **reglas clínicas** (pueden subir el nivel de riesgo) y en los **perfiles** (pesos validados por especialistas).
+
+**Por qué se reformulan:** el texto actual pide al padre algo que no puede saber o que no aplica a un niño pequeño (por ejemplo, síntomas de depresión o dificultades en lectura y matemáticas en un niño de 2 años). Se pregunta por un **diagnóstico ya recibido** o por una **conducta observada**.
+
+**Opciones:** Sí · No · No sé. Se guardan como `yes`, `no`, `unknown`. "No sé" **nunca** se trata como "No": no activa reglas, cuenta 0 en el perfil y se registra en `unanswered_comorbidities` para que el agente lo mencione.
+
+| # | Variable | Uso | Texto actual | Texto propuesto | Ejemplo propuesto |
+|---|---|---|---|---|---|
+| 13 | `c_speech` | Reglas; perfil comunicación (25 %) | ¿Su hijo/a tiene dificultades para hablar o expresar ideas claramente? | ¿Algún profesional le ha dicho que su hijo/a tiene retraso del habla o del lenguaje, o usted nota que habla mucho menos que otros niños de su edad? | Usa muy pocas palabras para su edad o no forma frases |
+| 14 | `c_learning` | Reglas; perfil comunicación (15 %) | ¿Su hijo/a tiene dificultades para aprender? | ¿Ha notado que a su hijo/a le cuesta más que a otros niños de su edad aprender cosas nuevas? | Juegos, rutinas o palabras nuevas |
+| 15 | `c_genetic` | Reglas | ¿Su hijo/a tiene algún trastorno genético? | ¿Su hijo/a tiene un diagnóstico médico de una condición genética? | Síndrome de Down o síndrome de X frágil |
+| 16 | `c_depression` | Reglas | ¿Su hijo/a presenta síntomas de depresión? | En las últimas semanas, ¿ha notado que su hijo/a está casi siempre triste, sin ganas de jugar o sin interés en lo que antes le gustaba? | — |
+| 17 | `c_developmental_delay` | Reglas | ¿Ha notado un retraso en el desarrollo de su hijo/a? | ¿Algún profesional le ha dicho que su hijo/a tiene retraso en su desarrollo, o se sentó, caminó o habló más tarde que otros niños? | — |
+| 18 | `c_social_behavior` | Reglas; perfil social (20 %) | ¿Su hijo/a tiene problemas de comportamiento o sociales? | ¿Ha notado que su hijo/a tiene rabietas muy frecuentes o muy intensas, o que casi nunca juega con otros niños? | — |
+| 19 | `c_anxiety` | Reglas; perfil social (5 %) | ¿Su hijo/a muestra señales de ansiedad? | ¿Ha notado que su hijo/a se asusta o se angustia mucho ante cambios, ruidos o lugares nuevos? | — |
+
+---
+
+## 5. Bloque 4: familia (pregunta 20)
+
+| Campo | Valor |
+|---|---|
+| Texto actual | ¿Alguien en su familia cercana ha sido diagnosticado con autismo? (ejemplo: "…o tiene comportamientos relacionados") |
+| Texto propuesto | ¿Alguien de la familia del niño o niña tiene un **diagnóstico** de autismo? |
+| Opciones | Sí, su padre, madre o un hermano/a · Sí, otro familiar · No · No sé |
+| Se guarda como | `family_history`: `first_degree`, `other`, `no` o `unknown` |
+| Uso | Regla clínica (por ejemplo, R01 con familia directa). No se identifica a la persona |
+| Cambio | Se quita "o tiene comportamientos relacionados": la regla clínica se basa en un diagnóstico, no en una sospecha |
+
+---
+
+## 6. Datos que se envían al backend
+
+`POST /assessments` (ver `consideraciones_app_tamizaje.md`, sección 3.2):
+
+```json
+{
+  "schema_version": "2.1",
+  "consent_id": "uuid",
+  "child": { "age_years": 2, "sex": "M" },
+  "qchat10": {
+    "A1": 0, "A2": 1, "A3": 2, "A4": 3, "A5": 1,
+    "A6": 0, "A7": 2, "A8": 4, "A9": 1, "A10": 4
+  },
+  "comorbidities": {
+    "speech": "yes", "learning": "no", "genetic": "unknown",
+    "depression": "no", "developmental_delay": "yes",
+    "social_behavior": "no", "anxiety": "no"
+  },
+  "family_history": "other"
+}
+```
+
+- `age_years`: 0 a 13. Con 0 no se hace la prueba (el frontend no envía el formulario).
+- `qchat10.*`: índice de la opción elegida (0 a 4). El backend calcula los binarios con la regla oficial.
+- `comorbidities.*`: `yes`, `no` o `unknown`.
+- `family_history`: `first_degree`, `other`, `no` o `unknown`.
+- El backend calcula `age_validity` a partir de `age_years` (sección 2).
+
+---
+
+## 7. Hoja de validación para especialistas
+
+Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. Las preguntas 3 a 12 solo se revisan para confirmar que la traducción es fiel; si se adopta la versión oficial del Autism Research Centre, se revisa esa.
+
+| # | Tema | ¿Qué deben revisar? | Aprobado | Con cambios | Rechazado | Comentarios |
+|---|---|---|---|---|---|---|
+| 1 | Edad | Avisos por edad y **tope clínico** (propuesta: 5 años) | ☐ | ☐ | ☐ | |
+| 2 | Sexo | Redacción | ☐ | ☐ | ☐ | |
+| 3 | A1 Responde a su nombre | Fidelidad al original y ejemplo | ☐ | ☐ | ☐ | |
+| 4 | A2 Contacto visual | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
+| 5 | A3 Señala para pedir | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
+| 6 | A4 Señala para compartir | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
+| 7 | A5 Juego de fingir | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
+| 8 | A6 Sigue la mirada | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
+| 9 | A7 Consuela | **Se agrega la condición del original** | ☐ | ☐ | ☐ | |
+| 10 | A8 Primeras palabras | Fidelidad y opciones | ☐ | ☐ | ☐ | |
+| 11 | A9 Gestos simples | **Se quita "señala lo que quiere" del ejemplo** | ☐ | ☐ | ☐ | |
+| 12 | A10 Mirada perdida | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
+| 13 | Habla y lenguaje | Redacción nueva y "No sé" | ☐ | ☐ | ☐ | |
+| 14 | Aprendizaje | Redacción nueva, adecuada a niños pequeños | ☐ | ☐ | ☐ | |
+| 15 | Condición genética | Redacción y ejemplos | ☐ | ☐ | ☐ | |
+| 16 | Ánimo (depresión) | ¿Tiene sentido a esta edad? ¿Mantener, cambiar o quitar? | ☐ | ☐ | ☐ | |
+| 17 | Retraso del desarrollo | Redacción nueva | ☐ | ☐ | ☐ | |
+| 18 | Conducta y juego social | Redacción nueva | ☐ | ☐ | ☐ | |
+| 19 | Ansiedad | Redacción nueva | ☐ | ☐ | ☐ | |
+| 20 | Antecedente familiar | Opciones (familia directa / otro familiar / no / no sé) | ☐ | ☐ | ☐ | |
+| — | Avisos por edad (sección 2) | Textos que ve el padre | ☐ | ☐ | ☐ | |
+
+**Preguntas abiertas para los especialistas:**
+
+1. ¿Cuál es la edad máxima clínica para hacer la prueba?
+2. ¿La pregunta 16 (ánimo) aporta algo en niños de 1 a 3 años, o conviene quitarla?
+3. ¿Se agrega una pregunta sobre **regresión** ("¿Su hijo/a dejó de decir palabras o de hacer cosas que ya hacía?")? Es un signo de alarma importante y está propuesta como regla R05 en `consideraciones_app_tamizaje.md`.
+4. ¿Las redacciones de las preguntas 13 a 19 cambian los pesos de los perfiles? (Los pesos actuales se definieron con las preguntas anteriores.)
+
+---
+
+## 8. Pendientes antes de implementar
+
+| Pendiente | Responsable |
+|---|---|
+| Revisar la licencia del Q-CHAT-10 y obtener la versión oficial en español del Autism Research Centre | Fundador |
+| Validación de los especialistas (sección 7) | Especialistas |
+| Prueba con 5 a 10 padres en celular: comprensión y tiempo | Equipo |
+| Actualizar el frontend (`questions.js`, `Forms.jsx`) y el esquema del backend | Desarrollo |
+
+**Fuentes:** Allison C. et al. (2012), *Toward brief "Red Flags" for autism screening: the Short Autism Spectrum Quotient and the Short Quantitative Checklist in 1,000 cases and 3,000 controls*, J Am Acad Child Adolesc Psychiatry · [Autism Research Centre: Q-CHAT-10](https://www.autismresearchcentre.com/tests/quantitative-checklist-for-autism-in-toddlers-10-items-q-chat-10/) · [Q-CHAT en Chile (estudio psicométrico)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11215167/)

@@ -303,7 +303,7 @@ Los puntos 1 a 4 funcionan igual para el SGT completo y para la versión limitad
 |---|---|
 | `app.parents` | id, email (usuario), password_hash, email_verified_at, created_at. La cuenta no guarda nombre, teléfono ni distrito |
 | `app.consents` | id, parent_id, text_version, purposes, accepted_at, revoked_at |
-| `app.assessments` | id, parent_id, age_months, sex, status, started_at, completed_at |
+| `app.assessments` | id, parent_id, age_years (0–13), age_validity, sex, status, started_at, completed_at |
 | `app.answers` | assessment_id, question_id, option_index (0–4 o sí/no/no sé), binary_value |
 | `app.results` | assessment_id, qchat10_score, probability, threshold, is_positive, base_level, final_level, triggered_rules, communication_pct, social_pct, profile, model_version, rules_version |
 | `app.explanations` | assessment_id, source (llm, template), text, suggested_therapies, prompt_version, knowledge_version |
@@ -338,7 +338,7 @@ erDiagram
 ### 4.4 Datos sensibles y retención
 
 - Los datos de salud del niño (respuestas y resultados) son **datos sensibles** según la Ley N.º 29733: requieren consentimiento expreso del padre o tutor (a validar con asesoría legal).
-- **No se guarda el nombre del niño**; solo edad en meses y sexo.
+- **No se guarda el nombre del niño** ni su fecha de nacimiento; solo edad en años y sexo.
 - Para reentrenar y para las métricas se usan **datos anonimizados** (sin padre ni contacto).
 - Evaluación completa de datos y privacidad (inventario, consentimiento, transferencias, riesgos y plan de acción): `docs/datos_y_privacidad.md`.
 - Plazos de conservación acordados (a validar con asesoría legal):

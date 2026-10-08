@@ -100,8 +100,7 @@ Este documento funciona como **evaluación de impacto** del tratamiento y se deb
 | Correo (usuario de la cuenta) | Padre | Identificativo | Iniciar sesión, recuperar la contraseña, avisos de la cuenta y de incidentes | `app.parents` | Backend; soporte con permiso | Mientras la cuenta esté activa | **No** |
 | Distrito | Padre | Personal (ubicación aproximada) | Ordenar las sedes por cercanía | **No se guarda en la cuenta**: se elige en la pantalla de sedes y viaja en la consulta | Backend | Solo durante la consulta | Sí (para filtrar terapias) |
 | Contraseña (hash argon2) | Padre | Credencial | Autenticación | `app.parents` | Nadie la ve | Mientras la cuenta esté activa | No |
-| Fecha de nacimiento | Niño | Personal | Calcular `age_months` | **No se guarda** (se calcula y se descarta) | — | — | No |
-| Edad en meses, sexo | Niño | Personal (de un menor) | Reglas por edad, auditoría de sesgos | `app.assessments` | Backend | Con la evaluación | Edad sí; sexo solo como contexto |
+| Edad en años (0 a 13), sexo | Niño | Personal (de un menor) | Reglas por edad, auditoría de sesgos | `app.assessments` | Backend | Con la evaluación | Edad sí; sexo solo como contexto |
 | Respuestas Q-CHAT-10 (índice 0–4) | Niño | **Sensible (salud)** | Tamizaje | `app.answers` | Backend | Con la evaluación | Sí, sin identificadores |
 | Comorbilidades (habla, aprendizaje, genética, etc.) | Niño | **Sensible (salud)** | Reglas clínicas y perfiles | `app.answers` | Backend | Con la evaluación | Sí, sin identificadores |
 | Antecedente familiar de autismo | Niño y **un familiar** | **Sensible (salud de un tercero)** | Regla clínica | `app.answers` | Backend | Con la evaluación | Sí, solo sí/no |
@@ -133,7 +132,7 @@ Este documento funciona como **evaluación de impacto** del tratamiento y se deb
 - DNI del padre (no hace falta para el tamizaje).
 - Texto libre del padre sobre el niño en esta fase: puede contener datos de salud no previstos y dificulta controlar lo que llega al LLM.
 - Datos de geolocalización precisa: basta con el distrito.
-- Fecha de nacimiento guardada: basta con la edad en meses.
+- Fecha de nacimiento: no se pide; basta con la edad en años.
 
 ---
 
@@ -253,7 +252,7 @@ Cuando un centro registra al padre como paciente (en `/account/centers`):
 | Tema | Hoy | Recomendación |
 |---|---|---|
 | **¿Cuenta antes del resultado?** | **Decidido:** la cuenta se crea antes de ver el resultado y **solo pide correo y contraseña** | Aceptable: la cuenta es mínima y sirve para guardar el resultado y ejercer los derechos ARCO. La finalidad (b) pasa a ser obligatoria y debe decirse antes de empezar. Nombre y teléfono solo se piden al compartir con un centro Integral. Usar el **correo** como usuario (no un nombre de usuario libre): sin correo no hay recuperación de contraseña ni forma de avisar al padre de un incidente |
-| **Edad máxima aceptada** | 12–216 meses (hasta 18 años) | Limitar a **menores de 14 años** (< 168 meses). El Q-CHAT-10 es para niños pequeños, y entre los 14 y los 17 años las reglas de consentimiento del adolescente cambian. Con eso todo el servicio queda bajo el consentimiento de quien ejerce la patria potestad o la tutela |
+| **Edad máxima aceptada** | **Decidido:** edad en años, de "Menos de 1 año" a "13 años" | Limitar a **menores de 14 años**. El Q-CHAT-10 es para niños pequeños, y entre los 14 y los 17 años las reglas de consentimiento del adolescente cambian. Con eso todo el servicio queda bajo el consentimiento de quien ejerce la patria potestad o la tutela |
 | **Antecedente familiar** | Pregunta por familiares con autismo | Mantener solo sí/no y el grado (primer grado u otro), sin identificar a la persona |
 | **PDF del resultado** | Se envía por correo | **No adjuntar datos de salud al correo**. El correo solo avisa que el resultado está disponible; el PDF se descarga desde la cuenta |
 
@@ -304,7 +303,7 @@ Actualiza la tabla acordada en `arquitectura_conecta.md` (sección 4.4):
 |---|---|---|
 | Cuenta del padre | Mientras esté activa; se elimina a pedido | Eliminación |
 | Evaluaciones y resultados | Mientras la cuenta esté activa, o **2 años sin actividad** (con aviso por correo 30 días antes) | Anonimización (si aceptó (e)) o eliminación |
-| Fecha de nacimiento | **No se guarda** | — |
+| Fecha de nacimiento | **No se pide** | — |
 | Consentimientos | Mientras existan los datos, más el plazo de prescripción de posibles reclamos **[verificar]** | Eliminación |
 | Vínculos con centros | Igual que la evaluación; los pendientes vencen a los 30 días | Eliminación |
 | Diagnósticos confirmados | Mientras el consentimiento (d) esté vigente | Se eliminan al revocar; si ya se usaron para entrenar, quedan solo en el dataset anonimizado |
@@ -410,7 +409,7 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 
 | Va | No va |
 |---|---|
-| Edad en meses, sexo (contexto), respuestas (texto de la opción), comorbilidades, antecedente familiar (sí/no), probabilidad, nivel, perfil, reglas activadas, distrito (para filtrar terapias), terapias del catálogo | Nombre, correo, teléfono del padre, ids internos de la cuenta, IP, cualquier dato de otro niño |
+| Edad en años, sexo (contexto), respuestas (texto de la opción), comorbilidades, antecedente familiar (sí/no), probabilidad, nivel, perfil, reglas activadas, distrito (para filtrar terapias), terapias del catálogo | Nombre, correo, teléfono del padre, ids internos de la cuenta, IP, cualquier dato de otro niño |
 
 ---
 

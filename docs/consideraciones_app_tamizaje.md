@@ -46,7 +46,7 @@ Puntuación actual (`Forms.jsx`, `calculateScore`): ítems 1–9 suman 1 si la o
 
 | id | Pregunta (resumen) | Variable | Modelo (capa 1) | Reglas (capa 2) | Agente (capa 3) | Perfiles |
 |---|---|---|---|---|---|---|
-| 1 | Edad | `age_months` | **No.** Se evaluó en el notebook v2 y no mejora el AUC clínico (0.9037 sin edad frente a 0.9038 con edad) | Aviso de validez fuera de 18–36 m | Sí (mensaje por edad) | No |
+| 1 | Edad | `age_years` | **No.** Se evaluó en el notebook v2 y no mejora el AUC clínico (0.9037 sin edad frente a 0.9038 con edad) | Avisos por edad (sección 2.3) | Sí (mensaje por edad) | No |
 | 2 | Sexo | `sex` | **No** | No | Sí (solo contexto, sin sesgar) | No |
 | 3 | Responde a su nombre | `A1` | Sí | No | Sí | Social (10 %) |
 | 4 | Contacto visual | `A2` | Sí | No | Sí | Social (10 %) |
@@ -69,34 +69,31 @@ Puntuación actual (`Forms.jsx`, `calculateScore`): ítems 1–9 suman 1 si la o
 
 Guardar **la respuesta cruda (índice 0–4)** de cada ítem además del valor binario. Hoy la tabla `evaluaciones` solo guarda `a1..a10` binarizados (`app/db/models.py:17-26`), lo que impide reentrenar con la escala completa o cambiar el punto de corte en el futuro.
 
-### 2.3 Edad en meses
+### 2.3 Edad
 
-- Preguntar **fecha de nacimiento** (preferido) o **años + meses**. Calcular `age_months` en el backend, no en el cliente.
-- Rango aceptado sugerido: 12–216 meses (1–18 años) para no excluir a nadie, pero:
-  - **18–36 meses**: resultado normal del Q-CHAT-10.
-  - **< 18 meses**: aviso "el cuestionario está pensado para niños desde los 18 meses; el resultado es orientativo. Repita la prueba a los 18 meses y consulte a su pediatra".
-  - **> 36 meses**: aviso "este cuestionario fue validado en niños pequeños; en su hijo/a el resultado es menos preciso. Le recomendamos una evaluación profesional". El nivel mostrado debe reflejar esta menor confianza.
+**Decidido:** la edad se pide **en años**, con una lista de "Menos de 1 año" a "13 años" (límite legal: menores de 14). No se pide fecha de nacimiento.
+
+| Edad | `age_validity` | ¿Se hace la prueba? |
+|---|---|---|
+| Menos de 1 año | `not_applicable` | No; se recomienda seguir los controles CRED y volver al año y medio |
+| 1 año | `check_age` | Sí, con aviso: si tiene menos de 1 año y 6 meses, el resultado es orientativo |
+| 2 años | `validated` | Sí (rango validado del Q-CHAT-10: 18–36 meses) |
+| 3 a 13 años | `less_precise` | Sí, con aviso de menor precisión. Tope clínico a definir con especialistas (propuesta: 5 años) |
+
+Textos exactos de los avisos en `formulario_tamizaje.md`, sección 2.
+
 - **Recomendación a evaluar con especialistas [a validar con especialistas]**: incorporar instrumentos según edad en fases futuras:
   - M-CHAT-R/F (16–30 meses; requiere entrevista de seguimiento para puntajes intermedios).
-  - AQ-10 versión niño (4–11 años) y adolescente (12–15 años).
+  - AQ-10 versión niño (4–11 años).
   - Verificar licencias y existencia de versiones validadas en español antes de usarlos.
 
-### 2.4 Redacción de las preguntas de comorbilidad
+### 2.4 Redacción de las preguntas
 
-Los padres no pueden autodiagnosticar un trastorno genético o una depresión en un niño de 2 años. Reformular como **diagnóstico ya recibido** o **conducta observada**:
+La versión final propuesta de las 20 preguntas (con texto actual, texto propuesto, opciones, cómo se guardan y la hoja de validación para especialistas) está en **`formulario_tamizaje.md`**. Resumen:
 
-| id | Redacción actual | Redacción propuesta [a validar con especialistas] |
-|---|---|---|
-| 13 | ¿Tiene dificultades para hablar o expresar ideas? | ¿Algún profesional le ha dicho que su hijo/a tiene retraso del habla o del lenguaje? / ¿Ha notado que habla mucho menos que otros niños de su edad? |
-| 14 | ¿Tiene dificultades para aprender? | ¿Ha notado que le cuesta más que a otros niños aprender cosas nuevas (juegos, rutinas, palabras)? |
-| 15 | ¿Tiene algún trastorno genético? | ¿Su hijo/a tiene un diagnóstico médico de una condición genética (por ejemplo, síndrome de Down, X frágil)? Opciones: Sí / No / No sé |
-| 16 | ¿Presenta síntomas de depresión? | ¿Ha notado que en las últimas semanas está casi siempre triste, sin ganas de jugar o sin interés en lo que antes le gustaba? |
-| 17 | ¿Ha notado un retraso en el desarrollo? | ¿Algún profesional le ha dicho que tiene retraso en su desarrollo? / ¿Se sentó, caminó o habló más tarde que otros niños? |
-| 18 | ¿Tiene problemas de comportamiento o sociales? | ¿Ha notado que tiene rabietas muy frecuentes o intensas, o que casi nunca juega con otros niños? |
-| 19 | ¿Muestra señales de ansiedad? | ¿Ha notado que se asusta o angustia mucho ante cambios, ruidos o lugares nuevos? |
-| 20 | ¿Alguien en su familia ha sido diagnosticado con autismo? | ¿Algún hermano/a, padre o madre del niño tiene diagnóstico de autismo? (separar familia de primer grado de "otros familiares") |
-
-Añadir la opción **"No sé"** donde tenga sentido y tratarla explícitamente en las reglas (nunca como "No" por defecto). Evitar "tiene comportamientos relacionados" en el ejemplo de id20: no es un antecedente diagnosticado.
+- **Q-CHAT-10 (3 a 12):** no se reescriben; se unifica el trato de "usted" y se acerca el texto al original. Se recomienda adoptar la versión oficial en español del Autism Research Centre y revisar su licencia.
+- **Comorbilidades (13 a 19):** se reformulan como **diagnóstico ya recibido** o **conducta observada**, con la opción **"No sé"**, que nunca se trata como "No".
+- **Antecedente familiar (20):** opciones "familia directa", "otro familiar", "No" y "No sé"; se quita "tiene comportamientos relacionados", porque no es un diagnóstico.
 
 ### 2.5 Validación
 
@@ -122,7 +119,7 @@ Añadir la opción **"No sé"** donde tenga sentido y tratarla explícitamente e
 
 ```mermaid
 flowchart TD
-    A[Formulario<br/>20 preguntas + edad en meses] --> B[API POST /assessments<br/>validación Pydantic]
+    A[Formulario<br/>20 preguntas, edad en años] --> B[API POST /assessments<br/>validación Pydantic]
     B --> C[Capa 1: Modelo ML<br/>pipeline sklearn + metadata.json]
     C -->|probabilidad, umbral| D[Capa 2: Reglas clínicas<br/>deterministas y versionadas]
     B -->|comorbilidades, antecedente, edad| D
@@ -146,7 +143,7 @@ Principio clave: **las capas 1 y 2 deciden; la capa 3 solo explica.** El LLM nun
   "schema_version": "2.0",
   "consent_id": "uuid",
   "child": {
-    "birth_date": "2024-03-15",
+    "age_years": 2,
     "sex": "M"
   },
   "qchat10": {
@@ -158,12 +155,13 @@ Principio clave: **las capas 1 y 2 deciden; la capa 3 solo explica.** El LLM nun
     "depression": "no", "developmental_delay": "yes",
     "social_behavior": "no", "anxiety": "no"
   },
-  "family_history": { "first_degree": "no", "other": "yes" }
+  "family_history": "other"
 }
 ```
 
 - `qchat10.*` = índice crudo de la opción (0–4). La binarización se hace en el backend con la regla oficial.
-- `sex` ∈ {`M`, `F`}, `comorbidities.*` ∈ {`yes`, `no`, `unknown`} (en pantalla: Sí / No / No sé).
+- `age_years` de 0 a 13; `sex` ∈ {`M`, `F`}; `comorbidities.*` ∈ {`yes`, `no`, `unknown`} (en pantalla: Sí / No / No sé); `family_history` ∈ {`first_degree`, `other`, `no`, `unknown`}. Detalle en `formulario_tamizaje.md`.
+- `age_validity` ∈ {`check_age`, `validated`, `less_precise`} lo calcula el backend (con `not_applicable` no se hace la prueba).
 
 ### 3.3 Contrato de datos: respuesta
 
@@ -177,8 +175,8 @@ Principio clave: **las capas 1 y 2 deciden; la capa 3 solo explica.** El LLM nun
     "threshold": 0.0,
     "is_positive": true,
     "qchat10_score": 6,
-    "age_months": 26,
-    "within_validated_range": true
+    "age_years": 2,
+    "age_validity": "validated"
   },
   "rules": {
     "version": "rules-2026.1",
@@ -264,7 +262,7 @@ Implicación práctica: el ML **no supera claramente** a la regla oficial. Mostr
 
 ### 4.6 Monitoreo y drift
 
-- Métricas semanales: número de evaluaciones, distribución de edad, distribución del puntaje Q-CHAT-10, % positivos, % por nivel, % fuera de 18–36 meses.
+- Métricas semanales: número de evaluaciones, distribución de edad, distribución del puntaje Q-CHAT-10, % positivos, % por nivel, % con edad fuera del rango validado (1 año o 3 años o más).
 - Alerta si el % de positivos o la distribución de ítems cambia fuertemente respecto a la línea base (p. ej. PSI > 0.2).
 - Registrar latencia y errores de `POST /assessments` y del LLM.
 
@@ -304,7 +302,7 @@ El nivel base sale del modelo: bandas de probabilidad definidas en `metadata.jso
 | R01 | Hermano/a, padre o madre con diagnóstico de TEA **y** nivel base Bajo | Subir a Moderado; recomendar vigilancia y repetir tamizaje | Riesgo de recurrencia en hermanos ~20% (Ozonoff et al., *Pediatrics* 2011; *JAMA Netw Open* 2024) | [pendiente] | reglas-2026.1 |
 | R02 | Retraso del habla/lenguaje **y** retraso global del desarrollo (id13 y id17 = sí) | Subir a Prioritario; recomendar evaluación del desarrollo pronta | Signos de alarma que justifican evaluación independiente del tamizaje (AAP, Hyman et al., *Pediatrics* 2020) | [pendiente] | reglas-2026.1 |
 | R03 | Diagnóstico de condición genética asociada (id15 = sí) | Subir un nivel; sugerir seguimiento con genética/neuropediatría | Mayor prevalencia de TEA en ciertos síndromes genéticos [citar con especialistas] | [pendiente] | reglas-2026.1 |
-| R04 | Edad fuera de 18–36 meses | No cambia nivel; añade aviso de validez y recomendación de evaluación profesional | Rango de validación del Q-CHAT-10 (Allison et al., 2012) | [pendiente] | reglas-2026.1 |
+| R04 | Edad de 1 año, o de 3 años o más (`age_validity` distinto de `validated`) | No cambia nivel; añade aviso de validez y recomendación de evaluación profesional | Rango de validación del Q-CHAT-10 (Allison et al., 2012) | [pendiente] | reglas-2026.1 |
 | R05 | Regresión reportada (pérdida de palabras o habilidades) — pregunta a añadir | Prioritario | Signo de alarma clásico [citar con especialistas] | [pendiente] | — |
 
 Las reglas anteriores son **ejemplos de formato**, no reglas aprobadas **[a validar con especialistas]**.
@@ -327,7 +325,7 @@ Traducir el resultado determinista a una explicación comprensible y empática p
 
 - `probability`, `threshold`, `is_positive`, `qchat10_score`, `final_level`, `triggered_rules` (con su texto explicativo).
 - Perfil (comunicación / social / mixto) y porcentajes.
-- Todas las respuestas (texto de la opción, no solo el índice), `age_months`, `within_validated_range`.
+- Todas las respuestas (texto de la opción, no solo el índice), `age_years`, `age_validity`.
 - Catálogo cerrado de terapias y lista de centros candidatos ya filtrada por el backend (ubicación, servicios, disponibilidad). El LLM **elige y explica** dentro de esas listas; no inventa centros.
 - No enviar al LLM nombres, DNI, correo, teléfono ni datos de contacto.
 
@@ -363,9 +361,9 @@ Traducir el resultado determinista a una explicación comprensible y empática p
 
 | Edad | Enfoque del mensaje |
 |---|---|
-| < 18 meses | Resultado orientativo; repetir a los 18 meses; conversar con el pediatra en el control. |
-| 18–36 meses | "Está en una muy buena etapa para intervenir: el cerebro a esta edad aprende muy rápido y la intervención temprana tiene los mejores resultados." |
-| > 36 meses | "El cuestionario es menos preciso a esta edad; si tiene dudas, es importante no esperar y pedir una evaluación profesional pronto." |
+| 1 año | Si tiene menos de 1 año y 6 meses, el resultado es orientativo; repetir al año y medio; conversar con el pediatra en el control. |
+| 2 años | "Está en una muy buena etapa para intervenir: el cerebro a esta edad aprende muy rápido y la intervención temprana tiene los mejores resultados." |
+| 3 años o más | "El cuestionario es menos preciso a esta edad; si tiene dudas, es importante no esperar y pedir una evaluación profesional pronto." |
 
 Estos textos deben revisarlos especialistas **[a validar con especialistas]**.
 
@@ -439,7 +437,7 @@ sequenceDiagram
     participant LLM as Agente LLM
     participant DB as PostgreSQL (catalog)
     API->>LLM: resultado + perfil + edad + respuestas + base de conocimiento
-    LLM->>API: llama search_therapies(age_months, district, keywords)
+    LLM->>API: llama search_therapies(age_years, district, keywords)
     API->>DB: SELECT con filtros fijos (solo tenants con Conecta activo)
     DB-->>API: therapy_id, location_id, name, description, edades, modality
     API-->>LLM: lista de terapias
@@ -456,7 +454,7 @@ sequenceDiagram
   "input_schema": {
     "type": "object",
     "properties": {
-      "age_months": { "type": "integer" },
+      "age_years": { "type": "integer", "description": "Edad del niño en años (0 a 13)" },
       "district": { "type": "string", "description": "Distrito o ciudad del padre, si lo indicó" },
       "modality": { "type": "string", "enum": ["in_person", "virtual", "any"] },
       "keywords": {
@@ -465,7 +463,7 @@ sequenceDiagram
         "description": "Opcional. Palabras para buscar en el nombre y la descripción de las terapias (p. ej. lenguaje, habla, juego) cuando el catálogo sea grande"
       }
     },
-    "required": ["age_months"],
+    "required": ["age_years"],
     "additionalProperties": false
   }
 }
@@ -477,7 +475,7 @@ sequenceDiagram
 |---|---|---|
 | `name` | El centro, texto libre | Ej.: "Taller de comunicación temprana" |
 | `description` | El centro, texto libre | Lo que el agente lee para decidir si encaja |
-| `min_age_months`, `max_age_months` | El centro | Para no recomendar algo fuera de edad |
+| `min_age_months`, `max_age_months` | El centro | Para no recomendar algo fuera de edad. El catálogo guarda meses (más preciso para estimulación temprana); el backend compara con la edad del niño en años (de `años × 12` a `años × 12 + 11` meses) |
 | `modality`, `district` (de la sede), `reference_price` | El centro | Filtros y datos para el padre |
 | `is_active` y `catalog.tenants.conecta_enabled` | El centro y el Panel Startup | Solo se devuelven terapias activas de centros con Conecta activo |
 
@@ -616,7 +614,7 @@ Todos los puntos de esta sección son **[a validar con asesoría legal]**. La ev
 
 - Test anónimo sin cuenta: guardar solo datos no identificables; definir plazo (p. ej. 24 meses) para métricas.
 - Datos de cuenta: mientras la cuenta exista + plazo definido; borrado real al cancelar.
-- Para reentrenamiento: dataset **anonimizado** (sin nombre, contacto, fecha exacta de nacimiento → edad en meses; sin identificadores de centro si no son necesarios), con consentimiento específico.
+- Para reentrenamiento: dataset **anonimizado** (sin nombre ni contacto, con la edad en años; sin identificadores de centro si no son necesarios), con consentimiento específico.
 - No guardar respuestas de salud en `localStorage` del navegador más allá de la sesión (hoy se hace, ver sección 10).
 
 ### 9.4 Dispositivo médico
@@ -653,7 +651,7 @@ Verificados en el código del repositorio (backend en `app/`, frontend a partir 
 |---|---|---|---|
 | 10 | Entrada como arreglo posicional de 25 valores de tipo libre, sin validación de rangos. | `app/schemas/input_data.py:5-6`, `app/model/data_preprocessor.py:7-14` | Esquema Pydantic con claves nombradas (sección 3.2). |
 | 11 | Longitud incorrecta devuelve HTTP 200 con `{"error": ...}`. | `app/api/api.py:33-34` | HTTP 422. |
-| 12 | Edad almacenada en años (`SmallInteger`). | `app/db/models.py:14` | Guardar `age_months` (y fecha de nacimiento solo si hay cuenta y consentimiento). |
+| 12 | Edad almacenada en años (`SmallInteger`). | `app/db/models.py:14` | Edad en años con lista de 0 a 13 y `age_validity` (sección 2.3). |
 | 13 | Solo se guardan A1–A10 binarizados; se pierde la respuesta cruda. | `app/db/models.py:17-26` | Guardar índice 0–4. |
 | 14 | No se guarda versión de modelo, reglas ni prompt. | `app/db/models.py:10-54` | Añadir columnas de versión. |
 | 15 | La hora de inicio viene del cliente (`Time_Start`). | `app/model/data_preprocessor.py:178`, `app/api/api.py:53-56` | Registrar inicio en el servidor. |
@@ -665,7 +663,7 @@ Verificados en el código del repositorio (backend en `app/`, frontend a partir 
 
 | # | Problema | Ubicación | Acción |
 |---|---|---|---|
-| 19 | Edad en años, rango 1–18; `handleChange` además acepta 0 aunque `isValid` exige ≥ 1. | `components/Forms.jsx:45` y `:219` | Fecha de nacimiento o años+meses. |
+| 19 | Edad en años, rango 1–18; `handleChange` además acepta 0 aunque `isValid` exige ≥ 1. | `components/Forms.jsx:45` y `:219` | Lista de "Menos de 1 año" a "13 años" (sección 2.3). |
 | 20 | `evolSociales` y `evolComunicativas` invierten las preguntas Sí/No: marcan 1 cuando la respuesta es "No" (`r === 0 ? 1 : 0`), al contrario que los porcentajes, que usan `=== 1`. | `components/Forms.jsx:151` y `:154` | Usar `r === 1`. |
 | 21 | Los porcentajes de habilidades se calculan en el frontend y no se indica que son un indicador orientativo (no salida del modelo). | `components/Forms.jsx:59-82` y `:113-144` | Mover el cálculo al backend (fuente única, sección 7.1) y presentarlo como indicador orientativo. |
 | 22 | `onFinish()` se llama antes de que termine el `fetch` a `/predict`; si falla, solo hay `console.error` y el usuario no ve error. | `components/Forms.jsx:190-207` | Esperar la respuesta, manejar errores y reintentos. |
@@ -692,7 +690,7 @@ Verificados en el código del repositorio (backend en `app/`, frontend a partir 
 - [ ] Protocolo de validación local con centros aliados iniciado.
 
 ### Formulario y UX
-- [ ] Edad en meses (o fecha de nacimiento) con avisos de validez fuera de 18–36 meses.
+- [ ] Edad en años (0 a 13) con los avisos por edad de `formulario_tamizaje.md`.
 - [ ] Preguntas de comorbilidad reformuladas y opción "No sé".
 - [ ] Respuestas crudas guardadas; validación Pydantic con claves nombradas.
 - [ ] Prueba con 5–10 padres reales en celular (comprensión y tiempo).

@@ -79,7 +79,7 @@ El resto de este borrador cubre el banco **Usuarios y evaluaciones de Conecta**.
 |---|---|---|
 | Identificación y contacto del usuario | Correo electrónico (usuario de la cuenta). No se recogen nombre ni teléfono | No |
 | Credenciales | Contraseña, guardada como hash | No |
-| Características del niño o niña | Edad en meses, sexo | No (pero son datos de un **menor de edad**) |
+| Características del niño o niña | Edad en años, sexo | No (pero son datos de un **menor de edad**) |
 | **Salud** | Respuestas sobre el desarrollo del niño (cuestionario Q-CHAT-10), dificultades de habla, aprendizaje, desarrollo, conducta y ansiedad, condición genética diagnosticada, antecedente familiar de autismo, resultado del tamizaje, diagnóstico confirmado por un centro (con consentimiento) | **Sí** |
 | Datos técnicos | Dirección IP, navegador, fecha y hora de acceso (logs de seguridad) | No |
 
