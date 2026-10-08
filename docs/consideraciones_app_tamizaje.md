@@ -78,7 +78,8 @@ Guardar **la respuesta cruda (índice 0–4)** de cada ítem además del valor b
 | Menos de 1 año | `not_applicable` | No; se recomienda seguir los controles CRED y volver al año y medio |
 | 1 año | `check_age` | Sí, con aviso: si tiene menos de 1 año y 6 meses, el resultado es orientativo |
 | 2 años | `validated` | Sí (rango validado del Q-CHAT-10: 18–36 meses) |
-| 3 a 13 años | `less_precise` | Sí, con aviso de menor precisión. Tope clínico a definir con especialistas (propuesta: 5 años) |
+| 3 a 5 años | `less_precise` | Sí, con aviso de menor precisión |
+| 6 a 13 años | `beyond_clinical_cap` | Sí, con aviso: la prueba se aplica con confianza hasta los 5 años (tope clínico de confianza, a validar con especialistas); después el resultado es solo referencial |
 
 Textos exactos de los avisos en `formulario_tamizaje.md`, sección 2.
 
@@ -161,7 +162,7 @@ Principio clave: **las capas 1 y 2 deciden; la capa 3 solo explica.** El LLM nun
 
 - `qchat10.*` = índice crudo de la opción (0–4). La binarización se hace en el backend con la regla oficial.
 - `age_years` de 0 a 13; `sex` ∈ {`M`, `F`}; `comorbidities.*` ∈ {`yes`, `no`, `unknown`} (en pantalla: Sí / No / No sé); `family_history` ∈ {`first_degree`, `other`, `no`, `unknown`}. Detalle en `formulario_tamizaje.md`.
-- `age_validity` ∈ {`check_age`, `validated`, `less_precise`} lo calcula el backend (con `not_applicable` no se hace la prueba).
+- `age_validity` ∈ {`check_age`, `validated`, `less_precise`, `beyond_clinical_cap`} lo calcula el backend (con `not_applicable` no se hace la prueba).
 
 ### 3.3 Contrato de datos: respuesta
 

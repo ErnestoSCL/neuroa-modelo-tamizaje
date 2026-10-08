@@ -56,9 +56,10 @@ Se guarda en `app.consents` con la versión del texto, las finalidades aceptadas
 | Menos de 1 año | `not_applicable` | **No** | "Este cuestionario es para niños desde el año y medio. Le recomendamos seguir los controles de crecimiento y desarrollo (CRED) de su hijo/a y volver cuando cumpla 1 año y 6 meses." |
 | 1 año | `check_age` | Sí | "Si su hijo/a tiene menos de 1 año y 6 meses, el resultado es solo orientativo. Le recomendamos repetir la prueba cuando cumpla 1 año y 6 meses y conversarlo con su pediatra." |
 | 2 años | `validated` | Sí | — |
-| 3 a 13 años | `less_precise` | Sí | "Este cuestionario fue validado en niños pequeños; a la edad de su hijo/a el resultado es menos preciso. Si tiene dudas sobre su desarrollo, le recomendamos una evaluación profesional." |
+| 3 a 5 años | `less_precise` | Sí | "Este cuestionario fue validado en niños pequeños; a la edad de su hijo/a el resultado es menos preciso. Si tiene dudas sobre su desarrollo, le recomendamos una evaluación profesional." |
+| 6 a 13 años | `beyond_clinical_cap` | Sí | "Esta prueba se aplica con confianza hasta los 5 años. Puede completarla, pero a la edad de su hijo/a el resultado es solo referencial. Le recomendamos una evaluación con un especialista." |
 
-**Tope clínico [a validar con especialistas]:** la ley permite hasta 13 años, pero el cuestionario pierde precisión mucho antes. Propuesta: aceptar hasta **5 años** con el aviso y, desde los **6 años**, no hacer la prueba y mostrar: "Esta prueba es para niños pequeños. Para su hijo/a le recomendamos una evaluación con un especialista", junto con los centros cercanos. Los especialistas deciden la edad exacta.
+**Tope clínico de confianza: 5 años [a validar con especialistas].** No es un límite: la prueba se puede hacer hasta los 13 años (límite legal). Desde los 6 años solo se muestra el aviso de que el resultado es referencial y se recomienda una evaluación con un especialista.
 
 **Nota sobre la precisión:** con la edad en años no se distingue a un niño de 13 meses de uno de 23. Por eso "1 año" lleva siempre un aviso. La edad **no** entra al modelo (el notebook v2 mostró que no mejora el resultado), así que esto solo afecta los avisos y los mensajes del agente.
 
@@ -172,7 +173,7 @@ Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. La
 
 | # | Tema | ¿Qué deben revisar? | Aprobado | Con cambios | Rechazado | Comentarios |
 |---|---|---|---|---|---|---|
-| 1 | Edad | Avisos por edad y **tope clínico** (propuesta: 5 años) | ☐ | ☐ | ☐ | |
+| 1 | Edad | Avisos por edad y **tope clínico de confianza** (propuesta: 5 años, con aviso después) | ☐ | ☐ | ☐ | |
 | 2 | Sexo | Redacción | ☐ | ☐ | ☐ | |
 | 3 | A1 Responde a su nombre | Fidelidad al original y ejemplo | ☐ | ☐ | ☐ | |
 | 4 | A2 Contacto visual | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
@@ -196,7 +197,7 @@ Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. La
 
 **Preguntas abiertas para los especialistas:**
 
-1. ¿Cuál es la edad máxima clínica para hacer la prueba?
+1. ¿Confirman 5 años como tope clínico de confianza (después se permite la prueba con aviso)?
 2. ¿La pregunta 16 (ánimo) aporta algo en niños de 1 a 3 años, o conviene quitarla?
 3. ¿Se agrega una pregunta sobre **regresión** ("¿Su hijo/a dejó de decir palabras o de hacer cosas que ya hacía?")? Es un signo de alarma importante y está propuesta como regla R05 en `consideraciones_app_tamizaje.md`.
 4. ¿Las redacciones de las preguntas 13 a 19 cambian los pesos de los perfiles? (Los pesos actuales se definieron con las preguntas anteriores.)
