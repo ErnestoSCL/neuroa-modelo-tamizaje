@@ -2,7 +2,7 @@
 
 Cómo se pasa de la probabilidad del modelo y las respuestas del formulario al **nivel de riesgo** y las **recomendaciones** que ve el padre. Complementa `formulario_tamizaje.md` (las 21 preguntas) y `consideraciones_app_tamizaje.md` (sección 5).
 
-Versión 1.0 · 2026-10-08 · Estado: **reglas aprobadas por el equipo; pendientes de validación por especialistas**
+Versión 1.1 · 2026-10-08 · Estado: **aprobadas por el equipo y validadas por especialistas**
 
 ---
 
@@ -23,7 +23,7 @@ Versión 1.0 · 2026-10-08 · Estado: **reglas aprobadas por el equipo; pendient
 
 ## 2. Nivel base (del modelo)
 
-El modelo da una probabilidad calibrada a partir de las 10 preguntas del Q-CHAT-10. **Propuesta de cortes [a validar con especialistas]:**
+El modelo da una probabilidad calibrada a partir de las 10 preguntas del Q-CHAT-10. **Cortes aprobados por los especialistas:**
 
 | Nivel base | Probabilidad del modelo | Equivale aprox. a (puntaje Q-CHAT-10) | Niños en la muestra clínica polaca (n = 252) | Con TEA confirmado |
 |---|---|---|---|---|
@@ -50,11 +50,11 @@ El modelo da una probabilidad calibrada a partir de las 10 preguntas del Q-CHAT-
 
 | Regla | Se activa si… | Efecto | Tipo | Fundamento |
 |---|---|---|---|---|
-| **R01** Familia directa | Pregunta 20 = padre, madre o hermano/a con diagnóstico de autismo | **Sube un nivel** (máximo Alto). Recomienda vigilar el desarrollo y repetir la prueba en 6 meses | Nivel | Los hermanos de un niño con TEA tienen cerca de 20 % de probabilidad de tenerlo (Ozonoff y otros, 2011) |
+| **R01** Familia directa | Pregunta 20 = padre, madre o hermano/a con diagnóstico de autismo | **Sube un nivel** (máximo Alto). Recomienda vigilar el desarrollo y repetir la prueba en 6 meses | Nivel | Los hermanos de un niño con TEA tienen cerca de 20 % de probabilidad de tenerlo (18.7 % en Ozonoff y otros, 2011; 20.2 % en la actualización de 2024) |
 | **R02** Habla + desarrollo | Pregunta 13 = Sí **y** pregunta 17 = Sí | **Prioritario.** Recomienda una evaluación del desarrollo pronto | Nivel | La combinación justifica evaluación sin importar el tamizaje (Hyman y otros, 2020) |
-| **R03** Condición genética | Pregunta 15 = Sí | **Sube un nivel** (máximo Alto). Sugiere seguimiento con genética o neuropediatría | Nivel | Varios síndromes genéticos (X frágil, esclerosis tuberosa, Down, entre otros) tienen una frecuencia de TEA muy superior a la población (Richards y otros, 2015) |
+| **R03** Condición genética | Pregunta 15 = Sí | **Sube un nivel** (máximo Alto). Sugiere seguimiento con genética o neuropediatría | Nivel | Varios síndromes genéticos (por ejemplo, X frágil o esclerosis tuberosa) tienen una frecuencia de TEA muy superior a la población, con mucha variación entre síndromes (Richards y otros, 2015) |
 | **R04** Edad | `age_validity` distinto de `validated` (1 año, o 3 años o más) | No cambia el nivel; muestra el aviso por edad (`formulario_tamizaje.md`, sección 2) | Recomendación | Rango de validación del Q-CHAT-10: 18 a 36 meses (Allison y otros, 2012) |
-| **R05** Regresión | Pregunta 21 = Sí | **Prioritario** (propuesta). Recomienda una evaluación pronto | Nivel | La pérdida de habilidades a cualquier edad es signo de alarma (Hyman y otros, 2020); ocurre en cerca de 1 de cada 3 niños con TEA (Barger y otros, 2013) |
+| **R05** Regresión | Pregunta 21 = Sí | **Prioritario** (aprobado). Recomienda una evaluación pronto | Nivel | La pérdida de habilidades ya adquiridas justifica evaluación médica (Hyman y otros, 2020); se reporta en cerca de un cuarto de los niños con TEA, sobre todo entre los 18 y 24 meses (Hyman y otros, 2020; edad media de pérdida 21.4 meses según Barger y otros, 2013) |
 | **R06** Desarrollo solo | Pregunta 17 = Sí **y** pregunta 13 ≠ Sí | **Sube un nivel** (máximo Alto). Recomienda una evaluación del desarrollo | Nivel | Un retraso del desarrollo justifica evaluación por sí solo (Hyman y otros, 2020) |
 | **R07** Ánimo | Pregunta 16 = Sí | Recomienda: "Le recomendamos conversar con su pediatra sobre el estado de ánimo de su hijo/a" | Recomendación | No indica TEA, pero una tristeza persistente en un niño pequeño merece consulta |
 | **R08** Otro familiar | Pregunta 20 = otro familiar con diagnóstico de autismo | Recomienda: "Mencione este antecedente a su pediatra en el próximo control" | Recomendación | El riesgo aumenta poco con familiares no directos (primos, cerca de 2 veces la población; hermanos, cerca de 10 veces; Sandin y otros, 2014) |
@@ -102,29 +102,29 @@ Estos casos sirven también como **tests** de las reglas y como parte del set de
 
 ---
 
-## 6. Hoja de validación para especialistas
+## 6. Hoja de validación para especialistas (aprobada)
 
 | Ítem | Qué revisar | Aprobado | Con cambios | Rechazado | Comentarios |
 |---|---|---|---|---|---|
-| Cortes del nivel base | Bajo < 0.20; Moderado 0.20–0.50; Alto ≥ 0.50 | ☐ | ☐ | ☐ | |
-| Principio de no acumulación | Nivel final = el más alto, no la suma | ☐ | ☐ | ☐ | |
-| R01 Familia directa | Sube un nivel (máximo Alto) | ☐ | ☐ | ☐ | |
-| R02 Habla + desarrollo | Prioritario | ☐ | ☐ | ☐ | |
-| R03 Condición genética | Sube un nivel (máximo Alto) | ☐ | ☐ | ☐ | |
-| R04 Edad | Solo aviso | ☐ | ☐ | ☐ | |
-| R05 Regresión | **Prioritario o un nivel** | ☐ | ☐ | ☐ | |
-| R06 Desarrollo solo | Sube un nivel (máximo Alto) | ☐ | ☐ | ☐ | |
-| R07 Ánimo | Solo recomendación | ☐ | ☐ | ☐ | |
-| R08 Otro familiar | Solo recomendación | ☐ | ☐ | ☐ | |
-| R09 / R09b "No sé" | Recomendaciones | ☐ | ☐ | ☐ | |
-| 14, 18 y 19 sin regla | Solo perfiles y agente | ☐ | ☐ | ☐ | |
+| Cortes del nivel base | Bajo < 0.20; Moderado 0.20–0.50; Alto ≥ 0.50 | ☑ | ☐ | ☐ | |
+| Principio de no acumulación | Nivel final = el más alto, no la suma | ☑ | ☐ | ☐ | |
+| R01 Familia directa | Sube un nivel (máximo Alto) | ☑ | ☐ | ☐ | |
+| R02 Habla + desarrollo | Prioritario | ☑ | ☐ | ☐ | |
+| R03 Condición genética | Sube un nivel (máximo Alto) | ☑ | ☐ | ☐ | |
+| R04 Edad | Solo aviso | ☑ | ☐ | ☐ | |
+| R05 Regresión | **Prioritario** | ☑ | ☐ | ☐ | |
+| R06 Desarrollo solo | Sube un nivel (máximo Alto) | ☑ | ☐ | ☐ | |
+| R07 Ánimo | Solo recomendación | ☑ | ☐ | ☐ | |
+| R08 Otro familiar | Solo recomendación | ☑ | ☐ | ☐ | |
+| R09 / R09b "No sé" | Recomendaciones | ☑ | ☐ | ☐ | |
+| 14, 18 y 19 sin regla | Solo perfiles y agente | ☑ | ☐ | ☐ | |
 
 ---
 
 ## 7. Pendientes
 
-- Validación de los especialistas, en la misma sesión que el formulario.
-- Verificar las citas con los artículos originales antes de publicarlas en la app.
+- ~~Validación de los especialistas~~ **Hecho:** aprobaron los cortes, las reglas y R05 como Prioritario.
+- ~~Verificar las citas~~ **Hecho** (2026-10-08): se confirmaron las cifras de Ozonoff (18.7 %, y 20.2 % en 2024) y Sandin (10.3 hermanos, 2.0 primos). La cifra de regresión se corrigió a "cerca de un cuarto" (Hyman 2020); el 32 % atribuido a Barger no se pudo confirmar.
 - Textos que ve el padre para cada nivel (qué significa y qué hacer): parte de la base de conocimiento del agente.
 - Revisar los cortes y las reglas con los datos de la validación local en el Perú.
 
@@ -134,5 +134,6 @@ Estos casos sirven también como **tests** de las reglas y como parte del set de
 - Barger BD, Campbell JM, McDonough JD (2013). Prevalence and onset of regression within autism spectrum disorders: a meta-analytic review. *J Autism Dev Disord*, 43(4), 817–828.
 - Hyman SL, Levy SE, Myers SM (2020). Identification, evaluation, and management of children with autism spectrum disorder. *Pediatrics*, 145(1), e20193447.
 - Ozonoff S y otros (2011). Recurrence risk for autism spectrum disorders: a Baby Siblings Research Consortium study. *Pediatrics*, 128(3), e488–e495.
+- Ozonoff S y otros (2024). Familial recurrence of autism: updates from the Baby Siblings Research Consortium. *Pediatrics*, 154(2), e2023065297.
 - Richards C y otros (2015). Prevalence of autism spectrum disorder phenomenology in genetic disorders: a systematic review and meta-analysis. *Lancet Psychiatry*, 2(10), 909–916.
 - Sandin S y otros (2014). The familial risk of autism. *JAMA*, 311(17), 1770–1777.

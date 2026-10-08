@@ -2,7 +2,7 @@
 
 Versión final propuesta de las 21 preguntas que responde el padre, madre o tutor, con la hoja de validación para los especialistas. Parte del formulario de TEAnimo (`components/form-comp/questions.js`), usado solo como referencia, y de las decisiones de `consideraciones_app_tamizaje.md` y `datos_y_privacidad.md`.
 
-Versión 1.2 · 2026-10-08 · Estado: **pendiente de validación por especialistas**
+Versión 1.3 · 2026-10-08 · Estado: **validado por especialistas**
 
 ---
 
@@ -162,12 +162,12 @@ No entran al modelo. Se usan en las **reglas clínicas** (pueden subir el nivel 
 | Texto | ¿Su hijo/a dejó de hacer, durante varias semanas, cosas que ya hacía, como decir palabras, señalar, saludar o responder a su nombre? |
 | Opciones | Sí · No · No sé |
 | Se guarda como | `regression`: `yes`, `no` o `unknown` |
-| Uso | No entra al modelo. Regla clínica **R05**: un "Sí" sube el nivel y recomienda una evaluación pronta, sin importar el puntaje. **Cuánto sube** (un nivel o directo a Prioritario) lo definen los especialistas |
+| Uso | No entra al modelo. Regla clínica **R05**: un "Sí" sube el nivel y recomienda una evaluación pronta, sin importar el puntaje. **Sube a Prioritario** (aprobado por los especialistas) |
 
 **Por qué se agrega:**
 
-- La pérdida de lenguaje o de habilidades sociales a cualquier edad es un signo de alarma que justifica derivar a evaluación (guía de la Academia Americana de Pediatría, Hyman y otros, 2020).
-- Ocurre en cerca de 1 de cada 3 niños con autismo, sobre todo entre los 15 y los 24 meses (metaanálisis de Barger, Campbell y McDonough, 2013).
+- La pérdida de habilidades ya adquiridas justifica evaluación médica (guía de la Academia Americana de Pediatría, Hyman y otros, 2020).
+- Se reporta en cerca de un cuarto de los niños con autismo, sobre todo entre los 18 y los 24 meses (Hyman y otros, 2020; edad media de pérdida de 21.4 meses según el metaanálisis de Barger, Campbell y McDonough, 2013).
 - También puede indicar otras condiciones que requieren atención médica pronta (por ejemplo, síndrome de Rett o síndrome de Landau-Kleffner).
 - El Q-CHAT-10 no lo pregunta: mide cómo está el niño hoy, no si perdió algo.
 
@@ -207,40 +207,40 @@ No entran al modelo. Se usan en las **reglas clínicas** (pueden subir el nivel 
 
 ---
 
-## 8. Hoja de validación para especialistas
+## 8. Hoja de validación para especialistas (aprobada)
 
 Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. Las preguntas 3 a 12 solo se revisan para confirmar que la traducción es fiel al original.
 
 | # | Tema | ¿Qué deben revisar? | Aprobado | Con cambios | Rechazado | Comentarios |
 |---|---|---|---|---|---|---|
-| 1 | Edad | Avisos por edad y **tope clínico de confianza** (propuesta: 5 años, con aviso después) | ☐ | ☐ | ☐ | |
-| 2 | Sexo | Redacción | ☐ | ☐ | ☐ | |
-| 3 | A1 Responde a su nombre | Fidelidad al original y ejemplo | ☐ | ☐ | ☐ | |
-| 4 | A2 Contacto visual | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
-| 5 | A3 Señala para pedir | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
-| 6 | A4 Señala para compartir | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
-| 7 | A5 Juego de simular | **"Simular" en lugar de "fingir"** | ☐ | ☐ | ☐ | |
-| 8 | A6 Sigue la mirada | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
-| 9 | A7 Consuela | **Se agrega la condición del original** | ☐ | ☐ | ☐ | |
-| 10 | A8 Primeras palabras | Fidelidad y opciones | ☐ | ☐ | ☐ | |
-| 11 | A9 Gestos simples | **Se quita "señala lo que quiere" del ejemplo** | ☐ | ☐ | ☐ | |
-| 12 | A10 Mirada perdida | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
-| 13 | Habla y lenguaje | Redacción nueva y "No sé" | ☐ | ☐ | ☐ | |
-| 14 | Aprendizaje | Redacción nueva, adecuada a niños pequeños | ☐ | ☐ | ☐ | |
-| 15 | Condición genética | Redacción y ejemplos | ☐ | ☐ | ☐ | |
-| 16 | Ánimo (depresión) | ¿Tiene sentido a esta edad? ¿Mantener, cambiar o quitar? | ☐ | ☐ | ☐ | |
-| 17 | Retraso del desarrollo | Redacción nueva | ☐ | ☐ | ☐ | |
-| 18 | Conducta y juego social | Redacción nueva | ☐ | ☐ | ☐ | |
-| 19 | Ansiedad | Redacción nueva | ☐ | ☐ | ☐ | |
-| 20 | Antecedente familiar | Opciones (familia directa / otro familiar / no / no sé) | ☐ | ☐ | ☐ | |
-| 21 | Regresión (nueva) | Redacción y **cuánto sube el nivel** con un "Sí" (un nivel o Prioritario) | ☐ | ☐ | ☐ | |
-| — | Avisos por edad (sección 2) | Textos que ve el padre | ☐ | ☐ | ☐ | |
+| 1 | Edad | Avisos por edad y **tope clínico de confianza** (propuesta: 5 años, con aviso después) | ☑ | ☐ | ☐ | |
+| 2 | Sexo | Redacción | ☑ | ☐ | ☐ | |
+| 3 | A1 Responde a su nombre | Fidelidad al original y ejemplo | ☑ | ☐ | ☐ | |
+| 4 | A2 Contacto visual | Fidelidad y ejemplo | ☑ | ☐ | ☐ | |
+| 5 | A3 Señala para pedir | Fidelidad y ejemplo | ☑ | ☐ | ☐ | |
+| 6 | A4 Señala para compartir | Fidelidad y ejemplo | ☑ | ☐ | ☐ | |
+| 7 | A5 Juego de simular | **"Simular" en lugar de "fingir"** | ☑ | ☐ | ☐ | |
+| 8 | A6 Sigue la mirada | Fidelidad y ejemplo | ☑ | ☐ | ☐ | |
+| 9 | A7 Consuela | **Se agrega la condición del original** | ☑ | ☐ | ☐ | |
+| 10 | A8 Primeras palabras | Fidelidad y opciones | ☑ | ☐ | ☐ | |
+| 11 | A9 Gestos simples | **Se quita "señala lo que quiere" del ejemplo** | ☑ | ☐ | ☐ | |
+| 12 | A10 Mirada perdida | Fidelidad y ejemplo | ☑ | ☐ | ☐ | |
+| 13 | Habla y lenguaje | Redacción nueva y "No sé" | ☑ | ☐ | ☐ | |
+| 14 | Aprendizaje | Redacción nueva, adecuada a niños pequeños | ☑ | ☐ | ☐ | |
+| 15 | Condición genética | Redacción y ejemplos | ☑ | ☐ | ☐ | |
+| 16 | Ánimo (depresión) | ¿Tiene sentido a esta edad? ¿Mantener, cambiar o quitar? | ☑ | ☐ | ☐ | |
+| 17 | Retraso del desarrollo | Redacción nueva | ☑ | ☐ | ☐ | |
+| 18 | Conducta y juego social | Redacción nueva | ☑ | ☐ | ☐ | |
+| 19 | Ansiedad | Redacción nueva | ☑ | ☐ | ☐ | |
+| 20 | Antecedente familiar | Opciones (familia directa / otro familiar / no / no sé) | ☑ | ☐ | ☐ | |
+| 21 | Regresión (nueva) | Redacción y **cuánto sube el nivel** con un "Sí" (un nivel o Prioritario) | ☑ | ☐ | ☐ | |
+| — | Avisos por edad (sección 2) | Textos que ve el padre | ☑ | ☐ | ☐ | |
 
 **Preguntas abiertas para los especialistas:**
 
 1. ~~¿Confirman 5 años como tope clínico de confianza?~~ **Decidido: sí**, con aviso después de los 5 años.
 2. ~~¿La pregunta 16 (ánimo) aporta algo en niños de 1 a 3 años?~~ **Decidido: se mantiene.**
-3. ~~¿Se agrega una pregunta sobre regresión?~~ **Decidido: sí**, como pregunta 21. Falta que los especialistas definan cuánto sube el nivel (regla R05).
+3. ~~¿Se agrega una pregunta sobre regresión?~~ **Decidido: sí**, como pregunta 21. Los especialistas aprobaron que un "Sí" lleve a **Prioritario** (regla R05).
 4. ~~¿Las redacciones de las preguntas 13 a 19 cambian los pesos de los perfiles?~~ **Decidido: los pesos se mantienen.**
 
 ---
@@ -252,7 +252,7 @@ El diseño del formulario está cerrado. Lo que falta depende de otras personas 
 | Pendiente | Dónde se sigue |
 |---|---|
 | Autorización del Autism Research Centre para usar el Q-CHAT-10 en Conecta | Tarea "Cumplir el mínimo legal de privacidad para el piloto" (permisos antes del piloto) |
-| Revisión de los especialistas (sección 8) | Tarea "Validar reglas clínicas con especialistas": formulario y reglas se revisan en la misma sesión |
+| ~~Revisión de los especialistas~~ | **Hecho:** formulario y reglas aprobados |
 | Construir el formulario en Conecta (Next.js, ruta `/screening/questions`) y su validación en `POST /assessments` | Desarrollo de Conecta. Es un proyecto nuevo: TEAnimo solo sirvió de referencia, no se modifica su código |
 | Prueba con 5 a 10 padres en celular (comprensión y tiempo) | Cuando el formulario esté construido en Conecta |
 

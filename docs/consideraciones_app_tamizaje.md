@@ -299,7 +299,7 @@ Implicación práctica: el ML **no supera claramente** a la regla oficial. Mostr
 
 **Decidido:** la propuesta completa está en **`reglas_clinicas.md`**. Resumen:
 
-- **Nivel base** desde la probabilidad del modelo (cortes a validar con especialistas): Bajo < 0.20, Moderado 0.20–0.50, Alto ≥ 0.50. **Prioritario** solo por reglas.
+- **Nivel base** desde la probabilidad del modelo (cortes aprobados por especialistas): Bajo < 0.20, Moderado 0.20–0.50, Alto ≥ 0.50. **Prioritario** solo por reglas.
 - **Dos tipos de reglas:** de nivel (suben el nivel) y de recomendación (agregan un consejo sin cambiar el nivel).
 - **No se acumulan:** el nivel final es el más alto que indique cualquier regla. "Subir un nivel" llega como máximo a Alto.
 
@@ -309,7 +309,7 @@ Implicación práctica: el ML **no supera claramente** a la regla oficial. Mostr
 | R02 | Retraso del habla (13) y del desarrollo (17) | Prioritario |
 | R03 | Condición genética (15) | Sube un nivel (máx. Alto) |
 | R04 | Edad fuera del rango validado | Aviso por edad |
-| R05 | Regresión (21) | Prioritario (propuesta) |
+| R05 | Regresión (21) | Prioritario |
 | R06 | Retraso del desarrollo (17) sin retraso del habla | Sube un nivel (máx. Alto) |
 | R07 | Ánimo bajo persistente (16) | Recomendación: hablarlo con el pediatra |
 | R08 | Otro familiar con autismo (20) | Recomendación: mencionarlo al pediatra |
