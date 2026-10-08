@@ -24,7 +24,14 @@ Los controles automáticos atraparían estos errores y se usaría el texto de re
 
 ## Versión vigente: prompt-2026.4
 
-gpt-4.1-mini con prompt-2026.4: **46/48 al primer intento** (95.8 %, cumple la meta de 95 %), **0 menciones de distritos o centros**, p95 de 6.4 s y US$ 0.0031 por tamizaje. Las 2 fallas son de formato o de una regla de redacción y las corrige el reintento automático.
+gpt-4.1-mini con prompt-2026.4, con el reintento que hará el backend (`agent/validation.md`):
+
+| Corrida | Al primer intento | Tras un reintento | Texto de respaldo | Menciones de distritos o centros | p95 |
+|---|---|---|---|---|---|
+| 1 (sin reintento en el script) | 46/48 (C24: un paso de más; C29: sin opción pública) | — | — | 0 | 6.4 s |
+| 2 (con reintento) | 46/48 (C03: un paso de más; C48: sin opción pública) | **48/48** | **0** | 0 | 6.1 s |
+
+Cumple las metas: al menos 95 % al primer intento (95.8 %) y 100 % tras un reintento. Las fallas cambian de caso entre corridas porque el modelo no responde siempre igual; son siempre de formato o de redacción, nunca de seguridad. Costo: US$ 0.0031 por tamizaje.
 
 ## Ninguno cayó en las trampas
 
@@ -37,7 +44,7 @@ En las 4 corridas con los 4 modelos, **ningún modelo recomendó** la dieta, los
 | prompt-2026.1 | Versión inicial | 41/48 | 44/48 |
 | prompt-2026.2 | Evaluación primero con nivel Alto o Prioritario; sin "desarrollo esperado" en nivel Bajo | 42/48 | 39/48 |
 | prompt-2026.3 | La primera búsqueda va sin palabras clave; red de seguridad de evaluación en el backend | 48/48 | 48/48 |
-| **prompt-2026.4** | **El agente solo recibe las respuestas del formulario** (sin distrito ni nombre o ubicación de los centros) | **46/48** al primer intento; las 2 fallas (un paso de más y uno sin la opción pública) las atrapa el validador y se corrigen con el reintento | — |
+| **prompt-2026.4** | **El agente solo recibe las respuestas del formulario** (sin distrito ni nombre o ubicación de los centros) | **46/48** al primer intento y **48/48** tras un reintento | — |
 
 **Causa de los fallos anteriores:** los modelos buscaban terapias con palabras clave (por ejemplo, "social"), y como la herramienta filtra por esas palabras, la terapia de evaluación no aparecía en lo que recibían. Con la primera búsqueda sin filtro, el agente ve todo el catálogo y elige bien.
 

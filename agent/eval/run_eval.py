@@ -27,6 +27,7 @@ AGENT = HERE.parent
 ROOT = AGENT.parent
 PROMPT_VERSION = "prompt-2026.4"
 USAGE = {}
+LAST = {}  # contexto del último intento, para el reintento
 
 
 def load_cases():
@@ -90,15 +91,24 @@ def mock_agent(case):
 
 
 # ---------- agente real (Azure OpenAI) ----------
-def llm_agent(case, client, deployment):
+def llm_agent(case, client, deployment, retry=None):
+    """retry = (mensajes del primer intento, salida, fallas): reintenta con el mismo
+    contexto más el motivo del error, como hace el backend (agent/validation.md)."""
     tools = [{"type": "function", "function": {"name": t["name"], "description": t["description"],
                                                 "parameters": t["input_schema"]}}
              for t in json.load(open(AGENT / "tools.json"))]
     schema = json.load(open(AGENT / "output_schema.json"))
     schema = {k: v for k, v in schema.items() if k not in ("$schema", "title", "description")}
-    messages = [{"role": "system", "content": system_prompt()},
-                {"role": "user", "content": json.dumps(case["input"], ensure_ascii=False)}]
     returned, called = set(), False
+    if retry:
+        messages, prev_out, prev_errors, returned, called = retry
+        messages = messages + [
+            {"role": "assistant", "content": json.dumps(prev_out, ensure_ascii=False)},
+            {"role": "user", "content": "Tu respuesta no pasó estos controles: " + "; ".join(prev_errors)
+             + ". Corrígela y devuelve el JSON completo."}]
+    else:
+        messages = [{"role": "system", "content": system_prompt()},
+                    {"role": "user", "content": json.dumps(case["input"], ensure_ascii=False)}]
     usage = {"input": 0, "cached": 0, "output": 0}
     for _ in range(4):
         resp = client.chat.completions.create(
@@ -119,7 +129,9 @@ def llm_agent(case, client, deployment):
                 returned |= {r["therapy_id"] for r in result["therapies"]}
                 messages.append({"role": "tool", "tool_call_id": call.id, "content": json.dumps(result, ensure_ascii=False)})
             continue
-        USAGE.update(usage)
+        for k, v in usage.items():
+            USAGE[k] = USAGE.get(k, 0) + v
+        LAST["state"] = (messages, returned, called)
         return json.loads(msg.content), returned, called
     raise RuntimeError("El agente no terminó en 4 turnos")
 
@@ -130,6 +142,7 @@ def main():
     ap.add_argument("--deployment", help="nombre del despliegue en Azure OpenAI")
     ap.add_argument("--openai", help="modelo de la API de OpenAI (por ejemplo, gpt-4.1-mini)")
     ap.add_argument("--limit", type=int, help="correr solo los primeros N casos")
+    ap.add_argument("--cases", help="correr solo estos casos, separados por comas (por ejemplo, C24,C29)")
     args = ap.parse_args()
     client, model = None, None
     if args.openai:
@@ -144,24 +157,36 @@ def main():
         ap.error("indique --mock, --openai <modelo> o --deployment <nombre>")
     mode = "mock" if args.mock else model
     (HERE / "results").mkdir(exist_ok=True)
-    totals = {"cases": 0, "valid": 0, "case_ok": 0, "errors": {}}
-    with open(HERE / "results" / f"{mode}.jsonl", "w", encoding="utf-8") as f:
-        for case in load_cases()[: args.limit]:
+    totals = {"cases": 0, "valid_first_try": 0, "valid": 0, "case_ok": 0, "fallback": 0, "errors": {}}
+    cases = load_cases()[: args.limit]
+    if args.cases:
+        cases = [c for c in cases if c["id"] in args.cases.split(",")]
+    suffix = "_cases" if args.cases else ""
+    with open(HERE / "results" / f"{mode}{suffix}.jsonl", "w", encoding="utf-8") as f:
+        for case in cases:
             t0 = time.time()
             USAGE.clear()
+            first_errors = None
             try:
                 out, returned, called = mock_agent(case) if args.mock else llm_agent(case, client, model)
                 v, e = validate(out, returned, called), check_case(out, case)
+                if v and not args.mock:  # un reintento con el motivo del error
+                    first_errors = v
+                    messages, returned, called = LAST["state"]
+                    out, returned, called = llm_agent(case, client, model, (messages, out, v, returned, called))
+                    v, e = validate(out, returned, called), check_case(out, case)
             except Exception as ex:  # noqa: BLE001
                 out, v, e = None, [f"EXC {type(ex).__name__}: {ex}"], []
             totals["cases"] += 1
+            totals["valid_first_try"] += not v and first_errors is None
             totals["valid"] += not v
+            totals["fallback"] += bool(v)
             totals["case_ok"] += not v and not e
             for err in v + e:
                 key = err.split(" ")[0]
                 totals["errors"][key] = totals["errors"].get(key, 0) + 1
             f.write(json.dumps({"id": case["id"], "prompt_version": PROMPT_VERSION, "seconds": round(time.time() - t0, 2),
-                                "validation": v, "case_checks": e, "usage": dict(USAGE), "output": out}, ensure_ascii=False) + "\n")
+                                "first_try_errors": first_errors, "validation": v, "case_checks": e, "usage": dict(USAGE), "output": out}, ensure_ascii=False) + "\n")
     print(json.dumps(totals, ensure_ascii=False, indent=2))
 
 
