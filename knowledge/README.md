@@ -2,7 +2,7 @@
 
 Textos curados que el agente IA recibe **completos** en cada evaluación (sin búsqueda, sin RAG). No le enseñan medicina: fijan **qué debe decir y cómo**, con definiciones y tono aprobados por el equipo clínico, para que no improvise. La app también los usa directamente cuando el agente falla (textos de respaldo).
 
-Versión `kb-2026.1` · 2026-10-08 · Estado: **borrador; pendiente de aprobación por especialistas**
+Versión `kb-2026.1` · 2026-10-08 · Estado: **aprobada por especialistas** (2026-10-08)
 
 | Archivo | Contenido |
 |---|---|

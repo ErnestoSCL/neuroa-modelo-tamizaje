@@ -1,9 +1,9 @@
 {
   "knowledge_version": "kb-2026.1",
   "date": "2026-10-08",
-  "status": "draft",
-  "approved_by": null,
-  "approved_at": null,
+  "status": "approved",
+  "approved_by": "Especialistas del equipo clínico",
+  "approved_at": "2026-10-08",
   "depends_on": {
     "form": "docs/formulario_tamizaje.md v1.3",
     "rules": "docs/reglas_clinicas.md v1.1 (rules-2026.1)",

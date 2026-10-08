@@ -46,7 +46,7 @@ El perfil se calcula con los pesos aprobados (`docs/consideraciones_app_tamizaje
 
 ---
 
-## Sin perfil predominante [propuesta, a validar con especialistas]
+## Sin perfil predominante
 
 **Cuándo:** ambos porcentajes son bajos (menores a 20).
 
