@@ -339,21 +339,7 @@ Traducir el resultado determinista a una explicación comprensible y empática p
 
 ### 6.3 Salida (JSON estricto)
 
-```json
-{
-  "parent_summary": "string (máx. 120 palabras)",
-  "what_it_means": "string",
-  "profile_explanation": "string",
-  "suggested_therapies": [
-    { "therapy_id": "uuid", "location_id": "uuid", "reason": "string" }
-  ],
-  "next_steps": ["string"],
-  "no_diagnosis_notice": "string"
-}
-```
-
-- Validar contra JSON Schema. Cada `therapy_id` y `location_id` debe estar entre los que devolvió la herramienta `search_therapies` en esa misma evaluación (sección 6.10); si no, se descarta.
-- Usar la salida estructurada del proveedor (JSON con esquema) y un `max_tokens` acotado. Fijar la aleatoriedad al mínimo **si el modelo lo permite**: algunos modelos recientes ya no aceptan `temperature`, y ahí la consistencia se logra con el esquema, el prompt y la validación.
+**Decidido:** formato en `agent/output_schema.json` (prompt-2026.1): `summary`, `profile_explanation`, `next_steps`, `suggested_therapies` (`therapy_id` + `reason`) y `no_matching_therapies`. Los textos con peso clínico o legal (título del nivel, textos de las reglas, avisos) no los escribe el agente: son textos fijos de `knowledge/`. Validación en `agent/validation.md` (controles V1 a V10); texto de respaldo en `agent/fallback.md`.
 
 ### 6.4 Guardrails (en el prompt y verificados después)
 
