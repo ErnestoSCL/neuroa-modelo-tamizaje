@@ -25,7 +25,7 @@ from check_output import CATALOG, check_case, validate
 HERE = Path(__file__).resolve().parent
 AGENT = HERE.parent
 ROOT = AGENT.parent
-PROMPT_VERSION = "prompt-2026.1"
+PROMPT_VERSION = "prompt-2026.2"
 USAGE = {}
 
 
