@@ -92,7 +92,7 @@ Textos exactos de los avisos en `formulario_tamizaje.md`, sección 2.
 
 La versión final propuesta de las 20 preguntas (con texto actual, texto propuesto, opciones, cómo se guardan y la hoja de validación para especialistas) está en **`formulario_tamizaje.md`**. Resumen:
 
-- **Q-CHAT-10 (3 a 12):** no se reescriben; se unifica el trato de "usted" y se acerca el texto al original. Se recomienda adoptar la versión oficial en español del Autism Research Centre y revisar su licencia.
+- **Q-CHAT-10 (3 a 12):** no se reescriben; se unifica el trato de "usted" y se acerca el texto al original. Traducción propia revisada contra las versiones chilenas; falta pedir autorización de uso al Autism Research Centre.
 - **Comorbilidades (13 a 19):** se reformulan como **diagnóstico ya recibido** o **conducta observada**, con la opción **"No sé"**, que nunca se trata como "No".
 - **Antecedente familiar (20):** opciones "familia directa", "otro familiar", "No" y "No sé"; se quita "tiene comportamientos relacionados", porque no es un diagnóstico.
 

@@ -2,7 +2,7 @@
 
 Versión final propuesta de las 20 preguntas que responde el padre, madre o tutor, con la hoja de validación para los especialistas. Parte del formulario actual del frontend (`components/form-comp/questions.js`) y de las decisiones de `consideraciones_app_tamizaje.md` y `datos_y_privacidad.md`.
 
-Versión 1.0 · 2026-10-08 · Estado: **pendiente de validación por especialistas**
+Versión 1.1 · 2026-10-08 · Estado: **pendiente de validación por especialistas**
 
 ---
 
@@ -79,27 +79,44 @@ Se guarda en `app.consents` con la versión del texto, las finalidades aceptadas
 
 **No se reescriben.** El Q-CHAT-10 es un cuestionario validado; cambiar el sentido de una pregunta afecta su validez y la del modelo, que se entrenó con él. Los cambios propuestos solo unifican el trato de "usted" y acercan el texto al original en inglés (Allison et al., 2012).
 
-**Recomendación principal:** reemplazar estas traducciones por la **versión oficial en español del Q-CHAT-10** publicada por el Autism Research Centre de la Universidad de Cambridge (traducción de INECO, Argentina; también hay una versión chilena), y ajustar solo el vocabulario local con permiso. Antes de lanzar hay que **revisar la licencia**: confirmar si el uso en un servicio comercial requiere autorización del Autism Research Centre **[verificar]**.
+**Cómo se definió el texto final:** traducción propia, fiel al original en inglés (Allison et al., 2012), revisada contra dos versiones chilenas publicadas en el sitio del Autism Research Centre, con vocabulario peruano ("señala", "chau", "simular") y trato de "usted".
 
-**Puntuación (no cambia):** preguntas 3 a 11 (A1–A9) suman 1 si la opción elegida es la 3.ª, 4.ª o 5.ª (índice 2, 3 o 4). La pregunta 12 (A10) suma 1 si es la 1.ª, 2.ª o 3.ª (índice 0, 1 o 2).
+- **Traducción de la Universidad Autónoma de Chile, sede Talca (Segura Pujol):** fiel al original y en el mismo orden. Sirvió de referencia, pero no se copia porque está publicada "con fines exclusivamente académicos".
+- **Adaptación de la Universidad de la Frontera, Chile (Gatica-Bahamonde y otros, 2019): no compatible con el modelo.** Reemplaza la pregunta de las primeras palabras (A8) por una de referencia social, y cambia el orden y algunas opciones. El modelo se entrenó con las 10 preguntas originales.
+- **Licencia:** el Q-CHAT-10 pertenece al Autism Research Centre de la Universidad de Cambridge. Antes de lanzar, pedirle autorización para su uso en Conecta **[pendiente]**.
+- **Validación local:** ninguna traducción al español está validada en población peruana; queda para el estudio de validación local.
 
-| # | Ítem | Texto actual | Texto propuesto | Ejemplo propuesto | Opciones (índice 0 → 4) |
-|---|---|---|---|---|---|
-| 3 | A1 | ¿Tu hijo te mira cuando lo llamas por su nombre? | ¿Su hijo/a le mira cuando usted le llama por su nombre? | Voltea a mirarle o reacciona cuando usted dice su nombre | Siempre · Usualmente · A veces · Raramente · Nunca |
-| 4 | A2 | ¿Qué tan fácil es para ti lograr contacto visual con tu hijo? | ¿Qué tan fácil es para usted lograr que su hijo/a le mire a los ojos? | Cuando usted le habla, le sostiene la mirada o la evita | Muy fácil · Bastante fácil · Bastante difícil · Muy difícil · Imposible |
-| 5 | A3 | ¿Tu hijo señala para indicar que quiere algo? | ¿Su hijo/a señala con el dedo para indicar que quiere algo? | Señala un juguete que no alcanza | Muchas veces al día · Unas cuantas veces al día · Unas cuantas veces por semana · Menos de una vez por semana · Nunca |
-| 6 | A4 | ¿Tu hijo señala para compartir interés contigo? | ¿Su hijo/a señala con el dedo para compartir con usted algo que le interesa? | Señala un avión o un perro para que usted también lo mire | Igual que la 5 |
-| 7 | A5 | ¿Tu hijo finge? | ¿Su hijo/a juega a fingir o "hacer como si"? | Le da de comer a una muñeca o habla por un teléfono de juguete | Igual que la 5 |
-| 8 | A6 | ¿Tu hijo sigue con la mirada hacia donde tú estás mirando? | ¿Su hijo/a mira hacia donde usted está mirando? | Si usted mira una lámpara, él o ella también la mira | Igual que la 5 |
-| 9 | A7 | ¿Tu hijo muestra señales de querer consolar? | Si usted u otra persona de la familia está visiblemente triste o molesta, ¿su hijo/a muestra señales de querer consolarla? | Le acaricia el pelo o le abraza | Siempre · Usualmente · A veces · Raramente · Nunca |
-| 10 | A8 | ¿Cómo describirías las primeras palabras de tu hijo? | ¿Cómo describiría las primeras palabras de su hijo/a? | Decía "mamá", "agua" o palabras parecidas, como otros niños | Muy típicas · Bastante típicas · Ligeramente inusuales · Muy inusuales · Mi hijo/a no habla |
-| 11 | A9 | ¿Tu hijo usa gestos simples? | ¿Su hijo/a usa gestos simples? | Dice adiós con la mano o mueve la cabeza para decir sí o no | Igual que la 5 |
-| 12 | A10 | ¿Tu hijo se queda mirando fijamente a la nada sin un propósito aparente? | ¿Su hijo/a se queda mirando fijamente a la nada, sin un propósito aparente? | Tiene la mirada perdida, sin fijarse en nada concreto | Igual que la 5 |
+**Puntuación (no cambia):** preguntas 3 a 11 (A1–A9) suman 1 si la opción elegida es la 3.ª, 4.ª o 5.ª (índice 2, 3 o 4). La pregunta 12 (A10) suma 1 si es la 1.ª, 2.ª o 3.ª (índice 0, 1 o 2). El orden en pantalla puede cambiar, pero cada respuesta se guarda siempre con su ítem original (A1 a A10).
+
+**Opciones de respuesta:**
+
+| Tipo | Preguntas | Opciones (índice 0 → 4) |
+|---|---|---|
+| Frecuencia general | 3 (A1), 9 (A7) | Siempre · Normalmente · A veces · Raramente · Nunca |
+| Facilidad | 4 (A2) | Muy fácil · Bastante fácil · Bastante difícil · Muy difícil · Imposible |
+| Frecuencia diaria | 5, 6, 7, 8, 11, 12 (A3–A6, A9, A10) | Muchas veces al día · Unas cuantas veces al día · Unas cuantas veces a la semana · Menos de una vez a la semana · Nunca |
+| Primeras palabras | 10 (A8) | Muy típicas · Bastante típicas · Un poco inusuales · Muy inusuales · Mi hijo/a no habla |
+
+Se mantienen "Bastante difícil" y "Unas cuantas veces" porque son las equivalencias fieles de *quite difficult* y *a few times*; las alternativas "más o menos difícil" y "pocas veces" cambian el sentido de la respuesta.
+
+| # | Ítem | Texto actual | Texto final | Ejemplo |
+|---|---|---|---|---|
+| 3 | A1 | ¿Tu hijo te mira cuando lo llamas por su nombre? | ¿Su hijo/a le mira cuando usted le llama por su nombre? | Voltea a mirarle cuando usted dice su nombre |
+| 4 | A2 | ¿Qué tan fácil es para ti lograr contacto visual con tu hijo? | ¿Qué tan fácil es para usted lograr contacto visual con su hijo/a? | Que le mire a los ojos cuando usted le habla |
+| 5 | A3 | ¿Tu hijo señala para indicar que quiere algo? | ¿Su hijo/a señala con el dedo para indicar que quiere algo? | Un juguete que no alcanza |
+| 6 | A4 | ¿Tu hijo señala para compartir interés contigo? | ¿Su hijo/a señala con el dedo para mostrarle algo que le interesa? | Para que usted también lo mire |
+| 7 | A5 | ¿Tu hijo finge? | ¿Su hijo/a juega a simular o "hacer como si"? | Dar de comer a un muñeco o hablar por un teléfono de juguete |
+| 8 | A6 | ¿Tu hijo sigue con la mirada hacia donde tú estás mirando? | ¿Su hijo/a sigue con la mirada hacia donde usted está mirando? | Si usted mira una lámpara, él o ella también la mira |
+| 9 | A7 | ¿Tu hijo muestra señales de querer consolar? | Si usted u otra persona de la familia está visiblemente triste o molesta, ¿su hijo/a muestra señales de querer ayudarla o consolarla? | Acariciarle o abrazarle |
+| 10 | A8 | ¿Cómo describirías las primeras palabras de tu hijo? | ¿Cómo describiría las primeras palabras de su hijo/a? | Decía "mamá", "agua" o palabras parecidas, como otros niños |
+| 11 | A9 | ¿Tu hijo usa gestos simples? | ¿Su hijo/a usa gestos simples? | Mover la mano para decir "chau" |
+| 12 | A10 | ¿Tu hijo se queda mirando fijamente a la nada sin un propósito aparente? | ¿Su hijo/a se queda mirando al vacío, sin un propósito aparente? | Con la mirada fija en un punto, sin fijarse en nada concreto |
 
 **Cambios que sí tocan el contenido (revisar con prioridad):**
 
 - **Pregunta 9 (A7):** el texto actual omite la condición del original ("si usted u otra persona de la familia está visiblemente triste o molesta"). Sin ella, el padre puede responder pensando en otras situaciones.
 - **Pregunta 11 (A9):** el ejemplo actual incluye "señala lo que quiere", que es la pregunta 5. Se quita para no mezclar ítems.
+- **Pregunta 7 (A5):** "¿finge?" puede leerse como "miente"; "simular" o "hacer como si" es lo que usan las traducciones chilenas.
 - **Pregunta 3 (A1):** el ejemplo actual usa un nombre propio ("Juan"); se cambia por uno neutro.
 
 ---
@@ -169,7 +186,7 @@ No entran al modelo. Se usan en las **reglas clínicas** (pueden subir el nivel 
 
 ## 7. Hoja de validación para especialistas
 
-Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. Las preguntas 3 a 12 solo se revisan para confirmar que la traducción es fiel; si se adopta la versión oficial del Autism Research Centre, se revisa esa.
+Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. Las preguntas 3 a 12 solo se revisan para confirmar que la traducción es fiel al original.
 
 | # | Tema | ¿Qué deben revisar? | Aprobado | Con cambios | Rechazado | Comentarios |
 |---|---|---|---|---|---|---|
@@ -179,7 +196,7 @@ Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. La
 | 4 | A2 Contacto visual | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
 | 5 | A3 Señala para pedir | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
 | 6 | A4 Señala para compartir | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
-| 7 | A5 Juego de fingir | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
+| 7 | A5 Juego de simular | **"Simular" en lugar de "fingir"** | ☐ | ☐ | ☐ | |
 | 8 | A6 Sigue la mirada | Fidelidad y ejemplo | ☐ | ☐ | ☐ | |
 | 9 | A7 Consuela | **Se agrega la condición del original** | ☐ | ☐ | ☐ | |
 | 10 | A8 Primeras palabras | Fidelidad y opciones | ☐ | ☐ | ☐ | |
@@ -208,7 +225,7 @@ Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. La
 
 | Pendiente | Responsable |
 |---|---|
-| Revisar la licencia del Q-CHAT-10 y obtener la versión oficial en español del Autism Research Centre | Fundador |
+| Pedir al Autism Research Centre autorización para usar el Q-CHAT-10 en Conecta | Fundador |
 | Validación de los especialistas (sección 7) | Especialistas |
 | Prueba con 5 a 10 padres en celular: comprensión y tiempo | Equipo |
 | Actualizar el frontend (`questions.js`, `Forms.jsx`) y el esquema del backend | Desarrollo |
