@@ -1,8 +1,8 @@
 # Formulario de tamizaje de Conecta
 
-Versión final propuesta de las 20 preguntas que responde el padre, madre o tutor, con la hoja de validación para los especialistas. Parte del formulario actual del frontend (`components/form-comp/questions.js`) y de las decisiones de `consideraciones_app_tamizaje.md` y `datos_y_privacidad.md`.
+Versión final propuesta de las 21 preguntas que responde el padre, madre o tutor, con la hoja de validación para los especialistas. Parte del formulario actual del frontend (`components/form-comp/questions.js`) y de las decisiones de `consideraciones_app_tamizaje.md` y `datos_y_privacidad.md`.
 
-Versión 1.1 · 2026-10-08 · Estado: **pendiente de validación por especialistas**
+Versión 1.2 · 2026-10-08 · Estado: **pendiente de validación por especialistas**
 
 ---
 
@@ -15,6 +15,7 @@ Versión 1.1 · 2026-10-08 · Estado: **pendiente de validación por especialist
 | 2. Q-CHAT-10 | 3 a 12 (A1–A10) | **Sí** (las únicas) | Probabilidad, perfiles y agente | Trato de "usted" y traducción fiel al original; no cambia el sentido ni la puntuación |
 | 3. Salud y desarrollo | 13 a 19 | No | Reglas clínicas y perfiles | Redactadas como diagnóstico recibido o conducta observada, con opción **"No sé"** |
 | 4. Familia | 20 | No | Regla clínica | Separa familia directa de otros familiares, con "No sé" |
+| 5. Regresión | 21 | No | Regla clínica R05 | **Nueva**: pérdida de habilidades que ya tenía |
 
 **Reglas generales:**
 
@@ -154,7 +155,27 @@ No entran al modelo. Se usan en las **reglas clínicas** (pueden subir el nivel 
 
 ---
 
-## 6. Datos que se envían al backend
+## 6. Bloque 5: regresión (pregunta 21, nueva)
+
+| Campo | Valor |
+|---|---|
+| Texto | ¿Su hijo/a dejó de hacer, durante varias semanas, cosas que ya hacía, como decir palabras, señalar, saludar o responder a su nombre? |
+| Opciones | Sí · No · No sé |
+| Se guarda como | `regression`: `yes`, `no` o `unknown` |
+| Uso | No entra al modelo. Regla clínica **R05**: un "Sí" sube el nivel y recomienda una evaluación pronta, sin importar el puntaje. **Cuánto sube** (un nivel o directo a Prioritario) lo definen los especialistas |
+
+**Por qué se agrega:**
+
+- La pérdida de lenguaje o de habilidades sociales a cualquier edad es un signo de alarma que justifica derivar a evaluación (guía de la Academia Americana de Pediatría, Hyman y otros, 2020).
+- Ocurre en cerca de 1 de cada 3 niños con autismo, sobre todo entre los 15 y los 24 meses (metaanálisis de Barger, Campbell y McDonough, 2013).
+- También puede indicar otras condiciones que requieren atención médica pronta (por ejemplo, síndrome de Rett o síndrome de Landau-Kleffner).
+- El Q-CHAT-10 no lo pregunta: mide cómo está el niño hoy, no si perdió algo.
+
+**Limitaciones:** la memoria de los padres sobre pérdidas no es exacta, así que un "No" no descarta nada. "Durante varias semanas" evita contar como regresión pausas normales (enfermedad, cambios en casa o aprender dos idiomas).
+
+---
+
+## 7. Datos que se envían al backend
 
 `POST /assessments` (ver `consideraciones_app_tamizaje.md`, sección 3.2):
 
@@ -172,7 +193,8 @@ No entran al modelo. Se usan en las **reglas clínicas** (pueden subir el nivel 
     "depression": "no", "developmental_delay": "yes",
     "social_behavior": "no", "anxiety": "no"
   },
-  "family_history": "other"
+  "family_history": "other",
+  "regression": "no"
 }
 ```
 
@@ -180,11 +202,12 @@ No entran al modelo. Se usan en las **reglas clínicas** (pueden subir el nivel 
 - `qchat10.*`: índice de la opción elegida (0 a 4). El backend calcula los binarios con la regla oficial.
 - `comorbidities.*`: `yes`, `no` o `unknown`.
 - `family_history`: `first_degree`, `other`, `no` o `unknown`.
+- `regression`: `yes`, `no` o `unknown`.
 - El backend calcula `age_validity` a partir de `age_years` (sección 2).
 
 ---
 
-## 7. Hoja de validación para especialistas
+## 8. Hoja de validación para especialistas
 
 Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. Las preguntas 3 a 12 solo se revisan para confirmar que la traducción es fiel al original.
 
@@ -210,23 +233,24 @@ Para cada pregunta: aprobar, aprobar con cambios o rechazar, con comentarios. La
 | 18 | Conducta y juego social | Redacción nueva | ☐ | ☐ | ☐ | |
 | 19 | Ansiedad | Redacción nueva | ☐ | ☐ | ☐ | |
 | 20 | Antecedente familiar | Opciones (familia directa / otro familiar / no / no sé) | ☐ | ☐ | ☐ | |
+| 21 | Regresión (nueva) | Redacción y **cuánto sube el nivel** con un "Sí" (un nivel o Prioritario) | ☐ | ☐ | ☐ | |
 | — | Avisos por edad (sección 2) | Textos que ve el padre | ☐ | ☐ | ☐ | |
 
 **Preguntas abiertas para los especialistas:**
 
 1. ~~¿Confirman 5 años como tope clínico de confianza?~~ **Decidido: sí**, con aviso después de los 5 años.
 2. ~~¿La pregunta 16 (ánimo) aporta algo en niños de 1 a 3 años?~~ **Decidido: se mantiene.**
-3. ¿Se agrega una pregunta sobre **regresión** ("¿Su hijo/a dejó de decir palabras o de hacer cosas que ya hacía?")? Es un signo de alarma importante y está propuesta como regla R05 en `consideraciones_app_tamizaje.md`.
+3. ~~¿Se agrega una pregunta sobre regresión?~~ **Decidido: sí**, como pregunta 21. Falta que los especialistas definan cuánto sube el nivel (regla R05).
 4. ~~¿Las redacciones de las preguntas 13 a 19 cambian los pesos de los perfiles?~~ **Decidido: los pesos se mantienen.**
 
 ---
 
-## 8. Pendientes antes de implementar
+## 9. Pendientes antes de implementar
 
 | Pendiente | Responsable |
 |---|---|
 | Pedir al Autism Research Centre autorización para usar el Q-CHAT-10 en Conecta | Fundador |
-| Validación de los especialistas (sección 7) | Especialistas |
+| Validación de los especialistas (sección 8) | Especialistas |
 | Prueba con 5 a 10 padres en celular: comprensión y tiempo | Equipo |
 | Actualizar el frontend (`questions.js`, `Forms.jsx`) y el esquema del backend | Desarrollo |
 

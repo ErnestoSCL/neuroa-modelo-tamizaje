@@ -104,6 +104,7 @@ Este documento funciona como **evaluación de impacto** del tratamiento y se deb
 | Respuestas Q-CHAT-10 (índice 0–4) | Niño | **Sensible (salud)** | Tamizaje | `app.answers` | Backend | Con la evaluación | Sí, sin identificadores |
 | Comorbilidades (habla, aprendizaje, genética, etc.) | Niño | **Sensible (salud)** | Reglas clínicas y perfiles | `app.answers` | Backend | Con la evaluación | Sí, sin identificadores |
 | Antecedente familiar de autismo | Niño y **un familiar** | **Sensible (salud de un tercero)** | Regla clínica | `app.answers` | Backend | Con la evaluación | Sí, solo sí/no |
+| Regresión (pérdida de habilidades que ya tenía) | Niño | **Sensible (salud)** | Regla clínica R05 | `app.answers` | Backend | Con la evaluación | Sí |
 | Probabilidad, nivel, perfil, reglas activadas | Niño | **Sensible (salud inferida)** | Resultado | `app.results` | Backend; el padre | Con la evaluación | Sí |
 | Explicación y terapias sugeridas | Niño | **Sensible** | Resultado | `app.explanations` | Backend; el padre | Con la evaluación | Es la salida del LLM |
 | Consentimientos (versión, finalidades, fechas) | Padre | Prueba de cumplimiento | Demostrar el consentimiento | `app.consents` | Backend; oficial de datos | Plazo legal posterior a la revocación **[verificar]** | No |

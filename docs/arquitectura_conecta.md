@@ -118,7 +118,7 @@ flowchart LR
 | `/centers` | Directorio de centros | Pública, generada en servidor |
 | `/centers/[slug]` | Página del centro: información, sedes, terapias y contacto | Pública, regenerada al cambiar el catálogo |
 | `/screening` | Inicio de la prueba: qué es, cuánto dura, consentimiento | Pública |
-| `/screening/questions` | Las 20 preguntas, una por pantalla, con progreso | Pública; se puede retomar |
+| `/screening/questions` | Las 21 preguntas, una por pantalla, con progreso | Pública; se puede retomar |
 | `/signup` | Crear cuenta antes de ver el resultado | Pública |
 | `/results/[id]` | Nivel de riesgo, perfil y explicación | Requiere sesión |
 | `/results/[id]/therapies` | Terapias sugeridas y sedes que las ofrecen | Requiere sesión |
@@ -226,7 +226,7 @@ Bajo `/internal`, con autenticación entre servicios. Los del Panel devuelven **
 
 `POST /assessments` ejecuta en orden:
 
-1. **Validación** de las 20 respuestas (Pydantic) y del consentimiento.
+1. **Validación** de las 21 respuestas (Pydantic) y del consentimiento.
 2. **Puntuación** de A1–A10 igual que el Q-CHAT-10 oficial.
 3. **Capa 1 (modelo):** probabilidad calibrada y comparación con el umbral de `metadata.json`.
 4. **Capa 2 (reglas clínicas):** comorbilidades, antecedente familiar y edad pueden subir el nivel (Bajo / Moderado / Alto / Prioritario).
@@ -365,7 +365,7 @@ sequenceDiagram
     participant A as Backend
     participant DB as PostgreSQL
     participant L as LLM
-    Pa->>W: Responde las 20 preguntas
+    Pa->>W: Responde las 21 preguntas
     W->>A: POST /auth/register + /consents
     W->>A: POST /assessments
     A->>A: Puntuación, modelo, reglas, perfil

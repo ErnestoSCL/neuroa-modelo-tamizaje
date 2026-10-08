@@ -66,6 +66,7 @@ Puntuación actual (`Forms.jsx`, `calculateScore`): ítems 1–9 suman 1 si la o
 | 18 | Problemas sociales/conducta | `c_social_behavior` | **No** | Sí | Sí | Social (20 %) |
 | 19 | Ansiedad | `c_anxiety` | **No** | Sí | Sí | Social (5 %) |
 | 20 | Familiar con autismo | `family_history` | **No** | Sí | Sí | No |
+| 21 | Regresión (nueva) | `regression` | **No** | Sí (R05) | Sí | No |
 
 Guardar **la respuesta cruda (índice 0–4)** de cada ítem además del valor binario. Hoy la tabla `evaluaciones` solo guarda `a1..a10` binarizados (`app/db/models.py:17-26`), lo que impide reentrenar con la escala completa o cambiar el punto de corte en el futuro.
 
@@ -90,10 +91,11 @@ Textos exactos de los avisos en `formulario_tamizaje.md`, sección 2.
 
 ### 2.4 Redacción de las preguntas
 
-La versión final propuesta de las 20 preguntas (con texto actual, texto propuesto, opciones, cómo se guardan y la hoja de validación para especialistas) está en **`formulario_tamizaje.md`**. Resumen:
+La versión final propuesta de las 21 preguntas (con texto actual, texto propuesto, opciones, cómo se guardan y la hoja de validación para especialistas) está en **`formulario_tamizaje.md`**. Resumen:
 
 - **Q-CHAT-10 (3 a 12):** no se reescriben; se unifica el trato de "usted" y se acerca el texto al original. Traducción propia revisada contra las versiones chilenas; falta pedir autorización de uso al Autism Research Centre.
 - **Comorbilidades (13 a 19):** se reformulan como **diagnóstico ya recibido** o **conducta observada**, con la opción **"No sé"**, que nunca se trata como "No".
+- **Regresión (21, nueva):** pérdida de habilidades que ya tenía; alimenta la regla R05.
 - **Antecedente familiar (20):** opciones "familia directa", "otro familiar", "No" y "No sé"; se quita "tiene comportamientos relacionados", porque no es un diagnóstico.
 
 ### 2.5 Validación
@@ -120,7 +122,7 @@ La versión final propuesta de las 20 preguntas (con texto actual, texto propues
 
 ```mermaid
 flowchart TD
-    A[Formulario<br/>20 preguntas, edad en años] --> B[API POST /assessments<br/>validación Pydantic]
+    A[Formulario<br/>21 preguntas, edad en años] --> B[API POST /assessments<br/>validación Pydantic]
     B --> C[Capa 1: Modelo ML<br/>pipeline sklearn + metadata.json]
     C -->|probabilidad, umbral| D[Capa 2: Reglas clínicas<br/>deterministas y versionadas]
     B -->|comorbilidades, antecedente, edad| D
@@ -156,7 +158,8 @@ Principio clave: **las capas 1 y 2 deciden; la capa 3 solo explica.** El LLM nun
     "depression": "no", "developmental_delay": "yes",
     "social_behavior": "no", "anxiety": "no"
   },
-  "family_history": "other"
+  "family_history": "other",
+  "regression": "no"
 }
 ```
 
@@ -304,7 +307,7 @@ El nivel base sale del modelo: bandas de probabilidad definidas en `metadata.jso
 | R02 | Retraso del habla/lenguaje **y** retraso global del desarrollo (id13 y id17 = sí) | Subir a Prioritario; recomendar evaluación del desarrollo pronta | Signos de alarma que justifican evaluación independiente del tamizaje (AAP, Hyman et al., *Pediatrics* 2020) | [pendiente] | reglas-2026.1 |
 | R03 | Diagnóstico de condición genética asociada (id15 = sí) | Subir un nivel; sugerir seguimiento con genética/neuropediatría | Mayor prevalencia de TEA en ciertos síndromes genéticos [citar con especialistas] | [pendiente] | reglas-2026.1 |
 | R04 | Edad de 1 año, o de 3 años o más (`age_validity` distinto de `validated`) | No cambia nivel; añade aviso de validez y recomendación de evaluación profesional | Rango de validación del Q-CHAT-10 (Allison et al., 2012) | [pendiente] | reglas-2026.1 |
-| R05 | Regresión reportada (pérdida de palabras o habilidades) — pregunta a añadir | Prioritario | Signo de alarma clásico [citar con especialistas] | [pendiente] | — |
+| R05 | Regresión reportada (pregunta 21 = sí) | Sube el nivel y recomienda evaluación pronta; cuánto (un nivel o Prioritario) lo deciden los especialistas | Signo de alarma clásico [citar con especialistas] | [pendiente] | — |
 
 Las reglas anteriores son **ejemplos de formato**, no reglas aprobadas **[a validar con especialistas]**.
 
