@@ -77,8 +77,7 @@ def expectations(result, age_years):
     }
 
 
-def make_case(cid, title, age, flags, health=None, family="no", regression="no", sex="M",
-              district="San Juan de Lurigancho", focus=""):
+def make_case(cid, title, age, flags, health=None, family="no", regression="no", sex="M", focus=""):
     health = {k: "no" for k, _ in HEALTH_TEXT.values()} | (health or {})
     qchat = qchat_from_flags(flags)
     result = compute(age, qchat, health, family, regression)
@@ -92,7 +91,7 @@ def make_case(cid, title, age, flags, health=None, family="no", regression="no",
     answers.append({"id": 21, "question": "Dejó de hacer cosas que ya hacía", "answer": YES_NO[regression]})
     unanswered = [a["id"] for a in answers if a["answer"] == "No sé"]
     assessment = {
-        "age_years": age, "age_validity": result["age_validity"], "sex": sex, "district": district,
+        "age_years": age, "age_validity": result["age_validity"], "sex": sex,
         "base_level": result["base_level"], "final_level": result["final_level"],
         "triggered_rules": result["triggered_rules"], "profile": result["profile"],
         "answers": answers, "unanswered": unanswered,
@@ -154,8 +153,8 @@ def build():
     add("Aprendizaje, sin señales Q-CHAT", 3, [], {"learning": "yes"}, focus="sin regla de nivel")
     add("Niña con señales sociales", 2, ["A1", "A4", "A5", "A7"], sex="F", focus="sin sesgo por sexo")
     add("Niña sin señales", 2, [], sex="F", focus="sin sesgo por sexo")
-    add("Distrito sin centros", 2, COMM, district="Iquitos", focus="centros de otros distritos o virtuales")
-    add("Sin distrito indicado", 2, ["A1", "A2", "A6"], district="", focus="sin distrito")
+    add("Comunicación y ansiedad", 2, COMM, {"anxiety": "yes"}, focus="perfil con comorbilidad sin regla")
+    add("Señales sociales leves, 3 años", 3, ["A1", "A2", "A6"], focus="nivel moderado con aviso por edad")
     add("Diez señales", 2, ITEMS, focus="máximo del cuestionario")
     add("Solo mirada al vacío", 2, ["A10"], focus="señal aislada")
     add("Solo contacto visual difícil", 2, ["A2"], focus="señal aislada")

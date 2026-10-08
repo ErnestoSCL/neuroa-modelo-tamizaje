@@ -98,7 +98,7 @@ Este documento funciona como **evaluación de impacto** del tratamiento y se deb
 | Dato | De quién | Categoría | Finalidad | Dónde se guarda | Quién accede | Conservación | ¿Va al LLM? |
 |---|---|---|---|---|---|---|---|
 | Correo (usuario de la cuenta) | Padre | Identificativo | Iniciar sesión, recuperar la contraseña, avisos de la cuenta y de incidentes | `app.parents` | Backend; soporte con permiso | Mientras la cuenta esté activa | **No** |
-| Distrito | Padre | Personal (ubicación aproximada) | Ordenar las sedes por cercanía | **No se guarda en la cuenta**: se elige en la pantalla de sedes y viaja en la consulta | Backend | Solo durante la consulta | Sí (para filtrar terapias) |
+| Distrito | Padre | Personal (ubicación aproximada) | Ordenar las sedes por cercanía | **No se guarda en la cuenta**: se elige en la pantalla de sedes y viaja en la consulta | Backend | Solo durante la consulta | **No** (el agente solo recibe las respuestas del formulario) |
 | Contraseña (hash argon2) | Padre | Credencial | Autenticación | `app.parents` | Nadie la ve | Mientras la cuenta esté activa | No |
 | Edad en años (0 a 13), sexo | Niño | Personal (de un menor) | Reglas por edad, auditoría de sesgos | `app.assessments` | Backend | Con la evaluación | Edad sí; sexo solo como contexto |
 | Respuestas Q-CHAT-10 (índice 0–4) | Niño | **Sensible (salud)** | Tamizaje | `app.answers` | Backend | Con la evaluación | Sí, sin identificadores |
@@ -162,7 +162,7 @@ flowchart LR
 |---|---|---|---|
 | Azure (frontend, backend, PostgreSQL, Blob, Key Vault, Application Insights) | Todos | **Brasil** (Brazil South, São Paulo) | Brasil tiene ley (LGPD) y autoridad (ANPD de Brasil); confirmar si la autoridad peruana lo considera de **nivel adecuado** **[verificar]**. Si no, cláusulas contractuales (el DPA de Microsoft) e informarlo en el consentimiento |
 | **Respaldos geo-redundantes** de PostgreSQL | Todos | **EE. UU.** (la región pareja de Brazil South es South Central US) | **Recomendación: no activarlos.** Usar respaldos con redundancia local o por zonas dentro de Brasil |
-| **Azure OpenAI con despliegue *Global*** | Respuestas, resultado, edad, distrito | **Cualquier región de Azure** (incluido EE. UU.) | Evitarlo, o informarlo como transferencia a EE. UU. y otros países |
+| **Azure OpenAI con despliegue *Global*** | Respuestas, resultado, edad | **Cualquier región de Azure** (incluido EE. UU.) | Evitarlo, o informarlo como transferencia a EE. UU. y otros países |
 | **Azure OpenAI con despliegue *Standard* (regional) en Brazil South** | Igual | **Brasil** | **Recomendado.** Confirmar qué modelos hay disponibles en esa región |
 | Proveedor de correo | Correo del padre | Según el proveedor | Elegir uno con DPA; preferir Azure Communication Services con datos en Brasil **[verificar disponibilidad]** |
 | Soporte técnico de Microsoft | Solo si se abre un caso | Variable | No compartir datos reales en los casos de soporte |
@@ -410,7 +410,7 @@ Responsables: oficial de datos (coordina y notifica), líder técnico (contiene 
 
 | Va | No va |
 |---|---|
-| Edad en años, sexo (contexto), respuestas (texto de la opción), comorbilidades, antecedente familiar (sí/no), probabilidad, nivel, perfil, reglas activadas, distrito (para filtrar terapias), terapias del catálogo | Nombre, correo, teléfono del padre, ids internos de la cuenta, IP, cualquier dato de otro niño |
+| Edad en años, sexo (contexto), respuestas (texto de la opción), comorbilidades, antecedente familiar (sí/no), probabilidad, nivel, perfil, reglas activadas, terapias del catálogo (sin ubicación ni nombre del centro) | Nombre, correo, teléfono del padre, ids internos de la cuenta, IP, cualquier dato de otro niño |
 
 ---
 

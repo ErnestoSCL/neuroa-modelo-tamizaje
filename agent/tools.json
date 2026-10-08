@@ -6,39 +6,53 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "age_years": {"type": "integer", "minimum": 0, "maximum": 13, "description": "Edad del niño en años"},
-        "district": {"type": "string", "description": "Distrito del padre, si lo indicó"},
-        "modality": {"type": "string", "enum": ["in_person", "virtual", "any"], "description": "Modalidad preferida; 'any' por defecto"},
+        "age_years": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 13,
+          "description": "Edad del niño en años"
+        },
+        "modality": {
+          "type": "string",
+          "enum": [
+            "in_person",
+            "virtual",
+            "any"
+          ],
+          "description": "Modalidad preferida; 'any' por defecto"
+        },
         "keywords": {
           "type": "array",
-          "items": {"type": "string"},
+          "items": {
+            "type": "string"
+          },
           "maxItems": 5,
           "description": "Opcional. Solo si la primera llamada devolvió truncated: true. Palabras para buscar en el nombre y la descripción (por ejemplo: lenguaje, ocupacional, social, evaluación)"
         }
       },
-      "required": ["age_years"]
+      "required": [
+        "age_years"
+      ]
     },
     "returns": {
-      "description": "Objeto con therapies (hasta 20 que encajan por edad, distrito o cercanos, y modalidad) y truncated (true si había más de 20). Sin datos de contacto: esos los agrega la app.",
+      "description": "Objeto con therapies (hasta 20 que encajan por edad y modalidad) y truncated (true si había más de 20). Sin ubicación, nombre del centro ni datos de contacto: el agente elige por necesidad y la app ordena las sedes por cercanía en la pantalla de sedes.",
       "item": {
         "therapy_id": "string",
         "location_id": "string",
-        "center_name": "string",
         "name": "string",
         "description": "string",
         "min_age_months": "integer",
         "max_age_months": "integer",
-        "modality": "in_person | virtual | both",
-        "district": "string"
+        "modality": "in_person | virtual | both"
       }
     },
     "backend_rules": [
       "Consulta fija sobre catalog.therapies y catalog.locations; el modelo nunca escribe SQL.",
       "Solo tenants con conecta_enabled = true y terapias con is_active = true.",
       "Edad: incluye la terapia si su rango en meses se cruza con [age_years*12, age_years*12 + 11].",
-      "Distrito: primero el distrito indicado; si hay menos de 5 resultados, completa con otros distritos.",
       "Máximo 2 llamadas por evaluación; la tercera devuelve error.",
-      "El backend registra los therapy_id devueltos para validar la respuesta final."
+      "El backend registra los therapy_id devueltos para validar la respuesta final.",
+      "Sin filtro por distrito: el agente solo conoce las respuestas del formulario. La cercanía la aplica la app en GET /locations, con el distrito que el padre elige en la pantalla de sedes."
     ]
   }
 ]

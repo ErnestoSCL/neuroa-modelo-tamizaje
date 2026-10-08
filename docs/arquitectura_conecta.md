@@ -232,7 +232,7 @@ Bajo `/internal`, con autenticación entre servicios. Los del Panel devuelven **
 4. **Capa 2 (reglas clínicas):** comorbilidades, antecedente familiar y edad pueden subir el nivel (Bajo / Moderado / Alto / Prioritario).
 5. **Perfil:** porcentajes comunicativo y social con los pesos validados por especialistas.
 6. Se guarda todo con las **versiones** del modelo y de las reglas, y se devuelve el resultado.
-7. **Capa 3 (agente IA):** se genera la explicación aparte. El agente llama a `search_therapies`, que consulta la copia del catálogo filtrando por tenants activos, edad y zona. El backend valida la salida; si falla, se usan textos plantilla.
+7. **Capa 3 (agente IA):** se genera la explicación aparte. El agente llama a `search_therapies`, que consulta la copia del catálogo filtrando por tenants activos y edad. El agente solo conoce las respuestas del formulario (sin distrito ni ubicación); la cercanía la aplica la app en la pantalla de sedes. El backend valida la salida; si falla, se usan textos plantilla.
 
 **Quién decide qué:**
 
@@ -374,7 +374,7 @@ sequenceDiagram
     W->>A: GET /assessments/{id}/explanation
     A->>L: Resultado + base de conocimiento
     L->>A: search_therapies
-    A->>DB: Terapias de tenants activos por edad y zona
+    A->>DB: Terapias de tenants activos por edad
     A-->>L: Lista de terapias
     L-->>A: Explicación y terapias elegidas
     A->>A: Valida la salida o usa plantilla

@@ -3,36 +3,116 @@
     "age_years": 2,
     "age_validity": "validated",
     "sex": "M",
-    "district": "San Juan de Lurigancho",
     "base_level": "moderate",
     "final_level": "priority",
-    "triggered_rules": ["R02", "R09"],
+    "triggered_rules": [
+      "R02",
+      "R09"
+    ],
     "profile": {
       "name": "communication",
       "communication_pct": 80,
       "social_pct": 35
     },
     "answers": [
-      {"id": 3, "question": "¿Su hijo/a le mira cuando usted le llama por su nombre?", "answer": "Normalmente"},
-      {"id": 4, "question": "¿Qué tan fácil es para usted lograr contacto visual con su hijo/a?", "answer": "Bastante fácil"},
-      {"id": 5, "question": "¿Su hijo/a señala con el dedo para indicar que quiere algo?", "answer": "Menos de una vez a la semana"},
-      {"id": 6, "question": "¿Su hijo/a señala con el dedo para mostrarle algo que le interesa?", "answer": "Unas cuantas veces a la semana"},
-      {"id": 7, "question": "¿Su hijo/a juega a simular o \"hacer como si\"?", "answer": "Unas cuantas veces al día"},
-      {"id": 8, "question": "¿Su hijo/a sigue con la mirada hacia donde usted está mirando?", "answer": "Unas cuantas veces al día"},
-      {"id": 9, "question": "Si usted u otra persona de la familia está visiblemente triste o molesta, ¿su hijo/a muestra señales de querer ayudarla o consolarla?", "answer": "Normalmente"},
-      {"id": 10, "question": "¿Cómo describiría las primeras palabras de su hijo/a?", "answer": "Mi hijo/a no habla"},
-      {"id": 11, "question": "¿Su hijo/a usa gestos simples?", "answer": "Menos de una vez a la semana"},
-      {"id": 12, "question": "¿Su hijo/a se queda mirando al vacío, sin un propósito aparente?", "answer": "Nunca"},
-      {"id": 13, "question": "Retraso del habla o del lenguaje", "answer": "Sí"},
-      {"id": 14, "question": "Le cuesta más aprender cosas nuevas", "answer": "No"},
-      {"id": 15, "question": "Diagnóstico de una condición genética", "answer": "No sé"},
-      {"id": 16, "question": "Casi siempre triste o sin ganas de jugar", "answer": "No"},
-      {"id": 17, "question": "Retraso del desarrollo", "answer": "Sí"},
-      {"id": 18, "question": "Rabietas muy frecuentes o casi no juega con otros niños", "answer": "No"},
-      {"id": 19, "question": "Se asusta o angustia mucho ante cambios o ruidos", "answer": "No"},
-      {"id": 20, "question": "Familiar con diagnóstico de autismo", "answer": "No"},
-      {"id": 21, "question": "Dejó de hacer cosas que ya hacía", "answer": "No"}
+      {
+        "id": 3,
+        "question": "¿Su hijo/a le mira cuando usted le llama por su nombre?",
+        "answer": "Normalmente"
+      },
+      {
+        "id": 4,
+        "question": "¿Qué tan fácil es para usted lograr contacto visual con su hijo/a?",
+        "answer": "Bastante fácil"
+      },
+      {
+        "id": 5,
+        "question": "¿Su hijo/a señala con el dedo para indicar que quiere algo?",
+        "answer": "Menos de una vez a la semana"
+      },
+      {
+        "id": 6,
+        "question": "¿Su hijo/a señala con el dedo para mostrarle algo que le interesa?",
+        "answer": "Unas cuantas veces a la semana"
+      },
+      {
+        "id": 7,
+        "question": "¿Su hijo/a juega a simular o \"hacer como si\"?",
+        "answer": "Unas cuantas veces al día"
+      },
+      {
+        "id": 8,
+        "question": "¿Su hijo/a sigue con la mirada hacia donde usted está mirando?",
+        "answer": "Unas cuantas veces al día"
+      },
+      {
+        "id": 9,
+        "question": "Si usted u otra persona de la familia está visiblemente triste o molesta, ¿su hijo/a muestra señales de querer ayudarla o consolarla?",
+        "answer": "Normalmente"
+      },
+      {
+        "id": 10,
+        "question": "¿Cómo describiría las primeras palabras de su hijo/a?",
+        "answer": "Mi hijo/a no habla"
+      },
+      {
+        "id": 11,
+        "question": "¿Su hijo/a usa gestos simples?",
+        "answer": "Menos de una vez a la semana"
+      },
+      {
+        "id": 12,
+        "question": "¿Su hijo/a se queda mirando al vacío, sin un propósito aparente?",
+        "answer": "Nunca"
+      },
+      {
+        "id": 13,
+        "question": "Retraso del habla o del lenguaje",
+        "answer": "Sí"
+      },
+      {
+        "id": 14,
+        "question": "Le cuesta más aprender cosas nuevas",
+        "answer": "No"
+      },
+      {
+        "id": 15,
+        "question": "Diagnóstico de una condición genética",
+        "answer": "No sé"
+      },
+      {
+        "id": 16,
+        "question": "Casi siempre triste o sin ganas de jugar",
+        "answer": "No"
+      },
+      {
+        "id": 17,
+        "question": "Retraso del desarrollo",
+        "answer": "Sí"
+      },
+      {
+        "id": 18,
+        "question": "Rabietas muy frecuentes o casi no juega con otros niños",
+        "answer": "No"
+      },
+      {
+        "id": 19,
+        "question": "Se asusta o angustia mucho ante cambios o ruidos",
+        "answer": "No"
+      },
+      {
+        "id": 20,
+        "question": "Familiar con diagnóstico de autismo",
+        "answer": "No"
+      },
+      {
+        "id": 21,
+        "question": "Dejó de hacer cosas que ya hacía",
+        "answer": "No"
+      }
     ],
-    "unanswered": [15]
+    "unanswered": [
+      15
+    ]
   }
 }

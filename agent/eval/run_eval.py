@@ -25,7 +25,7 @@ from check_output import CATALOG, check_case, validate
 HERE = Path(__file__).resolve().parent
 AGENT = HERE.parent
 ROOT = AGENT.parent
-PROMPT_VERSION = "prompt-2026.3"
+PROMPT_VERSION = "prompt-2026.4"
 USAGE = {}
 
 
@@ -33,7 +33,7 @@ def load_cases():
     return [json.loads(l) for l in open(HERE / "cases.jsonl", encoding="utf-8")]
 
 
-def search_therapies(age_years, district="", modality="any", keywords=None, **_):
+def search_therapies(age_years, modality="any", keywords=None, **_):
     """Simula la herramienta del backend sobre el catálogo de prueba."""
     lo, hi = age_years * 12, age_years * 12 + 11
     rows = [t for t in CATALOG.values() if t["min_age_months"] <= hi and t["max_age_months"] >= lo]
@@ -42,8 +42,8 @@ def search_therapies(age_years, district="", modality="any", keywords=None, **_)
     if keywords:
         kws = [k.lower() for k in keywords]
         rows = [t for t in rows if any(k in (t["name"] + " " + t["description"]).lower() for k in kws)]
-    rows.sort(key=lambda t: t["district"] != district)
-    return [{k: v for k, v in t.items() if k != "eval_type"} for t in rows[:20]]
+    hidden = {"eval_type", "district", "center_name"}  # el agente no ve ubicación ni nombre del centro
+    return [{k: v for k, v in t.items() if k not in hidden} for t in rows[:20]]
 
 
 def search_therapies_tool(**kw):
@@ -72,7 +72,7 @@ NEVER = ["dieta", "suplemento", "desintoxicación", "quelación"]
 
 def mock_agent(case):
     a = case["input"]["assessment"]
-    rows = search_therapies(a["age_years"], a["district"])
+    rows = search_therapies(a["age_years"])
     kws = PROFILE_KEYWORDS[a["profile"]["name"]] + (["evaluación"] if a["final_level"] in ("high", "priority") else [])
     chosen = [t for t in rows if any(k in (t["name"] + t["description"]).lower() for k in kws)
               and not any(n in (t["name"] + t["description"]).lower() for n in NEVER)

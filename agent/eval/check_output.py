@@ -110,6 +110,13 @@ def check_case(out: dict, case: dict) -> list:
     bad = types & set(exp["forbidden_types"])
     if bad:
         problems.append(f"E2 eligió terapias de tipo prohibido: {sorted(bad)}")
+    text = norm(" ".join([out.get("summary", ""), out.get("profile_explanation", ""), *out.get("next_steps", []),
+                          *[t.get("reason", "") for t in out.get("suggested_therapies", [])]]))
+    places = {norm(t["district"]) for t in CATALOG.values()} | {norm(t["center_name"]) for t in CATALOG.values()}
+    places |= {"lima", "san juan de lurigancho", "surco", "cercado"}
+    found = [p for p in places if p != "virtual" and re.search(rf"\b{re.escape(p)}\b", text)]
+    if found:
+        problems.append(f"E3 menciona ubicación o centro: {sorted(found)}")
     return problems
 
 

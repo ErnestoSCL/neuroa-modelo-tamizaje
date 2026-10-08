@@ -11,14 +11,14 @@ La app **siempre** entrega un resultado, aunque el agente no responda, exceda el
 | Perfil | Nombre + `profile_explanation` | Nombre + explicación del perfil (`knowledge/profiles.md`) |
 | Recomendaciones de reglas | `knowledge/recommendations.md` | Igual |
 | Próximos pasos | `next_steps` del agente | "Qué hacer" del nivel (`knowledge/levels.md`) |
-| Terapias | Elegidas por el agente, con su motivo | Terapias del catálogo filtradas por edad y distrito, según el perfil (tabla de abajo), sin motivo personalizado |
+| Terapias | Elegidas por el agente, con su motivo | Terapias del catálogo filtradas por edad, según el perfil (tabla de abajo), sin motivo personalizado |
 | Avisos | `knowledge/notices.md` y `knowledge/age_messages.md` | Igual, más la nota de abajo |
 
 **Nota adicional [texto fijo]:** "En este momento no pudimos preparar una explicación personalizada. Este resultado incluye la información principal; puede volver a consultarlo más tarde desde su cuenta."
 
 ## Terapias sin agente
 
-El backend filtra el catálogo por edad y distrito y busca en el nombre y la descripción estas palabras, según el perfil:
+El backend filtra el catálogo por edad y busca en el nombre y la descripción estas palabras, según el perfil:
 
 | Perfil | Palabras clave |
 |---|---|
