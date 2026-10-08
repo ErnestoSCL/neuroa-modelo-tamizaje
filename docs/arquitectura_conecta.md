@@ -498,11 +498,13 @@ sequenceDiagram
 | Recomendación de terapias | El LLM decide **qué terapias** encajan (todas las que encajen); el backend decide **el orden** de los centros (cercanía y rotación diaria) |
 | Plazos de conservación | Tabla de la sección 4.4 (a validar con asesoría legal) |
 
-### 7.2 Modelo de LLM: gpt-4.1-mini (recomendado, pendiente de confirmar)
+### 7.2 Modelo de LLM: gpt-4.1-mini (decidido por el equipo el 2026-10-08)
 
 **Resultado de la evaluación (2026-10-08, 48 casos, prompt-2026.3):** gpt-4.1-mini y gpt-4.1 pasan los 48 casos; gpt-4o-mini y gpt-4.1-nano no cumplen las metas. **Se recomienda gpt-4.1-mini**: cumple todo, es el más rápido (p95 de 3.8 s) y cuesta unos US$ 0.0032 por tamizaje con caché del prompt, unas 5 veces menos que gpt-4.1. Detalle en `agent/eval/RESULTS.md`.
 
-**Falta para confirmarlo:** la revisión de especialistas con la rúbrica (`agent/eval/review_sample.md`) y verificar que esté disponible como despliegue Standard en Brazil South.
+**Por qué no los más baratos:** gpt-4.1-nano inventa terapias sin consultar el catálogo y gpt-4o-mini omite la opción pública; el ahorro (US$ 1 a 3 cada 1000 tamizajes) no compensa el riesgo.
+
+**Antes de producción:** revisión de especialistas con la rúbrica (`agent/eval/review_sample.md`) y verificar que esté disponible como despliegue Standard en Brazil South, repitiendo ahí la evaluación.
 
 Tabla de referencia usada para elegir los candidatos:
 
