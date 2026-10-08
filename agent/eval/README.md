@@ -62,6 +62,7 @@ cd agent/eval
 python build_cases.py                    # solo si cambian el formulario, las reglas o el catálogo de prueba
 python run_eval.py --mock                # prueba el circuito sin modelo
 AZURE_OPENAI_ENDPOINT=... AZURE_OPENAI_API_KEY=... python run_eval.py --deployment gpt-4.1-mini
+OPENAI_API_KEY=... python run_eval.py --openai gpt-4.1-mini --limit 5   # API de OpenAI, solo con estos casos ficticios
 ```
 
 Los resultados quedan en `results/<modo>.jsonl` (excluido de git).

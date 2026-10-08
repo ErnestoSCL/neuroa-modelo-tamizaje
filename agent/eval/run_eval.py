@@ -6,8 +6,10 @@ Modos:
       el circuito completo sin gastar en un modelo.
   python agent/eval/run_eval.py --deployment <nombre>
       Modelo real en Azure OpenAI. Requiere las variables de entorno
-      AZURE_OPENAI_ENDPOINT y AZURE_OPENAI_API_KEY (o identidad administrada)
-      y el paquete openai >= 1.40.
+      AZURE_OPENAI_ENDPOINT y AZURE_OPENAI_API_KEY y el paquete openai >= 1.40.
+  python agent/eval/run_eval.py --openai <modelo>
+      Modelo real en la API de OpenAI (solo para evaluar con los casos ficticios;
+      en producción se usa Azure en Brazil South). Requiere OPENAI_API_KEY.
 
 Salida: agent/eval/results/<modo>.jsonl y un resumen en pantalla.
 """
@@ -81,7 +83,7 @@ def mock_agent(case):
 
 
 # ---------- agente real (Azure OpenAI) ----------
-def azure_agent(case, client, deployment):
+def llm_agent(case, client, deployment):
     tools = [{"type": "function", "function": {"name": t["name"], "description": t["description"],
                                                 "parameters": t["input_schema"]}}
              for t in json.load(open(AGENT / "tools.json"))]
@@ -94,7 +96,7 @@ def azure_agent(case, client, deployment):
         resp = client.chat.completions.create(
             model=deployment, messages=messages, tools=tools,
             response_format={"type": "json_schema", "json_schema": {"name": "AgentOutput", "schema": schema, "strict": False}},
-            max_tokens=1500)
+            max_completion_tokens=1500)
         msg = resp.choices[0].message
         if msg.tool_calls:
             messages.append(msg.model_dump(exclude_none=True))
@@ -111,21 +113,29 @@ def azure_agent(case, client, deployment):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--mock", action="store_true")
-    ap.add_argument("--deployment")
+    ap.add_argument("--deployment", help="nombre del despliegue en Azure OpenAI")
+    ap.add_argument("--openai", help="modelo de la API de OpenAI (por ejemplo, gpt-4.1-mini)")
+    ap.add_argument("--limit", type=int, help="correr solo los primeros N casos")
     args = ap.parse_args()
-    client = None
-    if not args.mock:
+    client, model = None, None
+    if args.openai:
+        from openai import OpenAI
+        client, model = OpenAI(), args.openai
+    elif args.deployment:
         from openai import AzureOpenAI
         client = AzureOpenAI(azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
                              api_key=os.environ.get("AZURE_OPENAI_API_KEY"), api_version="2024-10-21")
-    mode = "mock" if args.mock else args.deployment
+        model = args.deployment
+    elif not args.mock:
+        ap.error("indique --mock, --openai <modelo> o --deployment <nombre>")
+    mode = "mock" if args.mock else model
     (HERE / "results").mkdir(exist_ok=True)
     totals = {"cases": 0, "valid": 0, "case_ok": 0, "errors": {}}
     with open(HERE / "results" / f"{mode}.jsonl", "w", encoding="utf-8") as f:
-        for case in load_cases():
+        for case in load_cases()[: args.limit]:
             t0 = time.time()
             try:
-                out, returned, called = mock_agent(case) if args.mock else azure_agent(case, client, args.deployment)
+                out, returned, called = mock_agent(case) if args.mock else llm_agent(case, client, model)
                 v, e = validate(out, returned, called), check_case(out, case)
             except Exception as ex:  # noqa: BLE001
                 out, v, e = None, [f"EXC {type(ex).__name__}: {ex}"], []
