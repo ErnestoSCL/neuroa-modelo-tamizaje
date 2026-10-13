@@ -211,7 +211,7 @@ Antes de aceptar (a), el padre debe ver de forma clara:
 
 ### 6.3 Texto base del consentimiento (borrador)
 
-Borrador en lenguaje simple, para revisión legal:
+**Versión final para aprobación en `consentimiento.md`** (`consent-2026.1`). Borrador original:
 
 > **Antes de empezar**
 >

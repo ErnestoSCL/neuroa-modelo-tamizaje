@@ -182,6 +182,8 @@ conecta-api/
 |---|---|
 | `POST /auth/register`, `POST /auth/login`, `POST /auth/logout` | Cuenta del padre |
 | `POST /consents` | Registrar el consentimiento del padre o tutor |
+| `GET /consents` | Autorizaciones vigentes de la cuenta ("Mis autorizaciones") |
+| `DELETE /consents/{purpose}` | Retirar una finalidad opcional |
 | `POST /assessments` | Enviar las respuestas de la prueba; devuelve el id de la evaluación |
 | `GET /assessments/{id}/result` | Nivel, probabilidad, perfil y reglas activadas |
 | `GET /assessments/{id}/explanation` | Explicación y terapias sugeridas por el agente IA |
@@ -302,7 +304,7 @@ Los puntos 1 a 4 funcionan igual para el SGT completo y para la versión limitad
 | Tabla | Campos clave |
 |---|---|
 | `app.parents` | id, email (usuario), password_hash, email_verified_at, created_at. La cuenta no guarda nombre, teléfono ni distrito |
-| `app.consents` | id, parent_id, text_version, purposes, accepted_at, revoked_at |
+| `app.consents` | id, parent_id (nulo hasta crear la cuenta), screening_session_id, purpose, text_version, center_link_id, granted_at, revoked_at. Una fila por finalidad; solo se inserta o se llena `revoked_at` (ver `guia_implementacion_privacidad.md`, sección 2) |
 | `app.assessments` | id, parent_id, age_years (0–13), age_validity, sex, status, started_at, completed_at |
 | `app.answers` | assessment_id, question_id, option_index (0–4 o sí/no/no sé), binary_value |
 | `app.results` | assessment_id, qchat10_score, probability, threshold, is_positive, base_level, final_level, triggered_rules, communication_pct, social_pct, profile, model_version, rules_version |
