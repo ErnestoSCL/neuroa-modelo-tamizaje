@@ -10,9 +10,9 @@ Versión 1.0 · Conecta · Una página para tener a mano
 
 | Rol | Persona | Contacto | Hace |
 |---|---|---|---|
-| Coordinador y oficial de datos | Ernesto Saniel Castro Lozano | [celular] · [privacidad@dominio] | Decide si es incidente, notifica a la ANPD y a los padres, lleva el registro |
+| Coordinador y oficial de datos | Ernesto Saniel Castro Lozano | Celular en la página de Notion · correo de privacidad pendiente hasta tener dominio | Decide si es incidente, notifica a la ANPD y a los padres, lleva el registro |
 | Líder técnico | Zahir Mauricio Aredo Vejarano | Celular en la página de Notion | Contiene, investiga y corrige |
-| Respaldo | [nombre] | [celular] | Reemplaza a cualquiera de los dos si no responde en 1 hora |
+| Respaldo | Jania Cecilia Salirrosas Morillo | Celular en la página de Notion | Reemplaza a cualquiera de los dos si no responde en 1 hora |
 
 Cualquiera que detecte algo avisa **de inmediato** al coordinador por llamada, no solo por mensaje.
 
