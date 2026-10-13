@@ -84,7 +84,7 @@ Se guarda en `app.consents` con la versión del texto, las finalidades aceptadas
 
 - **Traducción de la Universidad Autónoma de Chile, sede Talca (Segura Pujol):** fiel al original y en el mismo orden. Sirvió de referencia, pero no se copia porque está publicada "con fines exclusivamente académicos".
 - **Adaptación de la Universidad de la Frontera, Chile (Gatica-Bahamonde y otros, 2019): no compatible con el modelo.** Reemplaza la pregunta de las primeras palabras (A8) por una de referencia social, y cambia el orden y algunas opciones. El modelo se entrenó con las 10 preguntas originales.
-- **Licencia:** el Q-CHAT-10 pertenece al Autism Research Centre de la Universidad de Cambridge. Antes de lanzar, pedirle autorización para su uso en Conecta **[pendiente]**.
+- **Licencia:** el Q-CHAT-10 pertenece al Autism Research Centre de la Universidad de Cambridge. El equipo decidió no tramitar una autorización aparte (2026-10-13).
 - **Validación local:** ninguna traducción al español está validada en población peruana; queda para el estudio de validación local.
 
 **Puntuación (no cambia):** preguntas 3 a 11 (A1–A9) suman 1 si la opción elegida es la 3.ª, 4.ª o 5.ª (índice 2, 3 o 4). La pregunta 12 (A10) suma 1 si es la 1.ª, 2.ª o 3.ª (índice 0, 1 o 2). El orden en pantalla puede cambiar, pero cada respuesta se guarda siempre con su ítem original (A1 a A10).
@@ -251,7 +251,6 @@ El diseño del formulario está cerrado. Lo que falta depende de otras personas 
 
 | Pendiente | Dónde se sigue |
 |---|---|
-| Autorización del Autism Research Centre para usar el Q-CHAT-10 en Conecta | Tarea "Cumplir el mínimo legal de privacidad para el piloto" (permisos antes del piloto) |
 | ~~Revisión de los especialistas~~ | **Hecho:** formulario y reglas aprobados |
 | Construir el formulario en Conecta (Next.js, ruta `/screening/questions`) y su validación en `POST /assessments` | Desarrollo de Conecta. Es un proyecto nuevo: TEAnimo solo sirvió de referencia, no se modifica su código |
 | Prueba con 5 a 10 padres en celular (comprensión y tiempo) | Cuando el formulario esté construido en Conecta |
